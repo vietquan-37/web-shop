@@ -1,0 +1,72 @@
+<div class="container">
+  <h2>
+    Add Product
+  </h2>
+  <form [formGroup]="productForm" (ngSubmit)="addProduct()">
+    <div class="file-upload-container">
+      <label class="file-upload-label">
+        <span>Select a file</span>
+        <input type="file" id="fileInput" (change)="OnFileSelected($event)" hidden accept=".jpg, .jpeg, .png">
+        <mat-icon>attach_file</mat-icon>
+
+      </label>
+
+    </div>
+    <div *ngIf="selectedFile" class="image-preview">
+      <div class="circle-image">
+        <img [src]="imagePreview" alt="Selected Image" class="preview-image">
+
+
+      </div>
+
+    </div>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Select a Category</mat-label>
+      <mat-select formControlName="categoryId" name="categoryId">
+        <mat-option *ngFor="let category of listOfCategories" [value]="category.categoryId">
+          {{category.name}}
+
+        </mat-option>
+
+      </mat-select>
+      <mat-error *ngIf="productForm.get('categoryId')?.hasError('required')">
+        This Input is required
+
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>
+        Name
+      </mat-label>
+      <input matInput type="text" placeholder="Name" formControlName="name">
+      <mat-error *ngIf="productForm.get('name')?.hasError('required')">
+        This Input is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>
+        Price
+      </mat-label>
+      <input matInput type="number" placeholder="Price" formControlName="price">
+      <mat-error *ngIf="productForm.get('price')?.hasError('required')">
+        This Input is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        Description
+      </mat-label>
+      <input matInput type="text" placeholder="description" formControlName="description">
+      <mat-error *ngIf="productForm.get('description')?.hasError('required')">
+        This Input is required
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Add Product</button>
+  </form>
+
+
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Add Category</h2>
+  <form [formGroup]="categoryForm" (click)="addCategory()" >
+    <mat-form-field appearance="outline">
+      <mat-label>
+        Name
+      </mat-label>
+      <input matInput formControlName="name" placeholder="Name" type="text">
+    <mat-error *ngIf="categoryForm.get('name')?.invalid&&categoryForm.get('name')?.touched">
+        Please input the valid name
+      </mat-error>
+
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>
+        Description
+      </mat-label>
+      <input matInput formControlName="description" placeholder="Description" type="text">
+        <mat-error *ngIf="categoryForm.get('description')?.invalid&&categoryForm.get('description')?.touched">
+        Please input the valid description
+      </mat-error>
+
+    </mat-form-field>
+<button mat-raised-button color="primary" type="button">Add Category</button>
+  </form>
+</div>
+

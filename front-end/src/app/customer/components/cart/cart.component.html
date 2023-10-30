@@ -1,0 +1,62 @@
+<div *ngIf="cartItems.length > 0; else emptyCart ">
+  <div class="cart-container">
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <div class="product-info">
+        <div class="product-image">
+          <img [src]="item.processedImg" alt="product-image">
+        </div>
+        <div class="product-details">
+          <div class="item-row">
+            <div class="item-name" [ngClass]="{ 'highlight' : item.highlighted }">
+              {{item.productName}}
+
+            </div>
+            <div class="item-price">
+              {{item.price |currency}}
+
+            </div>
+            <div class="quality-controls">
+              <button mat-icon-button [disabled]="item.quantity ==1">
+                <mat-icon>
+                  remove_circle_outline
+                </mat-icon>
+
+              </button>
+              <span class="quantity">{{ item.quantity }}</span>
+              <button mat-icon-button>
+                <mat-icon>
+                  add_circle_outline
+                </mat-icon>
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+    <div class="total-price">
+      TotalAmount: {{order.totalAmount | currency}}
+
+    </div>
+    <div class="total-price">
+    Amount: {{order.amount | currency}}
+
+    </div>
+    <div >
+<button mat-raised-button color="primary">Place Order</button>
+    </div>
+  </div>
+</div>
+<ng-template #emptyCart>
+  <div class="empty-cart">
+    <mat-icon class="icon">
+      remove_shopping_cart
+    </mat-icon>
+
+    <span>Your cart is empty.</span>
+
+    <button mat-raised-button color="primary" [routerLink]="'/customer/dashboard'">Shop Now</button>
+  </div>
+</ng-template>

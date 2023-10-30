@@ -1,0 +1,51 @@
+  <div class="container">
+    <mat-card >
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="loginForm" *ngIf="mfaEnable==false||mfaEnable==null">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Email" required>
+            <mat-error *ngIf="loginForm.get('email')?.invalid&&loginForm.get('email')?.touched">
+              Please Enter the valid  Email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Password" required>
+            <button mat-icon-button matSuffix (click)="togglePassword()">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="loginForm.get('password')?.invalid&&loginForm.get('password')?.touched">
+              Please Enter the valid Password
+            </mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="button" [disabled]="loginForm.invalid" (click)="onSubmit()">Login</button>
+
+        </form>
+
+        <form [formGroup]="verifyForm" *ngIf="mfaEnable==true">
+          <mat-form-field appearance="outline">
+            <mat-label>Code</mat-label>
+            <input matInput formControlName="code" placeholder="Code" required>
+            <mat-error *ngIf="verifyForm.get('code')?.invalid && verifyForm.get('code')?.touched">
+              Please Enter the valid Code
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="button" [disabled]="verifyForm.invalid" (click)="verifyTfaCode()">Verify code</button>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="accent" routerLink="/register">
+          Dont have account? Register
+
+        </button>
+
+      </mat-card-actions>
+
+    </mat-card>
+
+  </div>
