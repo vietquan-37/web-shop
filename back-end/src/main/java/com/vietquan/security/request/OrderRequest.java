@@ -30,6 +30,7 @@ public class OrderRequest {
     private UUID trackingId;
 
     private String username;
+    private String couponName;
 
     private List<CartItemsRequest> carts;
 }

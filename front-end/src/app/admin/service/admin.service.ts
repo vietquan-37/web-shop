@@ -15,6 +15,9 @@ export class AdminService {
   addCategory(categoryData: any):Observable<any>{
 return this.http.post(`${this.baseUrl}/category/create`, categoryData,{headers:this.createHeader()})
   }
+  addCoupon(couponData: any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/coupon/create`, couponData,{headers:this.createHeader()})
+  }
  private createHeader():HttpHeaders{
     return new HttpHeaders().set(
       'Authorization', 'Bearer ' + localStorage.getItem('accessToken')

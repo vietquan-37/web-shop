@@ -43,6 +43,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatTableModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatPaginatorModule
 
   ],
 

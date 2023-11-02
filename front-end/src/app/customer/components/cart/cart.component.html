@@ -1,6 +1,11 @@
 <div *ngIf="cartItems.length > 0; else emptyCart ">
   <div class="cart-container">
     <div class="cart-item" *ngFor="let item of cartItems">
+      <button style="float: right"
+        mat-icon-button
+        (click)="deleteProductFromCart(item.productId)">
+        <mat-icon>delete</mat-icon>
+      </button>
       <div class="product-info">
         <div class="product-image">
           <img [src]="item.processedImg" alt="product-image">
@@ -36,17 +41,35 @@
       </div>
 
     </div>
+
     <div class="total-price">
       TotalAmount: {{order.totalAmount | currency}}
 
     </div>
     <div class="total-price">
-    Amount: {{order.amount | currency}}
+      Amount: {{order.amount | currency}}
 
     </div>
-    <div >
-<button mat-raised-button color="primary">Place Order</button>
+    <div class="total-price">
+      Coupon Applied:  {{order.couponName}}
+
     </div>
+    <div>
+      <button mat-raised-button color="primary">Place Order</button>
+    </div>
+  </div>
+  <div class="container" *ngIf="order.couponName==null">
+    <form [formGroup]="couponForm" (ngSubmit)="applyCoupon()">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Code</mat-label>
+        <input matInput type="text" placeholder="Code" formControlName="code">
+        <mat-error *ngIf="couponForm.get('code')?.hasError('required')">
+          This input is required
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Apply Coupon</button>
+
+    </form>
   </div>
 </div>
 <ng-template #emptyCart>

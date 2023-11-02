@@ -5,11 +5,15 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {PostCategoryComponent} from "./components/post-category/post-category.component";
 import {PostProductComponent} from "./components/post-product/post-product.component";
 import {authGuard} from "../services/auth/auth.guard";
+import {PostCouponComponent} from "./components/post-coupon/post-coupon.component";
+import {CouponsComponent} from "./components/coupons/coupons.component";
 
 const routes: Routes = [{path: '', component: AdminComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
   {path: 'category', component: PostCategoryComponent, canActivate: [authGuard],},
-  {path: 'product', component: PostProductComponent, canActivate: [authGuard],}
+  {path: 'product', component: PostProductComponent, canActivate: [authGuard],},
+  {path: 'post-coupon', component: PostCouponComponent, canActivate: [authGuard],},
+  {path: 'coupons', component: CouponsComponent, canActivate: [authGuard],}
 ];
 
 @NgModule({

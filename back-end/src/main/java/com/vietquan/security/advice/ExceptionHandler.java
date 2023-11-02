@@ -7,6 +7,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ValidationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,7 +38,13 @@ public class ExceptionHandler {
         } else if (exception instanceof ExpiredJwtException) {
             error.put("error", "token is expired");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        } else if (exception instanceof DuplicateKeyException) {
+        }
+        else if (exception instanceof ValidationException) {
+            error.put("error",exception.getMessage());
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
+
+        else if (exception instanceof DuplicateKeyException) {
             error.put("error", exception.getMessage());
             response.setStatus(HttpStatus.CONFLICT.value());
         } else if (exception instanceof EntityNotFoundException) {

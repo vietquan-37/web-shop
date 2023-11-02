@@ -46,3 +46,11 @@
   </mat-card>
 
 </div>
+<!-- Add this section inside your template -->
+<div class="pagination">
+  <button mat-raised-button color="primary" (click)="loadPreviousPage()" [disabled]="currentPage === 0">Previous</button>
+  <ng-container *ngFor="let pageNumber of pageNumbers">
+    <button mat-raised-button color="primary" (click)="loadPage(pageNumber - 1)" [disabled]="currentPage === pageNumber - 1">{{ pageNumber }}</button>
+  </ng-container>
+  <button mat-raised-button color="primary" (click)="loadNextPage()" [disabled]="currentPage >= totalPages - 1">Next</button>
+</div>

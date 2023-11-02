@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {AdminService} from "../../../admin/service/admin.service";
-import {PublicService} from "../../../services/public.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {CustomerService} from "../../service/customer.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { PublicService } from "../../../services/public.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { CustomerService } from "../../service/customer.service";
+import {Observable, range} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,56 +12,46 @@ import {CustomerService} from "../../service/customer.service";
 })
 export class DashboardComponent implements OnInit {
   products: any[] = [];
-  searchForm!:FormGroup;
+  searchForm!: FormGroup;
+  currentPage: number = 0;
+  totalPages: number = 0;
 
+  pageNumbers: number[] = [];
   constructor(
-              private pService:PublicService,
-              public service:CustomerService,
-              private builder: FormBuilder,
-              private snackBar:MatSnackBar) {}
+    private pService: PublicService,
+    public service: CustomerService,
+    private builder: FormBuilder,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
-    this.getAllProducts();
     this.searchForm = this.builder.group({
-      name: [null, { nonNullable: false }],
+      name: [null]
     });
+    this.getAllProducts();
   }
 
   getAllProducts() {
-    this.pService.getAllProduct().subscribe((res) => {
-      this.products = res.map((product: any) => {
-        return {
-          processedImg: 'data:image/jpeg;base64,' + product.image,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          categoryName: product.categoryName,
-          id:product.id
-
-        };
-      });
+    this.pService.getAllProduct(this.currentPage).subscribe((res: any) => {
+      this.products = res.content.map((product: any) => ({
+        processedImg: 'data:image/jpeg;base64,' + product.image,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        categoryName: product.categoryName,
+        id: product.id
+      }));
+      this.totalPages = res.totalPages;
+      this.updatePageNumbers();
     });
   }
-
   submitForm(event: any) {
     if (this.searchForm.valid) {
       const name = this.searchForm.get('name')?.value;
 
       if (name) {
-        this.pService.getAllProductByName(name).subscribe((res) => {
-          this.products = res.map((product: any) => {
-            return {
-              processedImg: 'data:image/jpeg;base64,' + product.image,
-              name: product.name,
-              description: product.description,
-              price: product.price,
-              categoryName: product.categoryName,
-              id: product.id
-            };
-          });
-        }, (error) => {
-          this.snackBar.open('No records found.', 'Close', { duration: 5000 });
-        });
+        this.currentPage = 0; // Reset currentPage to 0 when performing a new search
+        this.getAllProductsByName(name, this.currentPage);
       } else {
         this.getAllProducts();
       }
@@ -69,23 +59,76 @@ export class DashboardComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  getAllProductsByName(name: string, page: number) {
+    this.pService.getAllProductByName(name, page).subscribe((res: any) => {
+      this.products = res.content.map((product: any) => ({
+        processedImg: 'data:image/jpeg;base64,' + product.image,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        categoryName: product.categoryName,
+        id: product.id
+      }));
+      this.totalPages = res.totalPages;
+      this.updatePageNumbers();
+    }, (error) => {
+      this.snackBar.open('No records found.', 'Close', { duration: 5000 });
+    });
+  }
+
+
   addToCart(id: any) {
     this.service.addToCart(id).subscribe(
       (res) => {
-
+        this.snackBar.open('Add to cart successfully', 'Close', { duration: 5000 });
       },
       (error) => {
         if (error.status === 409) {
-          this.snackBar.open('The product is already in the cart', 'Close', {duration: 5000});
+          this.snackBar.open('The product is already in the cart', 'Close', { duration: 5000 });
         }
-        if (error.status === 201) {
-          this.snackBar.open('Add to cart successfully', 'Close', { duration: 5000 });
-        }
-      },
-      () => {
-        this.snackBar.dismiss();
       }
     );
   }
 
+  loadNextPage() {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      const name = this.searchForm.get('name')?.value;
+      if (name) {
+        this.getAllProductsByName(name, this.currentPage);
+      } else {
+        this.getAllProducts();
+      }
+    }
+  }
+
+  loadPreviousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      const name = this.searchForm.get('name')?.value;
+      if (name) {
+        this.getAllProductsByName(name, this.currentPage);
+      } else {
+        this.getAllProducts();
+      }
+    }
+  }
+  // Inside your component class
+  loadPage(pageIndex: number) {
+    if (pageIndex >= 0 && pageIndex < this.totalPages) {
+      this.currentPage = pageIndex;
+      const name = this.searchForm.get('name')?.value;
+      if (name) {
+        this.getAllProductsByName(name, this.currentPage);
+      } else {
+        this.getAllProducts();
+      }
+    }
+  }
+
+
+  updatePageNumbers() {
+    this.pageNumbers = Array.from({ length: this.totalPages }, (_, index) => index + 1);
+  }
 }

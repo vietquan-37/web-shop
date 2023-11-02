@@ -1,53 +1,63 @@
-  <form [formGroup]="searchForm" class="search-form" (submit)="submitForm($event)">
-    <mat-form-field appearance="outline" class="search-input">
-      <mat-label>Enter keyword to search</mat-label>
-      <input matInput formControlName="name">
-      <button mat-button matSuffix color="primary" >
-        <mat-icon>Search</mat-icon>
-      </button>
-    </mat-form-field>
-  </form>
-  <div class="product-list">
-    <mat-card class="product-card" *ngFor="let product of products">
-      <div class="product-image">
-        <img [src]="product.processedImg" alt="product-image">
-      </div>
-      <div class="product-details">
-        <h2 class="product-name">{{product.name}}</h2>
-        <p class="product-description">{{product.description}}</p>
+<form [formGroup]="searchForm" class="search-form" (submit)="submitForm($event)">
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Enter keyword to search</mat-label>
+    <input matInput formControlName="name">
+    <button mat-button matSuffix color="primary">
+      <mat-icon>Search</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
+<div class="product-list">
+  <mat-card class="product-card" *ngFor="let product of products">
+    <div class="product-image">
+      <img [src]="product.processedImg" alt="product-image">
+    </div>
+    <div class="product-details">
+      <h2 class="product-name">{{product.name}}</h2>
+      <p class="product-description">{{product.description}}</p>
 
-        <div class="product-info">
-          <div class="info-row">
+      <div class="product-info">
+        <div class="info-row">
             <span class="info-label">
               Price:
             </span>
-            <span class="info-value">
+          <span class="info-value">
          {{product.price | currency}}
             </span>
-          </div>
+        </div>
 
-          <div class="info-row">
+        <div class="info-row">
             <span class="info-label">
               Category Name:
             </span>
-            <span class="info-value">
+          <span class="info-value">
          {{product.categoryName}}
             </span>
-          </div>
         </div>
-        <div class="actions">
-          <button mat-raised-button color="primary" class="update-button" [routerLink]="'/faq'+ product.id">
-            FAQ
-          </button>
-          <button mat-raised-button color="accent" class="update-button" [routerLink]="'/product'+ product.id">
-           Update
-          </button>
-          <button mat-raised-button color="warn" class="delete-button"  (click)="deleteProduct(product.id)">
-            Delete
-          </button>
-        </div>
-
       </div>
-    </mat-card>
+      <div class="actions">
+        <button mat-raised-button color="primary" class="update-button" [routerLink]="'/faq'+ product.id">
+          FAQ
+        </button>
+        <button mat-raised-button color="accent" class="update-button" [routerLink]="'/product'+ product.id">
+          Update
+        </button>
+        <button mat-raised-button color="warn" class="delete-button" (click)="deleteProduct(product.id)">
+          Delete
+        </button>
+      </div>
 
-  </div>
+    </div>
+  </mat-card>
+
+</div>
+<div class="pagination">
+  <button mat-raised-button color="primary" (click)="loadPreviousPage()" [disabled]="currentPage === 0">Previous
+  </button>
+  <ng-container *ngFor="let pageNumber of pageNumbers">
+    <button mat-raised-button color="primary" (click)="loadPage(pageNumber - 1)"
+            [disabled]="currentPage === pageNumber - 1">{{ pageNumber }}</button>
+  </ng-container>
+  <button mat-raised-button color="primary" (click)="loadNextPage()" [disabled]="currentPage >= totalPages - 1">Next
+  </button>
+</div>

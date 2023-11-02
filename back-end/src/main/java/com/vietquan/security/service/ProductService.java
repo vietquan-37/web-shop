@@ -8,12 +8,13 @@ import com.vietquan.security.request.ProductRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,18 +40,21 @@ public class ProductService {
 
     }
 
-    public List<ProductRequest> getAllProduct() {
-        List<Product> products = repository.findAll();
+    public Page<ProductRequest> getAllProduct(int page) {
+        Pageable pageable = PageRequest.of(page, 6);
+        Page<Product> products = repository.findAll(pageable);
 
-        return products.stream().map(Product::getDto).collect((Collectors.toList()));
+        return products.map(Product::getDto);
     }
 
-    public List<ProductRequest> getAllProductByName(String name) {
-        List<Product> products = repository.findAllByNameContaining(name);
+    public Page<ProductRequest> getAllProductByName(String name,int page) {
+        Pageable pageable = PageRequest.of(page, 6);
+
+        Page<Product> products = repository.findByNameContainingIgnoreCase(name, pageable);
         if (products.isEmpty()) {
             throw new EntityNotFoundException("Dont have any product");
         }
-        return products.stream().map(Product::getDto).collect((Collectors.toList()));
+        return products.map(Product::getDto);
     }
 
     public boolean deleteProduct(Integer id) {

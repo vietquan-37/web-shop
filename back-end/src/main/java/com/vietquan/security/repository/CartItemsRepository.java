@@ -7,7 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CartItemsRepository extends JpaRepository<CartItems,Integer> {
+public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
 
-    Optional<CartItems> findByProductProductIdAndOrderIdAndUserId(Integer productId,Integer orderId,Integer userId);
+    Optional<CartItems> findByProductProductIdAndOrderIdAndUserId(Integer productId, Integer orderId, Integer userId);
+
+
+
 }

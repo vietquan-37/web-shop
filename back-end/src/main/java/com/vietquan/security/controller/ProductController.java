@@ -4,6 +4,7 @@ import com.vietquan.security.request.ProductRequest;
 import com.vietquan.security.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,16 +30,16 @@ public class ProductController {
     @GetMapping("")
     @PreAuthorize("hasAnyRole('ADMIN','USER')"
     )
-    public ResponseEntity<List<ProductRequest>> getAllProduct() {
-        List<ProductRequest> all = service.getAllProduct();
+    public ResponseEntity<Page<ProductRequest>> getAllProduct(@RequestParam(defaultValue = "0")int page) {
+        Page<ProductRequest> all = service.getAllProduct(page);
         return ResponseEntity.ok(all);
     }
 
     @GetMapping("/search/{name}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')"
     )
-    public ResponseEntity<List<ProductRequest>> getAllProductByName(@PathVariable String name) {
-        List<ProductRequest> all = service.getAllProductByName(name);
+    public ResponseEntity<Page<ProductRequest>> getAllProductByName(@PathVariable String name,@RequestParam(defaultValue = "0")int page) {
+        Page<ProductRequest> all = service.getAllProductByName(name,page);
         return ResponseEntity.ok(all);
     }
 

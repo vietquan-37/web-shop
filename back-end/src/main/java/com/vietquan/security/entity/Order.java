@@ -2,6 +2,7 @@ package com.vietquan.security.entity;
 
 import com.vietquan.security.enumPackage.OrderStatus;
 import com.vietquan.security.enumPackage.PaymentMethod;
+import com.vietquan.security.request.OrderRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,9 +45,34 @@ public class Order {
             name = "user_id"
     )
     User user;
+    @OneToOne
+    @JoinColumn(
+            referencedColumnName = "id",
+            name = "coupon_id"
+
+    )
+    Coupon coupon;
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "order"
     )
     private List<CartItems> carts;
+    public OrderRequest getOrderDto(){
+        OrderRequest request=new OrderRequest();
+        request.setId(id);
+        request.setOrderDescription(orderDescription);
+        request.setDate(date);
+        request.setAmount(amount);
+        request.setDiscount(discount);
+        request.setTotalAmount(totalAmount);
+        request.setOrderStatus(orderStatus);
+        request.setPayment(payment);
+        request.setTrackingId(trackingId);
+        request.setAddress(address);
+        request.setUsername(user.getUsername());
+        if(coupon!=null){
+            request.setCouponName(coupon.getCouponName());
+        }
+        return request;
+    }
 }
