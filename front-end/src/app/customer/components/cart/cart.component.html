@@ -3,7 +3,7 @@
     <div class="cart-item" *ngFor="let item of cartItems">
       <button style="float: right"
         mat-icon-button
-        (click)="deleteProductFromCart(item.productId)">
+        (click)="deleteProductFromCart(item.productId,item.size)">
         <mat-icon>delete</mat-icon>
       </button>
       <div class="product-info">
@@ -20,15 +20,19 @@
               {{item.price |currency}}
 
             </div>
+            <div class="item-price">
+              {{item.size }}
+
+            </div>
             <div class="quality-controls">
-              <button mat-icon-button [disabled]="item.quantity ==1">
+              <button mat-icon-button [disabled]="item.quantity ==1" (click)="decreaseQuantity(item.productId,item.size)" >
                 <mat-icon>
                   remove_circle_outline
                 </mat-icon>
 
               </button>
               <span class="quantity">{{ item.quantity }}</span>
-              <button mat-icon-button>
+              <button mat-icon-button (click)="increaseQuantity(item.productId,item.size)">
                 <mat-icon>
                   add_circle_outline
                 </mat-icon>
@@ -54,6 +58,7 @@
       Coupon Applied:  {{order.couponName}}
 
     </div>
+
     <div>
       <button mat-raised-button color="primary">Place Order</button>
     </div>

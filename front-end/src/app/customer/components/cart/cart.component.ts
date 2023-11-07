@@ -36,8 +36,8 @@ export class CartComponent implements OnInit {
       this.snackBar.open('Add coupon successfully','Close',{duration:5000})
         this.getCartData();
     },
-      error =>{
-      if(error.status==400){
+      (error) =>{
+      if(error.status==404){
         this.snackBar.open('code not found','Close',{duration:5000})
       }
       }
@@ -58,7 +58,8 @@ export class CartComponent implements OnInit {
               processedImg: 'data:image/jpeg;base64,' + cartItem.img,
               price:cartItem.price,
               quantity: cartItem.quantity,
-              productName:cartItem.productName
+              productName:cartItem.productName,
+              size:cartItem.size
 
             };
           });
@@ -71,9 +72,9 @@ export class CartComponent implements OnInit {
       );
 
   }
-  deleteProductFromCart(productId: number) {
+  deleteProductFromCart(productId: number,size:any) {
 
-    this.service.deleteProductFromCart( productId).subscribe(
+    this.service.deleteProductFromCart( productId,size).subscribe(
       () => {
         this.getCartData(); // Refresh cart data after deletion
         this.snackBar.open('Product removed from cart.', 'Close', { duration: 3000 });
@@ -84,6 +85,37 @@ export class CartComponent implements OnInit {
       }
     );
   }
+  increaseQuantity(productId: number,size:any) {
+
+    this.service.increaseQuantity( productId,size).subscribe(
+      () => {
+        this.getCartData(); // Refresh cart data after deletion
+        this.snackBar.open('Product quantity increased successfully', 'Close', { duration: 3000 });
+      },
+      (error) => {
+        if(error.status==400){
+          this.snackBar.open('dont have enough quantity','Close',{duration:5000})
+        }
+
+      }
+    );
+  }
+  decreaseQuantity(productId: number,size:any) {
+
+    this.service.decreaseQuantity( productId,size).subscribe(
+      () => {
+        this.getCartData(); // Refresh cart data after deletion
+        this.snackBar.open('Product quantity decreased successfully', 'Close', { duration: 3000 });
+      },
+      (error) => {
+        if(error.status==400){
+          this.snackBar.open('error while decrease the quantity','Close',{duration:5000})
+        }
+
+      }
+    );
+  }
+
 
 
 

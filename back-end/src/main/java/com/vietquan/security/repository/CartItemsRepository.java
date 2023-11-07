@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
 
-    Optional<CartItems> findByProductProductIdAndOrderIdAndUserId(Integer productId, Integer orderId, Integer userId);
+    Optional<CartItems> findByProductProductIdAndOrderIdAndUserIdAndProductSizeSizeId(Integer productId, Integer orderId, Integer userId,Integer id);
 
 
 

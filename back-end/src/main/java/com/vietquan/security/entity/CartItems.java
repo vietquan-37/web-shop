@@ -46,6 +46,10 @@ public class CartItems {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_size_id")
+
+    private ProductSize productSize;
     public CartItemsRequest getCartDto(){
         CartItemsRequest dto=new CartItemsRequest();
         dto.setCartId(cartId);
@@ -55,6 +59,8 @@ public class CartItems {
         dto.setUserId(user.getId());
         dto.setProductName(product.getName());
         dto.setImg(product.getImage());
+        dto.setSize(productSize.getSize());
+
         return dto;
     }
 }

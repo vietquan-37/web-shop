@@ -66,7 +66,7 @@ public class ExceptionHandler {
             error.put("error", exception.getMessage());
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         } else {
-            error.put("error", "internal server error");
+            error.put("error", exception.getMessage());
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 

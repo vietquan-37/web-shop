@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 public class ProductRequest {
 
@@ -27,4 +29,5 @@ public class ProductRequest {
     private String categoryName;
 
     private MultipartFile img;
+    private List<ProductSizeRequest> productSizes;
 }

@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   searchForm!: FormGroup;
   currentPage: number = 0;
   totalPages: number = 0;
-
+  selectedSize: string = '';
   pageNumbers: number[] = [];
   constructor(
     private pService: PublicService,
@@ -39,8 +39,11 @@ export class DashboardComponent implements OnInit {
         description: product.description,
         price: product.price,
         categoryName: product.categoryName,
-        id: product.id
+        id: product.id,
+        productSizes: product.productSizes
+
       }));
+
       this.totalPages = res.totalPages;
       this.updatePageNumbers();
     });
@@ -68,7 +71,8 @@ export class DashboardComponent implements OnInit {
         description: product.description,
         price: product.price,
         categoryName: product.categoryName,
-        id: product.id
+        id: product.id,
+        productSizes: product.productSizes
       }));
       this.totalPages = res.totalPages;
       this.updatePageNumbers();
@@ -78,18 +82,29 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  addToCart(id: any) {
-    this.service.addToCart(id).subscribe(
+  addToCart(id: any, selectedSize: any) {
+
+    this.service.addToCart(id, selectedSize).subscribe(
       (res) => {
         this.snackBar.open('Add to cart successfully', 'Close', { duration: 5000 });
       },
       (error) => {
-        if (error.status === 409) {
-          this.snackBar.open('The product is already in the cart', 'Close', { duration: 5000 });
+
+        console.error('Error adding to cart:', error);
+        if (error.status === 400) {
+          this.snackBar.open('out of stock', 'Close', { duration: 5000 });
+        }
+        console.error('Error adding to cart:', error);
+        if (error.status === 500) {
+          this.snackBar.open(' please select the size', 'Close', { duration: 5000 });
+        }
+        else {
+          this.snackBar.open('Error adding to cart. Please try again later.', 'Close', { duration: 5000 });
         }
       }
     );
   }
+
 
   loadNextPage() {
     if (this.currentPage < this.totalPages - 1) {
@@ -131,4 +146,6 @@ export class DashboardComponent implements OnInit {
   updatePageNumbers() {
     this.pageNumbers = Array.from({ length: this.totalPages }, (_, index) => index + 1);
   }
+
+
 }

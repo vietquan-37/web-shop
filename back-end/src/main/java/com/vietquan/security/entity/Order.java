@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -73,6 +74,7 @@ public class Order {
         if(coupon!=null){
             request.setCouponName(coupon.getCouponName());
         }
+        request.setCarts(carts.stream().map(CartItems::getCartDto).collect(Collectors.toList()));
         return request;
     }
 }

@@ -39,22 +39,13 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(
-                                API_V_1_AUTH
-
-                        )
+                                API_V_1_AUTH)
                         .permitAll()
-
                         .anyRequest()
-
-
-
-
                         .authenticated()
                 )
-
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

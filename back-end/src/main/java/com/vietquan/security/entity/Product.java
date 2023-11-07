@@ -2,6 +2,7 @@ package com.vietquan.security.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vietquan.security.request.ProductRequest;
+import com.vietquan.security.request.ProductSizeRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -35,7 +40,8 @@ public class Product {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Category category;
-
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductSize> productSizes;
 
     public ProductRequest getDto(){
         ProductRequest request=new ProductRequest();
@@ -46,6 +52,17 @@ public class Product {
         request.setDescription(description);
         request.setCategoryId(category.getCategoryId());
         request.setCategoryName(category.getName());
+        if (productSizes != null) {
+            List<ProductSizeRequest> productSizeRequests = productSizes.stream()
+                    .map(productSize -> {
+                        ProductSizeRequest sizeRequest = new ProductSizeRequest();
+                        sizeRequest.setSize(productSize.getSize());
+                        sizeRequest.setQuantity(productSize.getQuantity());
+                        return sizeRequest;
+                    })
+                    .collect(Collectors.toList());
+            request.setProductSizes(productSizeRequests);
+        }
         return request;
     }
 }

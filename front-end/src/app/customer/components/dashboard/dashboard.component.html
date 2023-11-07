@@ -35,9 +35,20 @@
             </span>
         </div>
       </div>
+      <div class="product-sizes">
+        <mat-label>Select Size:</mat-label>
+        <mat-select [(ngModel)]="selectedSize">
+          <ng-container *ngFor="let size of product.productSizes">
+            <mat-option [value]="size.size" [disabled]="size.quantity === 0">{{ size.size }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </div>
+
+
+
       <div class="actions">
 
-        <button mat-raised-button color="accent" class="cart-button" (click)="addToCart(product.id)" >
+        <button mat-raised-button color="accent" class="cart-button" (click)="addToCart(product.id,selectedSize)" >
           Add to cart
         </button>
       </div>
@@ -54,3 +65,4 @@
   </ng-container>
   <button mat-raised-button color="primary" (click)="loadNextPage()" [disabled]="currentPage >= totalPages - 1">Next</button>
 </div>
+<!---->

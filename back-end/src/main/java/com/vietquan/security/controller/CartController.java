@@ -1,5 +1,6 @@
 package com.vietquan.security.controller;
 
+import com.vietquan.security.enumPackage.Size;
 import com.vietquan.security.request.AddProductToCartRequest;
 import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.service.CartService;
@@ -33,7 +34,7 @@ public class CartController {
 
     }
 
-    @GetMapping("/{userId}/{code}")
+    @PostMapping("/{userId}/{code}")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<?> applyCode(@PathVariable Integer userId, @PathVariable String code) throws ValidationException {
         OrderRequest request = service.applyCoupon(userId, code);
@@ -41,16 +42,19 @@ public class CartController {
 
     }
 
-    @DeleteMapping("/delete/{userId}/{productId}")
+    @DeleteMapping("/delete/{userId}/{productId}/{size}")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<?> deleteProductFromCart(@PathVariable Integer userId, @PathVariable Integer productId) {
-        return service.deleteProductToCart(userId, productId);
+    public ResponseEntity<?> deleteProductFromCart(@PathVariable Integer userId, @PathVariable Integer productId,@PathVariable Size size) {
+        return service.deleteProductToCart(userId, productId,size);
     }
-    @PostMapping("/{userId}/{code}")
+    @PostMapping ("/increase")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<?> applyCoupon(@PathVariable Integer userId,@PathVariable String code) throws ValidationException {
-        OrderRequest request=service.applyCoupon(userId, code);
-        return ResponseEntity.ok(request);
-
+    public ResponseEntity<?> increaseQuantity(@RequestBody AddProductToCartRequest request) {
+        return service.increaseQuantity(request);
+    }
+    @PostMapping ("/decrease")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<?> decreaseQuantity(@RequestBody AddProductToCartRequest request) {
+        return service.decreaseQuantity(request);
     }
 }
