@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Router} from "@angular/router";
-import {AdminService} from "../../service/admin.service";
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router } from "@angular/router";
+import { AdminService } from "../../service/admin.service";
 
 @Component({
   selector: 'app-post-product',
@@ -12,15 +12,34 @@ import {AdminService} from "../../service/admin.service";
 export class PostProductComponent implements OnInit {
   productForm!: FormGroup;
   listOfCategories: any[] = [];
-  selectedFile: File | null = null; // Provide an initial value of null
-  imagePreview: string | ArrayBuffer | null = null; // Provide an initial value of null
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
+  sizes: string[] = ['S', 'M', 'L', 'XL', 'NON_SIZE'];
 
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
     private service: AdminService
-  ) {
+  ) { }
+
+  get productSizesFormArray() {
+    return this.productForm.get('productSizes') as FormArray;
+  }
+
+  addProductSize() {
+    const productSizes = this.productForm.get('productSizes') as FormArray;
+    const nonSizeSelected = productSizes.controls.some(control => control.get('size')?.value === 'NON_SIZE');
+    if (!nonSizeSelected) {
+      productSizes.push(
+        this.builder.group({
+          size: ['', [Validators.required]],
+          quantity: ['', [Validators.required, Validators.min(1)]]
+        })
+      );
+    } else {
+      this.snackBar.open('Cannot add other sizes when NON_SIZE is selected.', 'Close', { duration: 5000 });
+    }
   }
 
   OnFileSelected(event: any) {
@@ -28,7 +47,6 @@ export class PostProductComponent implements OnInit {
     if (file) {
       const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
       if (!allowedExtensions.test(file.name)) {
-        // Invalid file type, show an error message or handle it as needed
         this.snackBar.open('Please select a PNG or JPG file.', 'Close', { duration: 5000 });
         this.selectedFile = null;
         this.imagePreview = null;
@@ -55,46 +73,50 @@ export class PostProductComponent implements OnInit {
       name: [null, Validators.required],
       price: [null, Validators.required],
       description: [null, Validators.required],
-
+      productSizes: this.builder.array([]),
     });
-    this.getAllCategory()
 
+    this.getAllCategory();
   }
 
   getAllCategory() {
     this.service.getAllCategory().subscribe((res: any[]) => {
-      console.log(res); // Log the API response to check if it contains the categories data
       this.listOfCategories = res;
     });
   }
 
   addProduct(): void {
     if (this.productForm.invalid) {
-      for (const i in this.productForm.controls) {
-        this.productForm.controls[i].markAsDirty();
-        this.productForm.controls[i].updateValueAndValidity();
-      }
-    } else {
-      const formData: FormData = new FormData();
-      const file = this.selectedFile || '';
-      formData.append('img', file);
-      formData.append('categoryId', this.productForm.get('categoryId')?.value)
-      formData.append('name', this.productForm.get('name')?.value)
-      formData.append('price', this.productForm.get('price')?.value)
-      formData.append('description', this.productForm.get('description')?.value)
-      this.service.addProduct(formData).subscribe((res) => {
-        if (res.categoryId != null) {
-          this.snackBar.open('Product create successfully', 'Close', {duration: 5000})
-
-          this.router.navigateByUrl('/admin/dashboard');
-        } else {
-          this.snackBar.open('Product create unsuccessfully', 'Close', {duration: 5000})
-        }
-
-      })
+      this.productForm.markAllAsTouched();
+      this.snackBar.open('Please fill out all the required fields.', 'Close', { duration: 5000 });
+      return;
     }
 
+    const formData: FormData = new FormData();
+    const file = this.selectedFile || '';
+    formData.append('img', file);
+    formData.append('categoryId', this.productForm.get('categoryId')?.value);
+    formData.append('name', this.productForm.get('name')?.value);
+    formData.append('price', this.productForm.get('price')?.value);
+    formData.append('description', this.productForm.get('description')?.value);
 
+    const productSizes = this.productForm.get('productSizes') as FormArray;
+    for (let i = 0; i < productSizes.length; i++) {
+      formData.append(`productSizes[${i}].size`, productSizes.at(i).get('size')?.value);
+      formData.append(`productSizes[${i}].quantity`, productSizes.at(i).get('quantity')?.value);
+    }
+
+    this.service.addProduct(formData).subscribe((res) => {
+      if (res.categoryId != null) {
+        this.snackBar.open('Product created successfully', 'Close', { duration: 5000 });
+        this.router.navigateByUrl('/admin/dashboard');
+      } else {
+        this.snackBar.open('Product creation unsuccessful', 'Close', { duration: 5000 });
+      }
+    });
   }
-
+  removeProductSize(index: number) {
+    const productSizes = this.productForm.get('productSizes') as FormArray;
+    productSizes.removeAt(index);
+  }
 }

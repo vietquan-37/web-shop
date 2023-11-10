@@ -1,0 +1,75 @@
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group img {
+  width: 200px;
+  height: auto;
+  display: block;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mat-form-field mat-label {
+  display: flex;
+  align-items: center; // Center align label text vertically
+  justify-content: space-between; // Space label content evenly between label edges
+  margin-bottom: 8px;
+}
+
+.mat-form-field input {
+  width: 100%; // Assign full width to input element
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+mat-form-field mat-error {
+  color: red;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+mat-dialog-actions button {
+  margin-right: 8px;
+}
+.size-quantity-form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  span {
+    margin-right: 10px;
+  }
+
+  input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 100px;
+  }
+
+  mat-error {
+    color: red;
+    font-size: 12px;
+  }
+}

@@ -26,6 +26,9 @@ return this.http.post(`${this.baseUrl}/category/create`, categoryData,{headers:t
   getAllCategory():Observable<any>{
     return this.http.get(`${this.baseUrl}/category`,{headers:this.createHeader()})
   }
+  updateProduct(productId:any,productData: any):Observable<any>{
+    return this.http.put(`${this.baseUrl}/product/update/${productId}`,productData,{headers:this.createHeader()})
+  }
 
   addProduct(productData: any):Observable<any>{
     return this.http.post(`${this.baseUrl}/product/create`, productData,{headers:this.createHeader()})

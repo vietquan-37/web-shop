@@ -1,5 +1,6 @@
 package com.vietquan.security.repository;
 
+import com.vietquan.security.entity.Product;
 import com.vietquan.security.entity.ProductSize;
 import com.vietquan.security.enumPackage.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ProductSizeRepository extends JpaRepository<ProductSize,Integer> {
    ProductSize findBySizeAndProductProductId(Size size,Integer productId);
-    Optional<ProductSize>findByProductProductId(Integer Id);
+
+
+    Optional<ProductSize> findByProductAndSize(Product product, Size size);
 }

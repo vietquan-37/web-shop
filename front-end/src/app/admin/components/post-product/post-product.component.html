@@ -65,6 +65,33 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Inside your form -->
+    <div formArrayName="productSizes">
+      <div *ngFor="let sizeGroup of productSizesFormArray.controls; let i = index" [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Size</mat-label>
+          <mat-select formControlName="size">
+            <mat-option *ngFor="let size of sizes" [value]="size">{{ size }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="sizeGroup.get('size')?.hasError('required')">This input is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Quantity</mat-label>
+          <input matInput type="number" formControlName="quantity" placeholder="Quantity">
+          <mat-error *ngIf="sizeGroup.get('quantity')?.hasError('required')">This input is required</mat-error>
+        </mat-form-field>
+        <button mat-icon-button color="warn" (click)="removeProductSize(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+
+    <button type="button" (click)="addProductSize()">Add Size</button>
+
+
+
     <button mat-raised-button color="primary" type="submit">Add Product</button>
   </form>
 

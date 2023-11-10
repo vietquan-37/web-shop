@@ -12,20 +12,17 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {
     path: 'customer',
-    component: CustomerComponent,
-    canActivate: [authGuard,roleGuard],
+    loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
+    canActivate: [authGuard, roleGuard],
     data: { expectedRole: 'USER' } // Specify the expected role for the customer route
   },
   {
     path: 'admin',
-    component: AdminComponent,
-    canActivate: [authGuard,roleGuard],
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivate: [authGuard, roleGuard],
     data: { expectedRole: 'ADMIN' } // Specify the expected role for the admin route
-  },
-  { path: 'customer', loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule) },
-
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) }
-];
+  }
+]; 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/product")
@@ -53,6 +52,12 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+    @PutMapping("/update/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductRequest> deleteProduct(@PathVariable Integer productId,@RequestBody ProductRequest request) throws IOException {
+      ProductRequest request1=  service.updateProduct(productId,request);
+      return ResponseEntity.ok(request1);
     }
 
 }

@@ -15,10 +15,11 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   exports: [
@@ -43,7 +44,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatTableModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+MatExpansionModule
 
   ],
 

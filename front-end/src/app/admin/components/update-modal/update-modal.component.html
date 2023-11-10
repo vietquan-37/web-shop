@@ -1,0 +1,48 @@
+<form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+  <!-- Dialog title -->
+  <h1 mat-dialog-title></h1>
+
+  <div mat-dialog-content>
+    <!-- Display current product image -->
+    <div class="form-group">
+      <label>Image</label>
+      <img *ngIf="data.product.processedImg" [src]="data.product.processedImg" alt="current-product-image" width="100px">
+    </div>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" placeholder="Name" formControlName="name">
+      <mat-error *ngIf="updateForm.get('name')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput type="number" placeholder="Price" formControlName="price">
+      <mat-error *ngIf="updateForm.get('price')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" placeholder="Description" formControlName="description">
+      <mat-error *ngIf="updateForm.get('description')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Sizes and Quantities:</mat-label>
+      <div *ngFor="let size of productSizesArray">
+        <div class="size-quantity-form-group">
+          <span>{{ size.size }}: <input matInput type="number" placeholder="Quantity" formControlName="{{ size.size }}"   class="parrble-input"></span>
+          <mat-error *ngIf="updateForm.get(size.size)?.hasError('required')">Quantity must be larger than 1</mat-error>
+        </div>
+      </div>
+    </mat-form-field>
+
+
+    <!-- Dialog actions: Close, Cancel, and Update Product buttons -->
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" (click)="closeDialog()">Close</button>
+      <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" type="submit" >Update Product</button>
+    </div>
+  </div>
+</form>

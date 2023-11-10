@@ -94,3 +94,24 @@
     }
   }
 }
+div[formArrayName="productSizes"] {
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+
+    mat-form-field {
+      margin-right: 20px;
+      width: 200px;
+    }
+
+    button {
+      margin-top: 8px;
+    }
+  }
+}
+
+button[type="button"] {
+  margin-top: 20px;
+}

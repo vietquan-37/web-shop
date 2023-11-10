@@ -48,6 +48,7 @@ public class AuthenticationService {
 
 // if the mfa enable --generate secret
         if (request.isMfaEnable()) {
+          repository.save(user);
             user.setSecret(twoFactorAuthenticationService.generateNewSecret());
             createAndSaveOrder(user);
 
@@ -55,7 +56,7 @@ public class AuthenticationService {
         var saveUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        createAndSaveOrder(user);
+        createAndSaveOrder(saveUser);
 
 
         return AuthenticationResponse.builder().userId(user.getId()).accessToken(jwtToken).refreshToken(refreshToken).mfaEnable(user.isMfaEnable()).secretImage(twoFactorAuthenticationService.generateQrCodeImageUri(user.getSecret())).role(user.getRole()).build();

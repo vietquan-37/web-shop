@@ -3,6 +3,8 @@ import { AdminService } from '../../service/admin.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PublicService} from "../../../services/public.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {UpdateModalComponent} from "../update-modal/update-modal.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +20,8 @@ export class DashboardComponent implements OnInit {
   constructor(private service: AdminService,
               private pService:PublicService,
               private builder: FormBuilder,
-              private snackBar:MatSnackBar) {}
+              private snackBar:MatSnackBar,
+              private dialog:MatDialog) {}
 
   ngOnInit() {
     this.searchForm = this.builder.group({
@@ -35,7 +38,8 @@ export class DashboardComponent implements OnInit {
         description: product.description,
         price: product.price,
         categoryName: product.categoryName,
-        id: product.id
+        id: product.id,
+        productSizes: product.productSizes
       }));
       this.totalPages = res.totalPages;
       this.updatePageNumbers();
@@ -64,7 +68,8 @@ export class DashboardComponent implements OnInit {
         description: product.description,
         price: product.price,
         categoryName: product.categoryName,
-        id: product.id
+        id: product.id,
+        productSizes: product.productSizes
       }));
       this.totalPages = res.totalPages;
       this.updatePageNumbers();
@@ -126,5 +131,18 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+  openUpdateDialog(product: any) {
+    const dialogConfig:any = new MatDialogConfig();
+    dialogConfig.data = { product ,imageData: product.processedImg,};
+
+    const dialogRef = this.dialog.open(UpdateModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+    }
 }
+
+
 

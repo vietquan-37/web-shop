@@ -1,6 +1,5 @@
 package com.vietquan.security.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -27,7 +26,8 @@ public class ProductRequest {
     private Integer categoryId;
 
     private String categoryName;
-
+    @NotNull
     private MultipartFile img;
+    @NotNull
     private List<ProductSizeRequest> productSizes;
 }

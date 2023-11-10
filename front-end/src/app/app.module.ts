@@ -10,9 +10,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
-import {AdminComponent} from "./admin/admin.component";
-import {CustomerComponent} from "./customer/customer.component";
 import {Interceptor} from "./services/http-interceptor.service";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -30,6 +29,7 @@ import {Interceptor} from "./services/http-interceptor.service";
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatDialogModule
 
   ],
   providers: [{
