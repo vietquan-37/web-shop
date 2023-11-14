@@ -1,10 +1,9 @@
 package com.vietquan.security.request;
 
-import com.vietquan.security.entity.CartItems;
-import com.vietquan.security.entity.User;
 import com.vietquan.security.enumPackage.OrderStatus;
 import com.vietquan.security.enumPackage.PaymentMethod;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.util.Date;
@@ -31,6 +30,7 @@ public class OrderRequest {
 
     private String username;
     private String couponName;
-
+    private String phoneNumber;
     private List<CartItemsRequest> carts;
+
 }

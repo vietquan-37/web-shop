@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(
-                                API_V_1_AUTH)
+                                API_V_1_AUTH,"/payment/success", "/payment/cancel")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

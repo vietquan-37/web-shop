@@ -40,6 +40,7 @@ public class Order {
     private Double totalAmount;
     private Double discount;
     private UUID trackingId;
+    private String phoneNumber;
     @OneToOne
     @JoinColumn(
             referencedColumnName = "Id",
@@ -58,6 +59,7 @@ public class Order {
             mappedBy = "order"
     )
     private List<CartItems> carts;
+    private String transactionId;
     public OrderRequest getOrderDto(){
         OrderRequest request=new OrderRequest();
         request.setId(id);
@@ -71,10 +73,12 @@ public class Order {
         request.setTrackingId(trackingId);
         request.setAddress(address);
         request.setUsername(user.getUsername());
+        request.setPhoneNumber(phoneNumber);
         if(coupon!=null){
             request.setCouponName(coupon.getCouponName());
         }
         request.setCarts(carts.stream().map(CartItems::getCartDto).collect(Collectors.toList()));
+
         return request;
     }
 }

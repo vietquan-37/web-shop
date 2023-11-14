@@ -3,6 +3,7 @@ package com.vietquan.security.controller;
 import com.vietquan.security.enumPackage.Size;
 import com.vietquan.security.request.AddProductToCartRequest;
 import com.vietquan.security.request.OrderRequest;
+import com.vietquan.security.request.PlaceOrderRequest;
 import com.vietquan.security.service.CartService;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -57,4 +58,5 @@ public class CartController {
     public ResponseEntity<?> decreaseQuantity(@RequestBody AddProductToCartRequest request) {
         return service.decreaseQuantity(request);
     }
+
 }

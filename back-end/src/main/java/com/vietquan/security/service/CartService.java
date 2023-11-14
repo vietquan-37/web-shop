@@ -7,6 +7,7 @@ import com.vietquan.security.repository.*;
 import com.vietquan.security.request.AddProductToCartRequest;
 import com.vietquan.security.request.CartItemsRequest;
 import com.vietquan.security.request.OrderRequest;
+import com.vietquan.security.request.PlaceOrderRequest;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -240,5 +238,6 @@ public class CartService {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "not found cart"));
     }
+
 }
 
