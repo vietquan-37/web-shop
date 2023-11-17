@@ -1,0 +1,32 @@
+<form [formGroup]="placeOrderForm" (ngSubmit)="onSubmit()">
+  <!-- Dialog title -->
+  <h1 mat-dialog-title></h1>
+Pay By Cash
+  <div mat-dialog-content>
+
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" placeholder="Description" formControlName="orderDescription">
+      <mat-error *ngIf="placeOrderForm.get('orderDescription')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input matInput type="text" placeholder="Address" formControlName="address">
+      <mat-error *ngIf="placeOrderForm.get('address')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>PhoneNumber</mat-label>
+      <input matInput type="text" placeholder="phoneNumber" formControlName="phoneNumber">
+      <mat-error *ngIf="placeOrderForm.get('phoneNumber')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+
+    <div mat-dialog-actions>
+
+      <button mat-raised-button color="primary" type="submit" >Submit Order</button>
+      <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+    </div>
+  </div>
+</form>
+

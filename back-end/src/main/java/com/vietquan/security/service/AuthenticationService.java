@@ -70,6 +70,7 @@ public class AuthenticationService {
         order.setDiscount(0.0);
         order.setUser(user);
         order.setOrderStatus(OrderStatus.PENDING);
+        order.setPayed(false);
         orderRepository.save(order);
     }
 

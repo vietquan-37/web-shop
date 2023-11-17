@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private boolean mfaEnable;
+    private String phoneNumber;
     private String secret;
     @Enumerated(EnumType.STRING)
     private Role role;

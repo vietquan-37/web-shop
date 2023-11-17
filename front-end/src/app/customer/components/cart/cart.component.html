@@ -60,7 +60,13 @@
     </div>
 
     <div>
-      <button mat-raised-button color="primary">Place Order</button>
+      <button  class="pay-cash-button" (click)="openPayByCash()">
+        Pay when delivery
+      </button>
+
+      <button class="paypal-checkout-button" (click)="checkoutByPayPal()" >
+        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="PayPal" >
+      </button>
     </div>
   </div>
   <div class="container" *ngIf="order.couponName==null">

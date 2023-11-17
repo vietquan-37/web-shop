@@ -60,6 +60,7 @@ public class Order {
     )
     private List<CartItems> carts;
     private String transactionId;
+    private boolean isPayed;
     public OrderRequest getOrderDto(){
         OrderRequest request=new OrderRequest();
         request.setId(id);
@@ -74,6 +75,7 @@ public class Order {
         request.setAddress(address);
         request.setUsername(user.getUsername());
         request.setPhoneNumber(phoneNumber);
+request.setPayed(isPayed);
         if(coupon!=null){
             request.setCouponName(coupon.getCouponName());
         }

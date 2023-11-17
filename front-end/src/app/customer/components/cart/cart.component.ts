@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../service/customer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {UpdateModalComponent} from "../../../admin/components/update-modal/update-modal.component";
+import {PlaceOrderComponent} from "../../place-order/place-order.component";
 
 @Component({
   selector: 'app-cart',
@@ -40,6 +42,9 @@ export class CartComponent implements OnInit {
       if(error.status==404){
         this.snackBar.open('code not found','Close',{duration:5000})
       }
+        if(error.status==400){
+          this.snackBar.open('coupon has expired','Close',{duration:5000})
+        }
       }
     )
   }
@@ -119,6 +124,55 @@ export class CartComponent implements OnInit {
 
 
 
+  checkoutByPayPal() {
+    const orderDto = {
+      userId: localStorage.getItem('userId'),
+      method: 'PAYPAL'
+    };
+
+    this.service.placeOrder(orderDto).subscribe(
+      (response) => {
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+        const popupWidth = 600;
+        const popupHeight = 600;
+        const leftPosition = (screenWidth - popupWidth) / 2;
+        const topPosition = (screenHeight - popupHeight) / 2;
+
+        const popupWindow = window.open(response.approvalUrl, '_blank', `width=${popupWidth},height=${popupHeight},left=${leftPosition},top=${topPosition}`);
+
+        if (!popupWindow) {
+          alert('Please enable pop-ups and try again.');
+        } else {
+          const checkPopup = setInterval(() => {
+            if (popupWindow.closed) {
+              clearInterval(checkPopup);
+              this.getCartData();
+
+              // Refresh cart data when the PayPal popup is closed
+            }
+          }, 1000);
+        }
+      },
+      (error) => {
+        console.error('Error placing order:', error);
+      }
+    );
+  }
+  openPayByCash() {
+    const dialogConfig:any = new MatDialogConfig();
+    const orderDto = {
+      userId: localStorage.getItem('userId'),
+      method: 'COD'
+    };
+    dialogConfig.data = {orderDto};
+
+    const dialogRef = this.dialog.open(PlaceOrderComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
 
 
 }

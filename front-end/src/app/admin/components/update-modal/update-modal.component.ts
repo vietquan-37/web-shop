@@ -70,7 +70,5 @@ export class UpdateModalComponent {
     }
   }
 
-  closeDialog() {
-    this.dialogRef.close();
-  }
+
 }

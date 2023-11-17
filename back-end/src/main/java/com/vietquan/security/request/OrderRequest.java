@@ -31,6 +31,7 @@ public class OrderRequest {
     private String username;
     private String couponName;
     private String phoneNumber;
+    private boolean isPayed;
     private List<CartItemsRequest> carts;
 
 }
