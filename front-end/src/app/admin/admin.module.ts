@@ -13,6 +13,7 @@ import {PostCouponComponent} from './components/post-coupon/post-coupon.componen
 import {CouponsComponent} from './components/coupons/coupons.component';
 import {UpdateModalComponent} from './components/update-modal/update-modal.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { OrdersComponent } from './components/orders/orders.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     PostProductComponent,
     PostCouponComponent,
     CouponsComponent,
-    UpdateModalComponent
+    UpdateModalComponent,
+    OrdersComponent
   ],
   imports: [
     CommonModule,

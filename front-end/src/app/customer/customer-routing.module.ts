@@ -5,11 +5,13 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {authGuard} from "../services/auth/auth.guard";
 import {CartComponent} from "./components/cart/cart.component";
 import {roleGuard} from "../services/auth/role.guard";
+import {UserOrdersComponent} from "./components/user-orders/user-orders.component";
 
 
 const routes: Routes = [{ path: '', component: CustomerComponent },
   { path: 'dashboard', component: DashboardComponent , canActivate: [authGuard,roleGuard] },
-  { path: 'cart', component: CartComponent , canActivate: [authGuard,roleGuard]}
+  { path: 'cart', component: CartComponent , canActivate: [authGuard,roleGuard]},
+  { path: 'order', component: UserOrdersComponent , canActivate: [authGuard,roleGuard]}
 ];
 
 @NgModule({

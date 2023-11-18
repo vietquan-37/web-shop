@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {UpdateModalComponent} from "../../../admin/components/update-modal/update-modal.component";
-import {PlaceOrderComponent} from "../../place-order/place-order.component";
+import {PlaceOrderComponent} from "../place-order/place-order.component";
 
 @Component({
   selector: 'app-cart',

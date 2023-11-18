@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CustomerService} from "../service/customer.service";
+import {CustomerService} from "../../service/customer.service";
 import {Router} from "@angular/router";
 
 @Component({

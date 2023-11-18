@@ -1,6 +1,5 @@
 package com.vietquan.security.service;
 
-import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.vietquan.security.entity.CartItems;
 import com.vietquan.security.entity.Order;
@@ -15,13 +14,13 @@ import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PayPalPaymentDetails;
 import com.vietquan.security.request.PlaceOrderRequest;
 import com.vietquan.security.response.OrderResponse;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +73,8 @@ private final ProductSizeRepository productSizeRepository;
                     activeOrder.setTrackingId(UUID.randomUUID());
                     activeOrder.setPhoneNumber(request.getPhoneNumber());
                     activeOrder.setPayment(request.getMethod());
+                    Date currentDate = new Date(System.currentTimeMillis());
+                    activeOrder.setDate((currentDate));
                     activeOrder.setPayed(false);
 
                     orderRepository.save(activeOrder);
@@ -105,5 +106,30 @@ private final ProductSizeRepository productSizeRepository;
         }
 
         return null;
+    }
+
+    public List<OrderRequest> getAllPlaceOrder() {
+        List<Order> orders = orderRepository.findAllByOrderStatusIn(List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
+        return orders.stream().map(Order::getOrderDto).collect(Collectors.toList());
+    }
+
+    public OrderRequest changeOrderStatus(Integer orderId, String status) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isPresent()) {
+            Order order1 = order.get();
+            if (Objects.equals(status, "SHIPPED")) {
+                order1.setOrderStatus(OrderStatus.SHIPPED);
+
+            } else if (Objects.equals(status, "DELIVERED")) {
+                order1.setOrderStatus(OrderStatus.DELIVERED);
+            }
+            return orderRepository.save(order1).getOrderDto();
+        } else {
+            throw new EntityNotFoundException("no record");
+        }
+    }
+
+    public List<OrderRequest> getUserOrder(Integer userId) {
+        return orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.PLACED, OrderStatus.DELIVERED, OrderStatus.SHIPPED)).stream().map(Order::getOrderDto).collect(Collectors.toList());
     }
 }

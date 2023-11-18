@@ -111,8 +111,9 @@ public class PayPalService {
         ShippingAddress shippingAddress = payerInfo.getShippingAddress();
         String formattedAddress = formatAddress(shippingAddress);
         order.setAddress(formattedAddress);
-        order.setDate(new Date());
         order.setPayed(true);
+        Date currentDate = new Date(System.currentTimeMillis());
+        order.setDate(currentDate);
         order.setTrackingId(UUID.randomUUID());
         order.setPayment(PaymentMethod.PAYPAL);
         order.setOrderStatus(OrderStatus.PLACED);

@@ -59,5 +59,9 @@ export class CustomerService {
   placeOrder(orderDto:any): Observable<any> {
     return this.http.post(`${this.baseUrl}/order/placeOrder`,orderDto,{headers:this.createHeader()})
   }
+  userOrder(): Observable<any> {
+    const userId: number = Number(localStorage.getItem('userId'));
+    return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`,{headers:this.createHeader()})
+  }
 
 }
