@@ -13,8 +13,8 @@
       <img [src]="product.processedImg" alt="product-image">
     </div>
     <div class="product-details">
-      <h2 class="product-name">{{product.name}}</h2>
-      <p class="product-description">{{product.description}}</p>
+      <a [routerLink]="['/customer/product', product.id]">{{ product.name }}</a>
+
 
       <div class="product-info">
         <div class="info-row">
@@ -35,23 +35,8 @@
             </span>
         </div>
       </div>
-      <div class="product-sizes">
-        <mat-label>Select Size:</mat-label>
-        <mat-select [(ngModel)]="selectedSize">
-          <ng-container *ngFor="let size of product.productSizes">
-            <mat-option [value]="size.size" [disabled]="size.quantity === 0">{{ size.size }}</mat-option>
-          </ng-container>
-        </mat-select>
-      </div>
 
 
-
-      <div class="actions">
-
-        <button mat-raised-button color="accent" class="cart-button" (click)="addToCart(product.id,selectedSize)" >
-          Add to cart
-        </button>
-      </div>
 
     </div>
   </mat-card>

@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Entity
 @Data
@@ -42,9 +42,11 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductSize> productSizes;
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images;
 
-    public ProductRequest getDto(){
-        ProductRequest request=new ProductRequest();
+    public ProductRequest getDto() {
+        ProductRequest request = new ProductRequest();
         request.setId(productId);
         request.setName(name);
         request.setPrice(price);
@@ -53,8 +55,7 @@ public class Product {
         request.setCategoryId(category.getCategoryId());
         request.setCategoryName(category.getName());
         if (productSizes != null) {
-            List<ProductSizeRequest> productSizeRequests = productSizes.stream()
-                    .map(productSize -> {
+            List<ProductSizeRequest> productSizeRequests = productSizes.stream().map(productSize -> {
                         ProductSizeRequest sizeRequest = new ProductSizeRequest();
                         sizeRequest.setSize(productSize.getSize());
                         sizeRequest.setQuantity(productSize.getQuantity());
@@ -63,6 +64,11 @@ public class Product {
                     .collect(Collectors.toList());
             request.setProductSizes(productSizeRequests);
         }
+        if (images != null) {
+            request.setByteImages(images.stream().map(ProductImage::getImage).collect(Collectors.toList()));
+        }
+
         return request;
     }
+
 }

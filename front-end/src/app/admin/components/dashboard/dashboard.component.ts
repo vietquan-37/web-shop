@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
     this.pService.getAllProduct(this.currentPage).subscribe((res: any) => {
       this.products = res.content.map((product: any) => ({
         processedImg: 'data:image/jpeg;base64,' + product.image,
+        byteImages: product.byteImages.map((img: any) => 'data:image/jpeg;base64,' + img), // New line
         name: product.name,
         description: product.description,
         price: product.price,

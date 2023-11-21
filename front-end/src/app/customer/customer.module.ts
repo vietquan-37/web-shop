@@ -10,6 +10,7 @@ import {MaterialModule} from "../../material.module";
 import { CartComponent } from './components/cart/cart.component';
 import { PlaceOrderComponent } from './components/place-order/place-order.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { UserOrdersComponent } from './components/user-orders/user-orders.compon
     DashboardComponent,
     CartComponent,
     PlaceOrderComponent,
-    UserOrdersComponent
+    UserOrdersComponent,
+    ProductDetailsComponent
   ],
   imports: [
     CommonModule,

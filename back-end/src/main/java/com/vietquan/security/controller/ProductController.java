@@ -55,9 +55,15 @@ public class ProductController {
     }
     @PutMapping("/update/{productId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductRequest> deleteProduct(@PathVariable Integer productId,@RequestBody ProductRequest request) throws IOException {
-      ProductRequest request1=  service.updateProduct(productId,request);
-      return ResponseEntity.ok(request1);
+    public ResponseEntity<ProductRequest> deleteProduct(@PathVariable Integer productId, @RequestBody ProductRequest request) throws IOException {
+        ProductRequest request1 = service.updateProduct(productId, request);
+        return ResponseEntity.ok(request1);
+    }
+
+    @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public ResponseEntity<ProductRequest> getProductById(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.getProductById(id));
     }
 
 }

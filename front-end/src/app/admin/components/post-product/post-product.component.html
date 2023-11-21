@@ -85,6 +85,24 @@
           <mat-icon>delete</mat-icon>
         </button>
       </div>
+      <div class="additional-images-container">
+        <div *ngFor="let preview of additionalImagePreviews; let i = index">
+          <div class="additional-image-preview">
+            <img [src]="preview" alt="Additional Image" class="additional-preview-image">
+            <button mat-icon-button color="warn" (click)="removeAdditionalImage(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="file-input-container">
+        <label class="file-input-label">
+          <span>Select additional image(s)</span>
+          <input type="file" (change)="onAdditionalImageSelected($event)" hidden accept=".jpg, .jpeg, .png" multiple>
+          <mat-icon>attach_file</mat-icon>
+        </label>
+      </div>
 
     </div>
 

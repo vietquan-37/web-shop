@@ -61,15 +61,23 @@
 }
 /* Image Styles */
 
+/* Image Styles */
+
+/* Image Styles */
 .product-image {
-  height: 200px;
+  height: 470px;
   overflow: hidden;
   background-color: #f0f0f0; /* Set background color to fill the white space */
-}
-.product-image img {
-  width: 100%;
-  height: 100%; /* Ensure the image covers the entire .product-image div */
-  object-fit: contain; /* Maintain aspect ratio and fit the entire image within the div */
+  position: relative; /* Set a relative position to contain the absolute positioned img element */
+
+  img {
+    position: absolute; /* Position the image absolute to the .product-image div */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire .product-image div while preserving aspect ratio */
+  }
 }
 /* Details Styles */
 
@@ -179,6 +187,31 @@
 
     &:hover {
       background-color: #f8f9fa;
+    }
+  }
+}
+.additional-images {
+  h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #007bff;
+  }
+
+  .additional-image {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 8px;
+
+    img {
+      width: 200px; /* Set the desired width */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    img:hover {
+      transform: scale(1.1);
     }
   }
 }

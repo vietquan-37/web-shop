@@ -15,7 +15,8 @@ export class PostProductComponent implements OnInit {
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   sizes: string[] = ['S', 'M', 'L', 'XL', 'NON_SIZE'];
-
+  additionalImages: File[] = [];
+  additionalImagePreviews: string[] = [];
   constructor(
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -42,8 +43,31 @@ export class PostProductComponent implements OnInit {
     }
   }
 
-  OnFileSelected(event: any) {
-    const file = event.target.files[0];
+
+  onAdditionalImageSelected(event: any) {
+    const files = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file) {
+        const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
+        if (!allowedExtensions.test(file.name)) {
+          this.snackBar.open('Please select a PNG or JPG file.', 'Close', { duration: 5000 });
+        } else {
+          this.additionalImages.push(file); // Store the selected image
+          this.additionalImagePreviews.push(this.getImagePreview(file));
+        }
+      }
+    }
+  }
+
+  getImagePreview(file: File): string {
+    return URL.createObjectURL(file);
+  }
+  ngOnDestroy() {
+    this.additionalImagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+  }
+  OnFileSelected(events: any) {
+    const file = events.target.files[0];
     if (file) {
       const allowedExtensions = /(\.png|\.jpg|\.jpeg)$/i;
       if (!allowedExtensions.test(file.name)) {
@@ -78,6 +102,15 @@ export class PostProductComponent implements OnInit {
 
     this.getAllCategory();
   }
+  removeAdditionalImage(index: number) {
+    // Remove the selected additional image based on the provided index
+    this.additionalImages.splice(index, 1);
+    this.additionalImagePreviews.splice(index, 1);
+  }
+
+
+
+
 
   getAllCategory() {
     this.service.getAllCategory().subscribe((res: any[]) => {
@@ -105,7 +138,9 @@ export class PostProductComponent implements OnInit {
       formData.append(`productSizes[${i}].size`, productSizes.at(i).get('size')?.value);
       formData.append(`productSizes[${i}].quantity`, productSizes.at(i).get('quantity')?.value);
     }
-
+    for (let i = 0; i < this.additionalImages.length; i++) {
+      formData.append(`additionalImages[${i}]`, this.additionalImages[i]);
+    }
     this.service.addProduct(formData).subscribe((res) => {
       if (res.categoryId != null) {
         this.snackBar.open('Product created successfully', 'Close', { duration: 5000 });

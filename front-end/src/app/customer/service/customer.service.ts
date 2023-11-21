@@ -63,5 +63,8 @@ export class CustomerService {
     const userId: number = Number(localStorage.getItem('userId'));
     return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`,{headers:this.createHeader()})
   }
+  getProductById(id:number): Observable<any>{
+    return this.http.get(`${this.baseUrl}/product/get/${id}`,{headers:this.createHeader()})
+  }
 
 }

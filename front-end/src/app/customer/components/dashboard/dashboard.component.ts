@@ -4,6 +4,7 @@ import { PublicService } from "../../../services/public.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { CustomerService } from "../../service/customer.service";
 import {Observable, range} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -15,13 +16,13 @@ export class DashboardComponent implements OnInit {
   searchForm!: FormGroup;
   currentPage: number = 0;
   totalPages: number = 0;
-  selectedSize: string = '';
   pageNumbers: number[] = [];
   constructor(
     private pService: PublicService,
     public service: CustomerService,
     private builder: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router:Router
   ) { }
 
   ngOnInit() {
@@ -36,11 +37,10 @@ export class DashboardComponent implements OnInit {
       this.products = res.content.map((product: any) => ({
         processedImg: 'data:image/jpeg;base64,' + product.image,
         name: product.name,
-        description: product.description,
+
         price: product.price,
         categoryName: product.categoryName,
         id: product.id,
-        productSizes: product.productSizes
 
       }));
 
@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
       this.updatePageNumbers();
     });
   }
+
   submitForm(event: any) {
     if (this.searchForm.valid) {
       const name = this.searchForm.get('name')?.value;
@@ -68,7 +69,7 @@ export class DashboardComponent implements OnInit {
       this.products = res.content.map((product: any) => ({
         processedImg: 'data:image/jpeg;base64,' + product.image,
         name: product.name,
-        description: product.description,
+
         price: product.price,
         categoryName: product.categoryName,
         id: product.id,
@@ -81,29 +82,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
-  addToCart(id: any, selectedSize: any) {
-
-    this.service.addToCart(id, selectedSize).subscribe(
-      (res) => {
-        this.snackBar.open('Add to cart successfully', 'Close', { duration: 5000 });
-      },
-      (error) => {
-
-        console.error('Error adding to cart:', error);
-        if (error.status === 400) {
-          this.snackBar.open('out of stock', 'Close', { duration: 5000 });
-        }
-        console.error('Error adding to cart:', error);
-        if (error.status === 500) {
-          this.snackBar.open(' please select the size', 'Close', { duration: 5000 });
-        }
-        else {
-          this.snackBar.open('Error adding to cart. Please try again later.', 'Close', { duration: 5000 });
-        }
-      }
-    );
-  }
 
 
   loadNextPage() {

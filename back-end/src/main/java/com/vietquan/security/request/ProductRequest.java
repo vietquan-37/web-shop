@@ -28,6 +28,8 @@ public class ProductRequest {
     private String categoryName;
     @NotNull
     private MultipartFile img;
-    @NotNull
+
     private List<ProductSizeRequest> productSizes;
+    private List<byte[]> byteImages;
+    private List<MultipartFile> additionalImages;
 }
