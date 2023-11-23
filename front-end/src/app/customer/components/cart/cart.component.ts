@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {UpdateModalComponent} from "../../../admin/components/update-modal/update-modal.component";
 import {PlaceOrderComponent} from "../place-order/place-order.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cart',
@@ -21,7 +22,8 @@ export class CartComponent implements OnInit {
     private service: CustomerService,
     private snackBar: MatSnackBar,
     private builder: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router:Router
 
   ) {}
 
@@ -147,9 +149,21 @@ export class CartComponent implements OnInit {
           const checkPopup = setInterval(() => {
             if (popupWindow.closed) {
               clearInterval(checkPopup);
-              this.getCartData();
 
-              // Refresh cart data when the PayPal popup is closed
+              // Check if cart is empty after the popup is closed
+              this.service.getCartByUserId().subscribe((cartData) => {
+                const isEmpty = cartData.carts.length === 0;
+
+                if (isEmpty) {
+                  // Display success snackbar in the cart page
+                  this.snackBar.open('Order placed successfully,wait for a second redirect to order page', 'Close', { duration: 4000 });
+
+                  // Redirect to the order page after 4 seconds
+                  setTimeout(() => {
+                    this.router.navigate(['/customer/order']);
+                  }, 4000);
+                }
+              });
             }
           }, 1000);
         }
@@ -159,6 +173,8 @@ export class CartComponent implements OnInit {
       }
     );
   }
+
+
   openPayByCash() {
     const dialogConfig:any = new MatDialogConfig();
     const orderDto = {

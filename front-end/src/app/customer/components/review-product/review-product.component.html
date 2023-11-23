@@ -1,0 +1,35 @@
+<div *ngFor="let product of products">
+  <div class="product-container">
+    <img [src]="product.processedImg" alt="{{ product.name }}" class="product-image"/>
+    <div class="product-details">
+      <h3>{{ product.name }}</h3>
+      <p>Price: ${{ product.price }}</p>
+      <div class="review-form">
+        <!-- Add your review form here -->
+        <ng-container *ngIf="!product.alreadyReviewed">
+          <form (ngSubmit)="submitReview(product.id, product.starRating, product.reviewComment)">
+            <label for="star">Star Rating:</label>
+            <select id="star" name="star" [(ngModel)]="product.starRating" required>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
+            </select>
+
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" [(ngModel)]="product.reviewComment" required></textarea>
+
+            <button type="submit">Submit Review</button>
+          </form>
+        </ng-container>
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<div *ngIf="products.length === 0" class="reviews-message">
+  <p> You have already reviewed this product in this order.</p>
+</div>

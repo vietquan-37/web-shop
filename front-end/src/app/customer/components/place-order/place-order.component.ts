@@ -44,7 +44,7 @@ private router:Router) {
           this.snackBar.open('Place Order successfully', 'Close', { duration: 5000 });
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate([this.router.url]);
+          this.router.navigate(['/customer/order']);
           this.dialogRef.close(response);
         },
         (error) => {

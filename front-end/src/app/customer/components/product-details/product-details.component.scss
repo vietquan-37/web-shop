@@ -4,14 +4,11 @@
   padding: 20px; /* Adjusted padding */
   margin: 0; /* Remove any default margins */
 
-  /* ... Other styles remain the same */
-
-
   .product-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 1000px; /* Set a maximum width for the card */
+    max-width: 600px; /* Set a maximum width for the card */
     width: 100%; /* Take up 100% of the available width */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased box-shadow */
     margin: 0 10px;
@@ -104,4 +101,90 @@
       }
     }
   }
+}
+
+
+.product-reviews {
+  margin-top: 20px;
+
+  h3 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+
+  .review-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9; /* Background color for each review item */
+
+    .review-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      .review-username {
+        font-weight: bold;
+        color: #333;
+      }
+
+      .review-stars {
+        color: #ffc107; /* Adjusted star color */
+      }
+
+      .star {
+        font-size: 18px; /* Adjusted star font size */
+        margin-right: 2px;
+      }
+
+      .filled {
+        color: #ffc107; /* Adjusted filled star color */
+      }
+    }
+
+    .review-comment {
+      color: #555;
+
+    }
+  }
+}
+.no-reviews-message {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional styles for a more modern and visually appealing look */
+.no-reviews-message p {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.no-reviews-message::before {
+  content: "\1F622"; /* Unicode sad face */
+  font-size: 2em;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.back-button {
+  margin-top: 20px;
+}
+
+.back-button button {
+  display: flex;
+  align-items: center;
+  color: #007bff;
+}
+
+.back-button mat-icon {
+  margin-right: 5px;
 }

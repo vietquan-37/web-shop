@@ -39,7 +39,10 @@ public class User implements UserDetails {
             mappedBy = "user"
     )
     private List<Token> tokens;
-
+    @OneToMany(
+            mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true
+    )
+    private List<Review> reviews;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

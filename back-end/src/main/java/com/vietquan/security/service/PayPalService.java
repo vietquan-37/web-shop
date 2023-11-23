@@ -117,6 +117,7 @@ public class PayPalService {
         order.setTrackingId(UUID.randomUUID());
         order.setPayment(PaymentMethod.PAYPAL);
         order.setOrderStatus(OrderStatus.PLACED);
+        order.setOrderDescription("order of "+order.getUser().getFirstname()+ " " + order.getUser().getLastname());
         for (CartItems cartItem : order.getCarts()) {
             ProductSize productSize = cartItem.getProductSize();
             int remainingQuantity = productSize.getQuantity() - cartItem.getQuantity();

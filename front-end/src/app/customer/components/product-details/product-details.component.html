@@ -1,4 +1,10 @@
+<div class="back-button">
+  <button mat-icon-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</div>
 <div class="product-list">
+
   <mat-card class="product-card" *ngIf="product">
     <div class="product-image">
       <img [src]="currentMainImage || product.processedImg" alt="product-image">
@@ -61,3 +67,20 @@
 
 </div>
 
+<div class="product-reviews">
+  <h3>Product Reviews</h3>
+  <div *ngFor="let review of reviews" class="review-item">
+    <div class="review-info">
+      <span class="review-username"> {{ review.username }}</span>
+      <div class="review-stars">
+        <!-- Display stars based on the 'star' property of the review -->
+        <span *ngFor="let _ of [1, 2, 3, 4, 5]" class="star" [class.filled]="review.star >= _">&#9733;</span>
+      </div>
+    </div>
+    <p class="review-comment"> {{ review.comment }}</p>
+  </div>
+
+</div>
+<div *ngIf="reviews.length === 0" class="no-reviews-message">
+  <p>No reviews yet.</p>
+</div>

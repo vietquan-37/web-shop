@@ -32,6 +32,7 @@ public class OrderRequest {
     private String couponName;
     private String phoneNumber;
     private boolean isPayed;
+    private Date deliveriedDate;
     private List<CartItemsRequest> carts;
 
 }

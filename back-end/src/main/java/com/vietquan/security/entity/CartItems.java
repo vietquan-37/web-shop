@@ -32,7 +32,8 @@ public class CartItems {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
     @ManyToOne(
-            fetch = FetchType.LAZY
+            targetEntity= Order.class,
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "order_id"

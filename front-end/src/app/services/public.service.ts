@@ -25,6 +25,9 @@ export class PublicService {
   getAllCoupon(): Observable<any> {
     return this.http.get(`${this.baseUrl}/coupon`, {headers: this.createHeader()})
   }
+  getAllReviewByProduct(productId:any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/review/get/${productId}`, {headers: this.createHeader()})
+  }
 
 
   getAllProductByName(name: string, page: number) {

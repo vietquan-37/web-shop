@@ -40,7 +40,7 @@ public class OrderController {
 
     @GetMapping("/myOrder/{userId}")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<OrderRequest>> getOrderForUser(@PathVariable Integer userId) {
+    public ResponseEntity<List<OrderRequest>>getOrderForUser(@PathVariable Integer userId) {
         return ResponseEntity.ok(service.getUserOrder(userId));
     }
 }

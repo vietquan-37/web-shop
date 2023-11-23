@@ -44,6 +44,10 @@ public class Product {
     private List<ProductSize> productSizes;
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;
+    @OneToMany(
+            mappedBy = "productReview",cascade = CascadeType.ALL,orphanRemoval = true
+    )
+    private List<Review> reviews;
 
     public ProductRequest getDto() {
         ProductRequest request = new ProductRequest();

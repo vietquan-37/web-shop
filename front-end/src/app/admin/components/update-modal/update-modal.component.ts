@@ -18,7 +18,9 @@ export class UpdateModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private adminService: AdminService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar ,
+
+
   ) {
     this.updateForm = this.formBuilder.group({
       name: [data.product.name, Validators.required],

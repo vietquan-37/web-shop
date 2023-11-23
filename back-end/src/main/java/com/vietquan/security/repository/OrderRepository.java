@@ -6,15 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order,Integer> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
     Order findByUserIdAndOrderStatus(Integer userId, OrderStatus orderStatus);
-Order findByTransactionId(String id);
-Order findByOrderStatus(OrderStatus status);
-List<Order> findAllByOrderStatusIn(List<OrderStatus> status);
-List<Order>findByUserIdAndOrderStatusIn(Integer userId,List<OrderStatus>statuses);
+
+    Order findByTransactionId(String id);
+
+    List<Order> findAllByOrderStatusIn(List<OrderStatus> status);
+
+    List<Order> findByUserIdAndOrderStatusIn(Integer userId, List<OrderStatus> statuses);
+
+    Order findByOrderStatus(OrderStatus status);
+
+    Order findByOrderStatusAndId(OrderStatus status, Integer orderId);
 
 
 }

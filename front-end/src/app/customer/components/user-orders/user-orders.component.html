@@ -1,13 +1,193 @@
+
 <div class="container">
-  <mat-card>
-    <mat-card-content>
-      <table mat-table [dataSource]="orders" class="mat-elevation-z8">
+  <div class="siu">
+    <mat-form-field>
+      <mat-label>Order Status</mat-label>
+      <mat-select [(value)]="selectedStatus" (change)="categorizeOrders()">
+        <mat-option value="PLACED">Placed</mat-option>
+        <mat-option value="SHIPPED">Shipped</mat-option>
+        <mat-option value="DELIVERED">Delivered</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="selectedStatus === 'PLACED'">
+    <mat-card>
+      <!-- Section for orders with status PLACED -->
+      <table mat-table [dataSource]="placedOrders" class="mat-elevation-z8">
         <ng-container matColumnDef="trackingId">
           <th mat-header-cell *matHeaderCellDef>Tracking ID</th>
           <td mat-cell *matCellDef="let order">{{order.trackingId}}</td>
 
         </ng-container>
+        <ng-container matColumnDef="carts">
+          <th mat-header-cell *matHeaderCellDef>Cart Items</th>
+          <td mat-cell *matCellDef="let order">
+            <div *ngFor="let cartItem of order.carts" class="cart-item-details">
+              <div class="product-info">
+                <div class="product-name">{{ cartItem.productName }}</div>
+                <div class="product-quantity">Quantity: {{ cartItem.quantity }}</div>
+                <div class="product-size">Size: {{ cartItem.size }}</div>
+              </div>
 
+              <div class="product-image">
+                <img [src]="'data:image/jpeg;base64,' + cartItem.img" alt="Product Image">
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let order">{{order.amount}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="orderDescription">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let order">{{order.orderDescription}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef>Address</th>
+          <td mat-cell *matCellDef="let order">{{order.address}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="orderStatus">
+          <th mat-header-cell *matHeaderCellDef>status</th>
+          <td mat-cell *matCellDef="let order">{{order.orderStatus}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Order Date</th>
+          <td mat-cell *matCellDef="let order">{{order.date | date:'dd/MM/yyyy'}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="payed">
+          <th mat-header-cell *matHeaderCellDef>Is Payed</th>
+          <td mat-cell *matCellDef="let order">{{ order.payed ? 'PAYED' : 'NOT YET' }}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="payment">
+          <th mat-header-cell *matHeaderCellDef>Payment Method</th>
+          <td mat-cell *matCellDef="let order">{{order.payment}}</td>
+
+
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment' , 'carts' ]"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns:['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment', 'carts' ]"></tr>
+      </table>
+    </mat-card>
+  </div>
+
+  <div *ngIf="selectedStatus === 'SHIPPED'">
+    <mat-card>
+      <!-- Section for orders with status SHIPPED -->
+      <table mat-table [dataSource]="shippedOrders" class="mat-elevation-z8">
+        <ng-container matColumnDef="trackingId">
+          <th mat-header-cell *matHeaderCellDef>Tracking ID</th>
+          <td mat-cell *matCellDef="let order">{{order.trackingId}}</td>
+
+        </ng-container>
+        <ng-container matColumnDef="carts">
+          <th mat-header-cell *matHeaderCellDef>Cart Items</th>
+          <td mat-cell *matCellDef="let order">
+            <div *ngFor="let cartItem of order.carts" class="cart-item-details">
+              <div class="product-info">
+                <div class="product-name">{{ cartItem.productName }}</div>
+                <div class="product-quantity">Quantity: {{ cartItem.quantity }}</div>
+                <div class="product-size">Size: {{ cartItem.size }}</div>
+              </div>
+
+              <div class="product-image">
+                <img [src]="'data:image/jpeg;base64,' + cartItem.img" alt="Product Image">
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let order">{{order.amount}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="orderDescription">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let order">{{order.orderDescription}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef>Address</th>
+          <td mat-cell *matCellDef="let order">{{order.address}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="orderStatus">
+          <th mat-header-cell *matHeaderCellDef>status</th>
+          <td mat-cell *matCellDef="let order">{{order.orderStatus}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Order Date</th>
+          <td mat-cell *matCellDef="let order">{{order.date | date:'dd/MM/yyyy'}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="payed">
+          <th mat-header-cell *matHeaderCellDef>Is Payed</th>
+          <td mat-cell *matCellDef="let order">{{ order.payed ? 'PAYED' : 'NOT YET' }}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="payment">
+          <th mat-header-cell *matHeaderCellDef>Payment Method</th>
+          <td mat-cell *matCellDef="let order">{{order.payment}}</td>
+
+
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment' , 'carts' ]"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns:['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment', 'carts' ]"></tr>
+      </table>
+    </mat-card>
+  </div>
+
+  <div *ngIf="selectedStatus === 'DELIVERED'">
+    <mat-card>
+      <!-- Section for orders with status DELIVERED -->
+      <table mat-table [dataSource]="deliveredOrders" class="mat-elevation-z8">
+        <ng-container matColumnDef="trackingId">
+          <th mat-header-cell *matHeaderCellDef>Tracking ID</th>
+          <td mat-cell *matCellDef="let order">{{order.trackingId}}</td>
+
+        </ng-container>
+        <ng-container matColumnDef="carts">
+          <th mat-header-cell *matHeaderCellDef>Cart Items</th>
+          <td mat-cell *matCellDef="let order">
+            <div *ngFor="let cartItem of order.carts" class="cart-item-details">
+              <div class="product-info">
+                <div class="product-name">{{ cartItem.productName }}</div>
+                <div class="product-quantity">Quantity: {{ cartItem.quantity }}</div>
+                <div class="product-size">Size: {{ cartItem.size }}</div>
+
+              </div>
+
+              <div class="product-image">
+                <img [src]="'data:image/jpeg;base64,' + cartItem.img" alt="Product Image">
+              </div>
+            </div>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef>Amount</th>
           <td mat-cell *matCellDef="let order">{{order.amount}}</td>
@@ -33,8 +213,14 @@
 
         </ng-container>
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let order">{{order.date | date:'dd//MM/yyyy'}}</td>
+          <th mat-header-cell *matHeaderCellDef>Order Date</th>
+          <td mat-cell *matCellDef="let order">{{order.date | date:'dd/MM/yyyy'}}</td>
+
+
+        </ng-container>
+        <ng-container matColumnDef="delivery">
+          <th mat-header-cell *matHeaderCellDef>Delivery Date</th>
+          <td mat-cell *matCellDef="let order">{{order.deliveriedDate | date:'dd/MM/yyyy'}}</td>
 
 
         </ng-container>
@@ -46,17 +232,28 @@
         </ng-container>
         <ng-container matColumnDef="payment">
           <th mat-header-cell *matHeaderCellDef>Payment Method</th>
-          <td mat-cell *matCellDef="let order" >{{order.payment}}</td>
+          <td mat-cell *matCellDef="let order">{{order.payment}}</td>
 
 
         </ng-container>
+        <ng-container matColumnDef="action">
 
+          <th mat-header-cell *matHeaderCellDef>
+            Action
+          </th>
+          <td mat-cell *matCellDef="let order">
+            <button mat-raised-button color="primary" [routerLink]="['/customer/review', order.id]" >
+             Review Product
+            </button>
+          </td>
+
+
+        </ng-container>
         <tr mat-header-row
-            *matHeaderRowDef="['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment'  ]"></tr>
+            *matHeaderRowDef="['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment' , 'carts' , 'action' ]"></tr>
         <tr mat-row
-            *matRowDef="let row; columns:['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment' ]"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-
+            *matRowDef="let row; columns:['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment', 'carts', 'action'  ]"></tr>
+      </table>1
+    </mat-card>
+  </div>
 </div>

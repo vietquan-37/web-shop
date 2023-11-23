@@ -29,6 +29,7 @@ public class Order {
     private Date date;
     private Double amount;
     private String address;
+    private Date deliveriedDate;
     @Enumerated(
             EnumType.STRING
     )
@@ -54,13 +55,14 @@ public class Order {
 
     )
     Coupon coupon;
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "order"
-    )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
     private List<CartItems> carts;
     private String transactionId;
     private boolean isPayed;
+    @OneToMany(
+            mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true
+    )
+    private List<Review> reviews;
     public OrderRequest getOrderDto(){
         OrderRequest request=new OrderRequest();
         request.setId(id);
@@ -75,12 +77,16 @@ public class Order {
         request.setAddress(address);
         request.setUsername(user.getUsername());
         request.setPhoneNumber(phoneNumber);
-request.setPayed(isPayed);
-        if(coupon!=null){
+        request.setPayed(isPayed);
+        if (coupon != null) {
             request.setCouponName(coupon.getCouponName());
         }
-        request.setCarts(carts.stream().map(CartItems::getCartDto).collect(Collectors.toList()));
-
+        if (carts != null) {
+            request.setCarts(carts.stream().map(CartItems::getCartDto).collect(Collectors.toList()));
+        }
+        if(deliveriedDate!=null){
+            request.setDeliveriedDate(deliveriedDate);
+        }
         return request;
     }
 }

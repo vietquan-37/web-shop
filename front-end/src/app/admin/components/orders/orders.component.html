@@ -1,3 +1,13 @@
+<mat-form-field>
+  <mat-label>Filter by Order Status</mat-label>
+  <mat-select [(ngModel)]="orderStatusFilter" (ngModelChange)="getPlaceOrders()">
+    <mat-option value="">All</mat-option>
+    <mat-option value="PLACED">PLACED</mat-option>
+    <mat-option value="SHIPPED">Shipped</mat-option>
+    <mat-option value="DELIVERED">Delivered</mat-option>
+
+  </mat-select>
+</mat-form-field>
 <div class="container">
   <mat-card>
     <mat-card-content>
@@ -6,6 +16,21 @@
           <th mat-header-cell *matHeaderCellDef>Tracking ID</th>
           <td mat-cell *matCellDef="let order">{{order.trackingId}}</td>
 
+        </ng-container>
+        <ng-container matColumnDef="carts">
+          <th mat-header-cell *matHeaderCellDef>Cart Items</th>
+          <td mat-cell *matCellDef="let order">
+            <div *ngFor="let cartItem of order.carts" class="cart-item-details">
+              <div class="product-info">
+                <div class="product-name">{{ cartItem.productName }}</div>
+                <div class="product-quantity">Quantity: {{ cartItem.quantity }}</div>
+              </div>
+
+              <div class="product-image">
+                <img [src]="'data:image/jpeg;base64,' + cartItem.img" alt="Product Image">
+              </div>
+            </div>
+          </td>
         </ng-container>
         <ng-container matColumnDef="username">
           <th mat-header-cell *matHeaderCellDef>Username</th>
@@ -33,15 +58,22 @@
         </ng-container>
         <ng-container matColumnDef="orderStatus">
           <th mat-header-cell *matHeaderCellDef>status</th>
-          <td mat-cell *matCellDef="let order" >{{order.orderStatus}}</td>
+          <td mat-cell *matCellDef="let order">{{order.orderStatus}}</td>
 
 
         </ng-container>
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let order">{{order.date | date:'dd//MM/yyyy'}}</td>
+          <th mat-header-cell *matHeaderCellDef>Order Date</th>
+          <td mat-cell *matCellDef="let order">{{order.date | date:'dd/MM/yyyy'}}</td>
 
 
+        </ng-container>
+        <ng-container matColumnDef="delivery">
+          <th mat-header-cell *matHeaderCellDef>Delivery Date</th>
+          <td mat-cell *matCellDef="let order">
+            <span *ngIf="order.deliveriedDate !== null">{{ order.deliveriedDate | date:'dd/MM/yyyy' }}</span>
+            <span *ngIf="order.deliveriedDate === null">Not delivered yet</span>
+          </td>
         </ng-container>
         <ng-container matColumnDef="payed">
           <th mat-header-cell *matHeaderCellDef>Is Payed</th>
@@ -51,16 +83,17 @@
         </ng-container>
         <ng-container matColumnDef="payment">
           <th mat-header-cell *matHeaderCellDef>Payment Method</th>
-          <td mat-cell *matCellDef="let order" >{{order.payment}}</td>
+          <td mat-cell *matCellDef="let order">{{order.payment}}</td>
 
 
         </ng-container>
         <ng-container matColumnDef="action">
+
           <th mat-header-cell *matHeaderCellDef>
             Action
           </th>
           <td mat-cell *matCellDef="let order">
-            <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">
+            <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" *ngIf="order.orderStatus !== 'DELIVERED'">
               Action
               <mat-menu #menu="matMenu">
         <span>
@@ -75,11 +108,13 @@
             </button>
           </td>
 
+
         </ng-container>
+
         <tr mat-header-row
-            *matHeaderRowDef="['trackingId', 'username', 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment' , 'action' ]"></tr>
+            *matHeaderRowDef="['trackingId', 'carts' , 'username', 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment' , 'action' ]"></tr>
         <tr mat-row
-            *matRowDef="let row; columns:['trackingId', 'username', 'amount', 'orderDescription', 'address', 'orderStatus' , 'date' , 'payed' , 'payment' , 'action' ]"></tr>
+            *matRowDef="let row; columns:['trackingId', 'carts', 'username', 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment' , 'action' ]"></tr>
       </table>
     </mat-card-content>
   </mat-card>

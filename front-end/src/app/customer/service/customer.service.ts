@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class CustomerService {
+
   private baseUrl = 'http://localhost:8080/api/v1';
   constructor(private http:HttpClient) { }
   addToCart(productId:any,size:any):Observable<any>{
@@ -59,12 +60,18 @@ export class CustomerService {
   placeOrder(orderDto:any): Observable<any> {
     return this.http.post(`${this.baseUrl}/order/placeOrder`,orderDto,{headers:this.createHeader()})
   }
+  createReview(reviewDto:any,orderId:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/review/create/${orderId}`,reviewDto,{headers:this.createHeader()})
+  }
   userOrder(): Observable<any> {
     const userId: number = Number(localStorage.getItem('userId'));
     return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`,{headers:this.createHeader()})
   }
   getProductById(id:number): Observable<any>{
     return this.http.get(`${this.baseUrl}/product/get/${id}`,{headers:this.createHeader()})
+  }
+  getProductForReview(orderId:any): Observable<any>{
+    return this.http.get(`${this.baseUrl}/review/${orderId}`,{headers:this.createHeader()})
   }
 
 }

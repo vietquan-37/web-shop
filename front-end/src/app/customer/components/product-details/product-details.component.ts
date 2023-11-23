@@ -15,13 +15,15 @@ export class ProductDetailsComponent implements OnInit{
 
   currentMainImage: string = '';
   selectedSize: string = '';
-
+reviews: any[] = [];
   constructor(
 
     public service: CustomerService,
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router:Router,
+    private pService:PublicService
   ) { }
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class ProductDetailsComponent implements OnInit{
         console.error('Error loading product:', error);
       }
     );
-
+this.getAllReview()
   }
 
   addToCart(id: any, selectedSize: any) {
@@ -52,6 +54,10 @@ export class ProductDetailsComponent implements OnInit{
     this.service.addToCart(id, selectedSize).subscribe(
       (res) => {
         this.snackBar.open('Add to cart successfully', 'Close', { duration: 5000 });
+        setTimeout(() => {
+          this.router.navigate(['/customer/cart']);
+        }, 3000);
+
       },
       (error) => {
 
@@ -72,5 +78,14 @@ export class ProductDetailsComponent implements OnInit{
   setMainImage(image: string) {
     this.currentMainImage = image;
   }
-
+getAllReview(){
+  const routeParams = this.route.snapshot.paramMap;
+  const productIdFromRoute = Number(routeParams.get('id'));
+  this.pService.getAllReviewByProduct(productIdFromRoute).subscribe((res)=>{
+    this.reviews=res
+  })
+}
+  goBack() {
+    this.router.navigate(['/customer/dashboard']);
+  }
 }

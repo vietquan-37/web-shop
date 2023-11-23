@@ -1,5 +1,6 @@
 package com.vietquan.security.request;
 
+import com.vietquan.security.entity.Review;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -32,4 +33,5 @@ public class ProductRequest {
     private List<ProductSizeRequest> productSizes;
     private List<byte[]> byteImages;
     private List<MultipartFile> additionalImages;
+
 }

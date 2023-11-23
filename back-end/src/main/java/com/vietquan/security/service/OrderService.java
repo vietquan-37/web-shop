@@ -115,21 +115,36 @@ private final ProductSizeRepository productSizeRepository;
 
     public OrderRequest changeOrderStatus(Integer orderId, String status) {
         Optional<Order> order = orderRepository.findById(orderId);
-        if (order.isPresent()) {
+
+        if (order.isPresent() && order.get().getOrderStatus() != OrderStatus.DELIVERED) {
             Order order1 = order.get();
+            if (order.get().getOrderStatus() == OrderStatus.PLACED) {
+
+            }
             if (Objects.equals(status, "SHIPPED")) {
                 order1.setOrderStatus(OrderStatus.SHIPPED);
 
-            } else if (Objects.equals(status, "DELIVERED")) {
-                order1.setOrderStatus(OrderStatus.DELIVERED);
+            } else if (order.get().getOrderStatus() != OrderStatus.PLACED) {
+
+
+                if (Objects.equals(status, "DELIVERED")) {
+                    order1.setOrderStatus(OrderStatus.DELIVERED);
+                    Date currentDate = new Date(System.currentTimeMillis());
+                    order1.setDeliveriedDate(currentDate);
+                    order1.setPayed(true);
+                }
+            }
+            else {
+                throw new RuntimeException("When order status are placed cannot change to delivered");
             }
             return orderRepository.save(order1).getOrderDto();
         } else {
-            throw new EntityNotFoundException("no record");
+            throw new EntityNotFoundException("no record not able to change");
         }
     }
 
     public List<OrderRequest> getUserOrder(Integer userId) {
+
         return orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.PLACED, OrderStatus.DELIVERED, OrderStatus.SHIPPED)).stream().map(Order::getOrderDto).collect(Collectors.toList());
     }
 }
