@@ -3,15 +3,14 @@ import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@a
 import { switchMap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
 
   private isRefreshing = false; // Flag to track if refresh token request is in progress
 
-  constructor(private authService: AuthenticationService,
-  private router:Router) { }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     console.log('Request made to: ', req.url);
@@ -20,30 +19,49 @@ export class Interceptor implements HttpInterceptor {
       catchError(error => {
         console.log('Error occurred:', error);
 
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          if (!this.isRefreshing) { // Check if refresh token request is not in progress
-            this.isRefreshing = true; // Set the flag to indicate refresh token request in progress
-            console.log('Access token expired, refreshing');
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 401) {
+            // Handle 401 error (unauthorized access)
+            if (!this.isRefreshing) {
+              // If refresh token request is not in progress, try to refresh access token
+              this.isRefreshing = true;
+              console.log('Access token expired, refreshing');
 
-            return this.authService.getNewAccessToken().pipe(
-              switchMap((response: any) => {
+              return this.authService.getNewAccessToken().pipe(
+                switchMap((response: any) => {
+                  // Update access token in request header
+                  const clonedRequest = req.clone({
+                    setHeaders: { Authorization: `Bearer ${response.accessToken}` }
+                  });
 
-                const clonedRequest = req.clone({
-                  setHeaders: { Authorization: `Bearer ${response.accessToken}` }
-                });
-                localStorage.setItem('accessToken', response.accessToken);
-                this.isRefreshing = false; // Reset the flag after a successful refresh
-                return next.handle(clonedRequest);
-              })
-            );
-          } else {
-            // If refresh token request is already in progress, log out the user
-            alert("session has expired")
+                  // Reset refresh token flag and update local storage
+                  this.isRefreshing = false;
+                  localStorage.setItem('accessToken', response.accessToken);
+
+                  // Retry the request with updated access token
+                  return next.handle(clonedRequest);
+                }),
+                catchError(() => {
+                  // If refresh token fails, log out the user and redirect to login
+                  alert('Session has expired. Please log in again.');
+                  localStorage.clear();
+                  this.router.navigate(['login']);
+                  return throwError('Access token is null');
+                })
+              );
+            } else {
+              // If refresh token request is already in progress, log out the user and redirect to login
+              alert('Your account has been logged in from another device. Please log in again.');
+              localStorage.clear();
+              this.router.navigate(['login']);
+              return throwError('Access token refresh failed');
+            }
+          } else if (error.status === 403) {
+            // Handle 403 error (forbidden access)
+            alert('this account have been log in another device');
             localStorage.clear();
             this.router.navigate(['login']);
-
-            return throwError('Access token is null');
-
+            return throwError('Forbidden access');
           }
         }
 

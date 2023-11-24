@@ -29,11 +29,16 @@ public class ReviewController {
     @GetMapping("/get/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<ReviewRequest>>getAllReviewById(@PathVariable Integer productId) {
-        return ResponseEntity.ok(service.   getAllReviewByProduct(productId));
+        return ResponseEntity.ok(service.getAllReviewByProduct(productId));
     }
     @GetMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ProductForReviewResponse>getAllProductForReview(@PathVariable Integer orderId) {
         return ResponseEntity.ok(service.getProductForReview(orderId));
+    }
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<List<ReviewRequest>>getReviewByUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(service.getAllReviewByUserId(userId));
     }
 }

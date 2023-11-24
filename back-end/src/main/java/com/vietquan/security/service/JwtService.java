@@ -1,10 +1,12 @@
 package com.vietquan.security.service;
 
+import com.vietquan.security.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-
+@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${application.security.jwt.secret-key}")
@@ -27,7 +29,7 @@ public class JwtService {
 
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
-
+private final TokenRepository repository;
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -71,7 +73,8 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        var tokens=repository.findAllValidToken(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) &&tokens==null;
     }
 
     private boolean isTokenExpired(String token) {

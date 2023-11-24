@@ -95,7 +95,12 @@ public class ReviewService {
         }
     }
 
+public List<ReviewRequest> getAllReviewByUserId(Integer userId) {
+    List<Review> reviews = repository.findByUsersId(userId);
+    return reviews.stream().map(Review::getDto).collect(Collectors.toList());
 
+
+}
 
 
 }

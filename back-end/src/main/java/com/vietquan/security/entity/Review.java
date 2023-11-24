@@ -64,6 +64,7 @@ public class Review {
         request.setComment(comment);
         request.setUsername(users.getUsername());
         request.setProductId(productReview.getProductId());
+        request.setImg(productReview.getImage());
         return request;
     }
 }
