@@ -16,6 +16,7 @@ import { UserReviewComponent } from './components/user-review/user-review.compon
 
 
 @NgModule({
+
   declarations: [
     CustomerComponent,
     DashboardComponent,

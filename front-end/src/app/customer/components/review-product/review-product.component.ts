@@ -1,17 +1,17 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { CustomerService } from "../../service/customer.service";
-import { FormBuilder } from "@angular/forms";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { ActivatedRoute, Router } from "@angular/router";
-import { PublicService } from "../../../services/public.service";
+import {CustomerService} from "../../service/customer.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-review-product',
   templateUrl: './review-product.component.html',
   styleUrls: ['./review-product.component.scss']
 })
-export class ReviewProductComponent implements OnInit{
+export class ReviewProductComponent implements OnInit {
   products: any[] = [];
+  reviewForm!: FormGroup;
 
   constructor(
     public service: CustomerService,
@@ -19,10 +19,58 @@ export class ReviewProductComponent implements OnInit{
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
+
 
   ngOnInit() {
     this.loadProducts();
+    this.initForm();
+  }
+
+  initForm() {
+    this.reviewForm = this.builder.group({
+      starRating: [0, [Validators.required, Validators.min(1)]],
+      reviewComment: ['', Validators.required],
+    });
+  }
+
+
+  submitReview(productId: number) {
+    if (this.reviewForm.valid) {
+      const {starRating, reviewComment} = this.reviewForm.value;
+      const routeParams = this.route.snapshot.paramMap;
+      const orderIdFromRoute = Number(routeParams.get('id'));
+      const reviewData = {
+        productId: productId,
+        star: starRating,
+        comment: reviewComment,
+      };
+
+      this.service.createReview(reviewData, orderIdFromRoute).subscribe(
+        (res) => {
+
+          this.snackBar.open('Review submitted successfully!', 'Close', {
+            duration: 3000,
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+
+
+        },
+        (error) => {
+          if (error.status == 500) {
+            this.snackBar.open('Cannot review again', 'Close', {
+              duration: 3000,
+            });
+          }
+        }
+      );
+    } else {
+      // Form is invalid, show an error or handle accordingly
+    }
   }
 
   loadProducts() {
@@ -49,34 +97,9 @@ export class ReviewProductComponent implements OnInit{
       }
     );
   }
-
-  submitReview(productId: number, starRating: number, reviewComment: string) {
-    const routeParams = this.route.snapshot.paramMap;
-    const orderIdFromRoute = Number(routeParams.get('id'));
-    const reviewData = {
-      productId: productId,
-      star: starRating,
-      comment: reviewComment,
-    };
-
-    this.service.createReview(reviewData, orderIdFromRoute).subscribe(
-      (res) => {
-        this.snackBar.open('Review submitted successfully!', 'Close', {
-          duration: 3000,
-        });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-
-      },
-      (error) => {
-      if(error.status==500){
-        this.snackBar.open('can not review again', 'Close', {
-          duration: 3000,
-        });
-      }
-      }
-    );
+  setStar(product: any, star: number): void {
+    this.reviewForm.get('starRating')?.setValue(star);
   }
+
+
 }

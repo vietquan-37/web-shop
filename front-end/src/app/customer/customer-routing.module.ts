@@ -8,6 +8,7 @@ import {roleGuard} from "../services/auth/role.guard";
 import {UserOrdersComponent} from "./components/user-orders/user-orders.component";
 import {ProductDetailsComponent} from "./components/product-details/product-details.component";
 import {ReviewProductComponent} from "./components/review-product/review-product.component";
+import {UserReviewComponent} from "./components/user-review/user-review.component";
 
 
 const routes: Routes = [{ path: '', component: CustomerComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [{ path: '', component: CustomerComponent },
   { path: 'order', component: UserOrdersComponent , canActivate: [authGuard,roleGuard]},
   { path: 'product/:id', component: ProductDetailsComponent ,canActivate: [authGuard,roleGuard] },
   { path: 'review/:id', component: ReviewProductComponent, canActivate: [authGuard,roleGuard]},
+  { path: 'review', component: UserReviewComponent, canActivate: [authGuard,roleGuard]},
 ];
 
 @NgModule({

@@ -130,18 +130,8 @@
         color: #333;
       }
 
-      .review-stars {
-        color: #ffc107; /* Adjusted star color */
-      }
 
-      .star {
-        font-size: 18px; /* Adjusted star font size */
-        margin-right: 2px;
-      }
 
-      .filled {
-        color: #ffc107; /* Adjusted filled star color */
-      }
     }
 
     .review-comment {
@@ -187,4 +177,9 @@
 
 .back-button mat-icon {
   margin-right: 5px;
+}
+.star {
+  color: gold; /* Set the color to yellow or any other color you prefer */
+  font-size: 35px; /* Adjust the font size as needed */
+  margin-right: 2px; /* Add spacing between stars if needed */
 }

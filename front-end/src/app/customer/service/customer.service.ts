@@ -73,5 +73,8 @@ export class CustomerService {
   getProductForReview(orderId:any): Observable<any>{
     return this.http.get(`${this.baseUrl}/review/${orderId}`,{headers:this.createHeader()})
   }
-
+  getReviewByUsed(): Observable<any>{
+  const  userId=localStorage.getItem('userId')
+    return this.http.get(`${this.baseUrl}/review/user/${userId}`,{headers:this.createHeader()})
+  }
 }

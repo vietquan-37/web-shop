@@ -1,0 +1,50 @@
+/* user-review.component.scss */
+
+.review-card {
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  margin: 15px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.review-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.review-details {
+  flex: 1;
+}
+
+.star {
+  color: gold; /* Set the color to yellow or any other color you prefer */
+  font-size: 35px; /* Adjust the font size as needed */
+  margin-right: 2px; /* Add spacing between stars if needed */
+}
+
+.filled {
+  color: #f39c12; /* Filled star color */
+}
+
+.product-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.comment {
+  font-size: 1.2em;
+  color: #555;
+}
+
+#noReviews {
+  color: #555;
+  font-size: 1.2em;
+  margin-top: 30px;
+}
+
+/* Add more styles as needed */

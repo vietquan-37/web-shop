@@ -1,35 +1,30 @@
-<div *ngFor="let product of products">
-  <div class="product-container">
-    <img [src]="product.processedImg" alt="{{ product.name }}" class="product-image"/>
-    <div class="product-details">
-      <h3>{{ product.name }}</h3>
-      <p>Price: ${{ product.price }}</p>
-      <div class="review-form">
-        <!-- Add your review form here -->
-        <ng-container *ngIf="!product.alreadyReviewed">
-          <form (ngSubmit)="submitReview(product.id, product.starRating, product.reviewComment)">
-            <label for="star">Star Rating:</label>
-            <select id="star" name="star" [(ngModel)]="product.starRating" required>
-              <option value="1">1 Star</option>
-              <option value="2">2 Stars</option>
-              <option value="3">3 Stars</option>
-              <option value="4">4 Stars</option>
-              <option value="5">5 Stars</option>
-            </select>
+  <div *ngFor="let product of products">
+    <div class="product-container">
+      <img [src]="product.processedImg" alt="{{ product.name }}" class="product-image"/>
+      <div class="product-details">
+        <h3>{{ product.name }}</h3>
+        <p>Price: ${{ product.price }}</p>
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview(product.id)">
+          <!-- Star Rating -->
+          <input type="hidden" formControlName="starRating" /> <!-- Add a hidden input for starRating -->
+          <div class="review-stars">
+            <span *ngFor="let _ of [1, 2, 3, 4, 5]" class="star" [class.filled]="reviewForm.get('starRating')?.value >= _" (click)="setStar(product, _)">&#9733;</span>
 
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="comment" [(ngModel)]="product.reviewComment" required></textarea>
+          </div>
 
-            <button type="submit">Submit Review</button>
-          </form>
-        </ng-container>
+          <!-- Comment -->
+          <label for="comment">Comment:</label>
+          <textarea id="comment" formControlName="reviewComment"></textarea>
 
+          <!-- Submit Button -->
+          <button type="submit" [disabled]="!reviewForm.valid">Submit Review</button>
+        </form>
 
       </div>
     </div>
-  </div>
 
-</div>
-<div *ngIf="products.length === 0" class="reviews-message">
-  <p> You have already reviewed this product in this order.</p>
-</div>
+  </div>
+  <div *ngIf="products.length === 0" class="reviews-message">
+    <p> You have already reviewed this product in this order.</p>
+    <a [routerLink]="['/customer/review']">Click this review your review</a>
+  </div>

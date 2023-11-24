@@ -9,5 +9,6 @@ public class ReviewRequest {
     private String comment;
     private String username;
 private Integer productId;
+private String productName;
 private byte[] img;
 }

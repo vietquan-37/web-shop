@@ -88,4 +88,7 @@ getAllReview(){
   goBack() {
     this.router.navigate(['/customer/dashboard']);
   }
+  createStarArray(starCount: number): number[] {
+    return Array.from({ length: starCount }, (_, index) => index + 1);
+  }
 }

@@ -1,1 +1,20 @@
-<p>user-review works!</p>
+<!-- user-review.component.html -->
+
+<div *ngIf="reviews.length > 0; else noReviews">
+  <div *ngFor="let review of reviews" class="review-card">
+    <img [src]="review.processedImg" alt="Review Image" class="review-image">
+    <div class="review-details">
+      <div class="star-rating">
+        <!-- Display stars based on starArray -->
+        Rating:
+        <span *ngFor="let star of review.starArray" class="star">&#9733;</span>
+      </div>
+      <div class="product-name">{{ review.productName }}</div>
+      <div class="comment">{{ review.comment }}</div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noReviews>
+  <p>No reviews available.</p>
+</ng-template>

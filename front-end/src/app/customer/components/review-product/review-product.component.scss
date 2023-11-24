@@ -1,71 +1,89 @@
-.reviews-message {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f8d7da; /* Light red background color for emphasis */
-  color: #721c24; /* Dark red text color */
-  border: 1px solid #f5c6cb; /* Border color */
-  border-radius: 5px; /* Rounded corners */
-  text-align: center;
-}
 .product-container {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin: 10px;
   display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 
   .product-image {
-    max-width: 200px;
-    margin-right: 10px;
+    max-width: 300px;
     object-fit: fill;
+    border-radius: 8px 0 0 8px;
   }
 
   .product-details {
-    flex: 1;
+    flex-grow: 1;
+    padding: 15px;
 
     h3 {
+      margin: 0 0 10px;
+      font-size: 1.5em;
       color: #333;
     }
 
     p {
+      margin: 0;
       color: #777;
     }
 
-    .review-form {
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      background-color: #f9f9f9;
+    form {
+      margin-top: 15px;
 
       label {
         display: block;
         margin-bottom: 5px;
         color: #333;
+        font-weight: bold;
       }
 
-      select, textarea {
+      select,
+      textarea {
         width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        padding: 12px;
+        margin-bottom: 15px;
         box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1.2em;
+        color: #555;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #4caf50;
+        }
       }
 
       button {
         background-color: #4caf50;
         color: white;
-        padding: 10px 15px;
+        padding: 12px 15px;
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
+        font-size: 1.2em;
+        transition: background-color 0.3s ease;
 
-        &:hover {
+        &:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+
+        &:hover:enabled {
           background-color: #45a049;
         }
       }
     }
   }
 }
+
+
+
 
 .reviews-message {
   margin-top: 20px;
@@ -75,3 +93,20 @@
   border: 1px solid #f5c6cb;
   border-radius: 4px;
 }
+.review-stars {
+  .star {
+    font-size: 40px; /* Adjust the font size to make the stars bigger */
+    color: #ccc; /* Default star color */
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: yellow; /* Change the color on hover if needed */
+    }
+  }
+
+  .star.filled {
+    color: yellow; /* Filled star color */
+  }
+}
+
