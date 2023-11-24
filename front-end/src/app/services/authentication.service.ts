@@ -46,7 +46,7 @@ export class AuthenticationService {
   }
 
   logout(): Observable<any> {
-    console.log('Logout method called.');
+
     const token = localStorage.getItem('refreshToken');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

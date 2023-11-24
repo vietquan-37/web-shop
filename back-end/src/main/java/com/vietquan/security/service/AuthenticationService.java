@@ -122,7 +122,7 @@ public class AuthenticationService {
 
         // Save the refresh token to the database
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        saveUserToken(user, refreshToken);
 
         // Return a response to the user containing the JWT token and refresh token
         return AuthenticationResponse.builder().userId(user.getId()).accessToken(jwtToken).refreshToken(refreshToken).role(user.getRole()).mfaEnable(false).build();
@@ -138,7 +138,7 @@ public class AuthenticationService {
     public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
         String userEmail = jwtService.extractUsername(request.getToken());
         User user = repository.findByEmail(userEmail).orElseThrow();
-        if (jwtService.isTokenValid(request.getToken(), user)) {
+        if (jwtService.isRefreshTokenValid(request.getToken(), user)) {
 
             var accessToken = jwtService.generateToken(user);
             return AuthenticationResponse.builder().userId(user.getId()).accessToken(accessToken).refreshToken(request.getToken()).build();
@@ -159,7 +159,7 @@ public class AuthenticationService {
         } else {
             var jwtToKen = jwtService.generateToken(user);
             var refresh = jwtService.generateRefreshToken(user);
-saveUserToken(user,jwtToKen);
+            saveUserToken(user, refresh);
             return AuthenticationResponse.builder().userId(user.getId()).accessToken(jwtToKen).refreshToken(refresh).mfaEnable(user.isMfaEnable()).role(user.getRole()).build();
         }
     }

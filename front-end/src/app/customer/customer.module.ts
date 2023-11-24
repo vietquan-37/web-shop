@@ -12,6 +12,7 @@ import { PlaceOrderComponent } from './components/place-order/place-order.compon
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ReviewProductComponent } from './components/review-product/review-product.component';
+import { UserReviewComponent } from './components/user-review/user-review.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ReviewProductComponent } from './components/review-product/review-produ
     PlaceOrderComponent,
     UserOrdersComponent,
     ProductDetailsComponent,
-    ReviewProductComponent
+    ReviewProductComponent,
+    UserReviewComponent
   ],
   imports: [
     CommonModule,

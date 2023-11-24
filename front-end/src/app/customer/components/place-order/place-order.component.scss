@@ -1,0 +1,73 @@
+/* Form container */
+.place-order-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  /* Form title */
+  mat-dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* Form fields */
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 10px;
+
+    mat-label {
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    input {
+      font-size: 14px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    mat-error {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+
+  /* Submit and cancel buttons */
+  mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+
+    mat-raised-button {
+      background-color: #3f51b5;
+      color: #fff;
+
+      &:hover {
+        background-color: #2638a0;
+      }
+    }
+
+    mat-raised-button[color="accent"] {
+      background-color: #f44336;
+      color: #fff;
+
+      &:hover {
+        background-color: #e71d36;
+      }
+    }
+  }
+}

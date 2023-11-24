@@ -29,7 +29,8 @@ public class JwtService {
 
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
-private final TokenRepository repository;
+    private final TokenRepository repository;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -73,8 +74,12 @@ private final TokenRepository repository;
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        var tokens=repository.findAllValidToken(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) &&tokens==null;
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+    public boolean isRefreshTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        var hehe=repository.findAllValidToken(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token) &&hehe==null;
     }
 
     private boolean isTokenExpired(String token) {
