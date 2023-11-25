@@ -11,4 +11,6 @@ public class ReviewRequest {
 private Integer productId;
 private String productName;
 private byte[] img;
+    private byte[] avatar;
+
 }

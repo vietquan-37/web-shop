@@ -33,6 +33,7 @@ public class Review {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Product productReview;
+
     @ManyToOne(
             fetch = FetchType.LAZY,
             optional = false
@@ -65,6 +66,7 @@ public class Review {
         request.setProductId(productReview.getProductId());
         request.setImg(productReview.getImage());
         request.setProductName(productReview.getName());
+        request.setAvatar(users.getAvatar());
         return request;
     }
 }

@@ -77,4 +77,9 @@ export class CustomerService {
   const  userId=localStorage.getItem('userId')
     return this.http.get(`${this.baseUrl}/review/user/${userId}`,{headers:this.createHeader()})
   }
+  getUserInfo(): Observable<any>{
+    const  userId=localStorage.getItem('userId')
+    return this.http.get(`${this.baseUrl}/users/${userId}`,{headers:this.createHeader()})
+  }
+
 }

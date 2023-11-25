@@ -119,67 +119,76 @@
     margin-bottom: 15px;
     background-color: #f9f9f9; /* Background color for each review item */
 
+    .user-avatar {
+      border-radius: 60%; // Add a rounded border to create a circular avatar
+      max-width: 100px; // Set a maximum width for the avatar
+      max-height: 100px; // Set a maximum height for the avatar
+    }
+    .review-username {
+      font-weight: bold;
+      color: #333;
+    }
     .review-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
 
-      .review-username {
-        font-weight: bold;
-        color: #333;
-      }
-
-
 
     }
 
     .review-comment {
+      font-weight: bold;
       color: #555;
+      background-color: #b3c2cf; /* Light yellow background color */
+      padding: 10px; /* Add some padding for better readability */
+      border-radius: 5px; /* Optional: Add rounded corners */
+      font-size: 1.2em; /* Increase font size */
+    }
 
+  }
+
+  .no-reviews-message {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    p {
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    &::before {
+      content: "\1F622"; /* Unicode sad face */
+      font-size: 2em;
+      display: block;
+      margin-bottom: 10px;
     }
   }
-}
-.no-reviews-message {
-  text-align: center;
-  color: #888;
-  font-style: italic;
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px dashed #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
-/* Additional styles for a more modern and visually appealing look */
-.no-reviews-message p {
-  margin: 0;
-  font-size: 1.2em;
-}
+  .back-button {
+    margin-top: 20px;
 
-.no-reviews-message::before {
-  content: "\1F622"; /* Unicode sad face */
-  font-size: 2em;
-  display: block;
-  margin-bottom: 10px;
-}
+    button {
+      display: flex;
+      align-items: center;
+      color: #007bff;
 
-.back-button {
-  margin-top: 20px;
-}
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+  }
 
-.back-button button {
-  display: flex;
-  align-items: center;
-  color: #007bff;
-}
-
-.back-button mat-icon {
-  margin-right: 5px;
-}
-.star {
-  color: gold; /* Set the color to yellow or any other color you prefer */
-  font-size: 35px; /* Adjust the font size as needed */
-  margin-right: 2px; /* Add spacing between stars if needed */
+  .star {
+    color: gold; /* Set the color to yellow or any other color you prefer */
+    font-size: 35px; /* Adjust the font size as needed */
+    margin-right: 2px; /* Add spacing between stars if needed */
+  }
 }

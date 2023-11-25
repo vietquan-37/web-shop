@@ -9,6 +9,7 @@ import {UserOrdersComponent} from "./components/user-orders/user-orders.componen
 import {ProductDetailsComponent} from "./components/product-details/product-details.component";
 import {ReviewProductComponent} from "./components/review-product/review-product.component";
 import {UserReviewComponent} from "./components/user-review/user-review.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 
 
 const routes: Routes = [{ path: '', component: CustomerComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [{ path: '', component: CustomerComponent },
   { path: 'product/:id', component: ProductDetailsComponent ,canActivate: [authGuard,roleGuard] },
   { path: 'review/:id', component: ReviewProductComponent, canActivate: [authGuard,roleGuard]},
   { path: 'review', component: UserReviewComponent, canActivate: [authGuard,roleGuard]},
+  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard,roleGuard]}
 ];
 
 @NgModule({

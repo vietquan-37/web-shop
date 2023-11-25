@@ -49,12 +49,6 @@ export class Interceptor implements HttpInterceptor {
                   return throwError('Access token is null');
                 })
               );
-            } else {
-              // If refresh token request is already in progress, log out the user and redirect to login
-              alert('Your account has been logged in from another device. Please log in again.');
-              localStorage.clear();
-              this.router.navigate(['login']);
-              return throwError('Access token refresh failed');
             }
           } else if (error.status === 403) {
             // Handle 403 error (forbidden access)

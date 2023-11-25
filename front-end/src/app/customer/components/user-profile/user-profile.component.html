@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="user-profile">
+    <div class="profile-header">
+      <h2>User Profile</h2>
+
+      <div class="profile-actions">
+        <button class="edit-button">Edit Profile</button>
+      </div>
+    </div>
+
+    <div *ngIf="info" class="profile-details">
+      <!-- Display user image or default avatar -->
+      <div class="user-avatar">
+        <img [src]="getImgUrl(info.img)" alt="User Avatar"/>
+      </div>
+      <div class="user-info">
+        <div>
+          <strong>Email:</strong> {{ info.email }}
+        </div>
+        <div>
+          <strong>First Name:</strong> {{ info.firstname }}
+        </div>
+        <div>
+          <strong>Last Name:</strong> {{ info.lastname }}
+        </div>
+        <div>
+          <strong>Phone:</strong> {{ info.phone }}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!info" class="loading-message">
+      <p>Loading user information...</p>
+    </div>
+  </div>
+</div>

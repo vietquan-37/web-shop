@@ -70,15 +70,18 @@
 <div class="product-reviews">
   <h3>Product Reviews</h3>
   <div *ngFor="let review of reviews" class="review-item">
+    <span class="review-username"> {{ review.username }}</span>
     <div class="review-info">
-      <span class="review-username"> {{ review.username }}</span>
+
+      <img src="{{'data:image/jpeg;base64,'+ review.avatar }}" alt="user avatar" class="user-avatar">
+
       <div class="star-rating">
         <!-- Display stars based on starArray -->
         Rating:
         <span *ngFor="let star of createStarArray(review.star)" class="star">&#9733;</span>
       </div>
     </div>
-    <p class="review-comment"> {{ review.comment }}</p>
+    <p class="review-comment">   {{ review.comment }}</p>
   </div>
 
 </div>

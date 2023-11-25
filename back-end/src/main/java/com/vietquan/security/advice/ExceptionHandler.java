@@ -35,11 +35,17 @@ public class ExceptionHandler {
                     fieldError -> error.put(fieldError.getField(), fieldError.getDefaultMessage())
             );
             response.setStatus(HttpStatus.BAD_REQUEST.value());
-        } else if (exception instanceof ExpiredJwtException) {
+        }
+
+        else if (exception instanceof ExpiredJwtException) {
             error.put("error", "token is expired");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
         else if (exception instanceof ValidationException) {
+            error.put("error",exception.getMessage());
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
+        else if (exception instanceof IllegalArgumentException) {
             error.put("error",exception.getMessage());
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
