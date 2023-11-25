@@ -55,8 +55,7 @@ public class Review {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Order orders;
-    @Column(name = "is_review", nullable = false, columnDefinition = "boolean default false")
-    private boolean isReviewed = false;
+
     public ReviewRequest getDto(){
         ReviewRequest request=new ReviewRequest();
         request.setReviewId(reviewId);

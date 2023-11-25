@@ -34,5 +34,5 @@ public class OrderRequest {
     private boolean isPayed;
     private Date deliveriedDate;
     private List<CartItemsRequest> carts;
-
+    private boolean isReviewed;
 }

@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {CustomerService} from "../../service/customer.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {ActivatedRoute} from "@angular/router";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CustomerService } from "../../service/customer.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-review-product',
@@ -11,7 +11,8 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ReviewProductComponent implements OnInit {
   products: any[] = [];
-  reviewForm!: FormGroup;
+  reviewForms: FormGroup[] = [];
+  currentProductId: number | null = null;
 
   constructor(
     public service: CustomerService,
@@ -19,26 +20,23 @@ export class ReviewProductComponent implements OnInit {
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
-  ) {
-  }
-
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
-    this.initForm();
   }
 
-  initForm() {
-    this.reviewForm = this.builder.group({
+  createForm(product: any) {
+    return this.builder.group({
       starRating: [0, [Validators.required, Validators.min(1)]],
       reviewComment: ['', Validators.required],
+      productId: [product.id] // Add productId to the form
     });
   }
 
-
-  submitReview(productId: number) {
-    if (this.reviewForm.valid) {
-      const {starRating, reviewComment} = this.reviewForm.value;
+  submitReview(productForm: FormGroup) {
+    if (productForm.valid) {
+      const { starRating, reviewComment, productId } = productForm.value;
       const routeParams = this.route.snapshot.paramMap;
       const orderIdFromRoute = Number(routeParams.get('id'));
       const reviewData = {
@@ -49,14 +47,17 @@ export class ReviewProductComponent implements OnInit {
 
       this.service.createReview(reviewData, orderIdFromRoute).subscribe(
         (res) => {
-
           this.snackBar.open('Review submitted successfully!', 'Close', {
             duration: 3000,
           });
 
+
           setTimeout(() => {
             window.location.reload();
           }, 2000);
+
+          productForm.reset();
+          this.currentProductId = null;
 
 
         },
@@ -80,14 +81,18 @@ export class ReviewProductComponent implements OnInit {
     this.service.getProductForReview(orderIdFromRoute).subscribe(
       (res) => {
         if (res && res.productList && Array.isArray(res.productList)) {
-          this.products = res.productList.map((product: any) => ({
-            processedImg: 'data:image/jpeg;base64,' + product.image,
-            name: product.name,
-            price: product.price,
-            id: product.id,
-            starRating: 0, // Initialize with default value
-            reviewComment: '' // Initialize with default value
-          }));
+          this.products = res.productList.map((product: any) => {
+            const productForm = this.createForm(product);
+            this.reviewForms.push(productForm);
+
+            return {
+              processedImg: 'data:image/jpeg;base64,' + product.image,
+              name: product.name,
+              price: product.price,
+              id: product.id,
+              form: productForm,
+            };
+          });
         } else {
           console.error('Invalid response format:', res);
         }
@@ -97,9 +102,10 @@ export class ReviewProductComponent implements OnInit {
       }
     );
   }
-  setStar(product: any, star: number): void {
-    this.reviewForm.get('starRating')?.setValue(star);
+
+  setStar(productForm: FormGroup, star: number): void {
+    // Set the current product for review when the user selects a star
+    this.currentProductId = productForm.get('productId')?.value;
+    productForm.get('starRating')?.setValue(star);
   }
-
-
 }

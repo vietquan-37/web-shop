@@ -40,7 +40,7 @@ public class ReviewService {
             review.setStar(request.getStar());
             review.setComment(request.getComment());
             review.setUsers(order.getUser());
-            review.setReviewed(true);
+
             review.setOrders(order);
             return repository.save(review).getDto();
 
@@ -77,6 +77,7 @@ public class ReviewService {
                 if (isReview.isEmpty()) {
                     requests.add(request);
                 }
+
             }
 
             // Create the response and set the product list
@@ -85,6 +86,9 @@ public class ReviewService {
 
             // If the product list is empty, throw an exception
             if (response.getProductList().isEmpty()) {
+                Optional<Order> order1 = orderRepository.findById(orderId);
+                order1.get().setReviewed(true);
+                orderRepository.save(order1.get());
                 throw new EntityNotFoundException("No product to review");
             }
 

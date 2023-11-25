@@ -242,9 +242,10 @@
             Action
           </th>
           <td mat-cell *matCellDef="let order">
-            <button mat-raised-button color="primary" [routerLink]="['/customer/review', order.id]" >
+            <button mat-raised-button color="primary" [disabled]="order.reviewed==true" [routerLink]="['/customer/review', order.id]" >
              Review Product
             </button>
+
           </td>
 
 
@@ -253,7 +254,7 @@
             *matHeaderRowDef="['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment' , 'carts' , 'action' ]"></tr>
         <tr mat-row
             *matRowDef="let row; columns:['trackingId' , 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment', 'carts', 'action'  ]"></tr>
-      </table>1
+      </table>
     </mat-card>
   </div>
 </div>

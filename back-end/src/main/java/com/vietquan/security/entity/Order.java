@@ -60,11 +60,14 @@ public class Order {
     private String transactionId;
     private boolean isPayed;
     @OneToMany(
-            mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true
+            mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true
     )
     private List<Review> reviews;
-    public OrderRequest getOrderDto(){
-        OrderRequest request=new OrderRequest();
+    @Column(name = "is_review", nullable = false, columnDefinition = "boolean default false")
+    private boolean isReviewed = false;
+
+    public OrderRequest getOrderDto() {
+        OrderRequest request = new OrderRequest();
         request.setId(id);
         request.setOrderDescription(orderDescription);
         request.setDate(date);
@@ -87,6 +90,7 @@ public class Order {
         if(deliveriedDate!=null){
             request.setDeliveriedDate(deliveriedDate);
         }
+        request.setReviewed(isReviewed);
         return request;
     }
 }
