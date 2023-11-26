@@ -38,6 +38,11 @@ export class CustomerService {
 
     return this.http.post(`${this.baseUrl}/cart/${userId}/${code}`,null,{ headers: this.createHeader() });
   }
+  changeUserInfo(userInfo: any): Observable<any> {
+    const userId: number = Number(localStorage.getItem('userId'));
+    return this.http.put(`${this.baseUrl}/users/changeInfo/${userId}`,userInfo,{ headers: this.createHeader() });
+  }
+
 
   increaseQuantity( productId: number,size:any): Observable<any> {
     const userId: number = Number(localStorage.getItem('userId'));

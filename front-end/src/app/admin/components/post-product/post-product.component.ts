@@ -63,9 +63,7 @@ export class PostProductComponent implements OnInit {
   getImagePreview(file: File): string {
     return URL.createObjectURL(file);
   }
-  ngOnDestroy() {
-    this.additionalImagePreviews.forEach(preview => URL.revokeObjectURL(preview));
-  }
+
   OnFileSelected(events: any) {
     const file = events.target.files[0];
     if (file) {
