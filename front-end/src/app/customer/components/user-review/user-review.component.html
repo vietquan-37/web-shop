@@ -13,6 +13,16 @@
       <div class="comment">{{ review.comment }}</div>
     </div>
   </div>
+
+  <div class="pagination">
+    <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+      Previous
+    </button>
+    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+    <button mat-button color="primary" [disabled]="currentPage === totalPages - 1" (click)="onPageChange(currentPage + 1)">
+      Next
+    </button>
+  </div>
 </div>
 
 <ng-template #noReviews>

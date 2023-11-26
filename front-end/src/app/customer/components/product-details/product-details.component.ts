@@ -16,6 +16,10 @@ export class ProductDetailsComponent implements OnInit{
   currentMainImage: string = '';
   selectedSize: string = '';
 reviews: any[] = [];
+  currentPage: number = 0;
+
+  totalPages: number = 0;  // New property to store total pages
+
   constructor(
 
     public service: CustomerService,
@@ -78,17 +82,30 @@ this.getAllReview()
   setMainImage(image: string) {
     this.currentMainImage = image;
   }
-getAllReview(){
-  const routeParams = this.route.snapshot.paramMap;
-  const productIdFromRoute = Number(routeParams.get('id'));
-  this.pService.getAllReviewByProduct(productIdFromRoute).subscribe((res)=>{
-    this.reviews=res
-  })
-}
+  getAllReview() {
+    const routeParams = this.route.snapshot.paramMap;
+    const productIdFromRoute = Number(routeParams.get('id'));
+
+    this.pService.getAllReviewByProduct(productIdFromRoute, this.currentPage)
+      .subscribe((res: any) => {
+        this.reviews = res.content;  // Adjust based on the actual response structure
+
+        // Update total pages based on the response
+        this.totalPages = res.totalPages;
+      });
+  }
+
+  // New method to handle page change
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.getAllReview();
+  }
+
   goBack() {
     this.router.navigate(['/customer/dashboard']);
   }
   createStarArray(starCount: number): number[] {
     return Array.from({ length: starCount }, (_, index) => index + 1);
   }
+
 }

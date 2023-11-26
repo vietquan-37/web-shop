@@ -4,6 +4,7 @@ import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PlaceOrderRequest;
 import com.vietquan.security.response.OrderResponse;
 import com.vietquan.security.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<OrderResponse> placeOrder(@RequestBody PlaceOrderRequest request) {
+    public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody PlaceOrderRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.placeOrder(request));
     }
 

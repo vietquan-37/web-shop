@@ -1,5 +1,10 @@
 /* user-review.component.scss */
 
+.review-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .review-card {
   border: 2px solid #ccc;
   border-radius: 12px;
@@ -18,6 +23,11 @@
 
 .review-details {
   flex: 1;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
 }
 
 .star {
@@ -45,6 +55,13 @@
   color: #555;
   font-size: 1.2em;
   margin-top: 30px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px; /* Adjust as needed */
 }
 
 /* Add more styles as needed */

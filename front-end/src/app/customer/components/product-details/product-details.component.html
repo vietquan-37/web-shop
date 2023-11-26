@@ -43,12 +43,12 @@
         <div class="product-images">
           <div class="additional-images" *ngIf="product.byteImages && product.byteImages.length > 0">
             <h3>Additional Images:</h3>
-            <div class="additional-image" *ngFor="let img of product.byteImages">
-              <img [src]="img" alt="additional-image" (click)="setMainImage(img)">
-            </div>
-            <div class="additional-image">
+            <span class="additional-image">
               <img [src]="product.processedImg" alt="additional-image" (click)="setMainImage(product.processedImg)">
-            </div>
+              <span *ngFor="let img of product.byteImages">
+                <img [src]="img" alt="additional-image" (click)="setMainImage(img)">
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -67,6 +67,8 @@
 
 </div>
 
+<!-- Existing HTML code... -->
+
 <div class="product-reviews">
   <h3>Product Reviews</h3>
   <div *ngFor="let review of reviews" class="review-item">
@@ -84,7 +86,22 @@
     <p class="review-comment">   {{ review.comment }}</p>
   </div>
 
+
+
+  <!-- Pagination controls -->
+  <div class="pagination">
+    <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+      Previous
+    </button>
+    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+    <button mat-button color="primary" [disabled]="currentPage === totalPages - 1" (click)="onPageChange(currentPage + 1)">
+      Next
+    </button>
+  </div>
 </div>
+
 <div *ngIf="reviews.length === 0" class="no-reviews-message">
   <p>No reviews yet.</p>
 </div>
+
+<!-- Existing HTML code... -->

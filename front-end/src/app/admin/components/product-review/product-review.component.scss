@@ -1,0 +1,82 @@
+/* Basic styling for the back button */
+.back-button {
+  margin-bottom: 20px;
+
+  button {
+    background-color: #2196F3; /* Adjust color as needed */
+    color: #fff;
+  }
+}
+
+/* Styling for product reviews section */
+.product-reviews {
+  h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .review-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+
+    .review-username {
+      font-weight: bold;
+      color: #2196F3; /* Make username stand out */
+    }
+
+    .review-info {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+
+      .user-avatar {
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 150px; /* Increase avatar size for more impact */
+        height: 150px;
+        border: 2px solid #2196F3; /* Add border to the avatar */
+        background-color: #fff; /* Add a white background to the avatar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .star-rating {
+        margin-left: auto; /* Push to the right */
+        font-size: 18px;
+
+        .star {
+          color: #FFD700; /* Adjust color as needed */
+        }
+      }
+    }
+
+    .review-comment {
+      margin-top: 10px;
+      color: #444; /* Darken the comment text */
+      font-size: 18px; /* Increase comment font size for more visibility */
+      background-color: #f0f8ff; /* Add a light background color to the comment */
+      padding: 10px;
+      border-radius: 8px; /* Add rounded corners to the comment box */
+    }
+  }
+
+  /* Pagination styling */
+  .pagination {
+    margin-top: 20px;
+
+    button {
+      margin-right: 10px;
+    }
+  }
+
+  /* Message when there are no reviews */
+  .no-reviews-message {
+    p {
+      font-style: italic;
+      color: #555;
+    }
+  }
+}

@@ -13,6 +13,9 @@ import com.vietquan.security.request.ReviewRequest;
 import com.vietquan.security.response.ProductForReviewResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -49,12 +52,13 @@ public class ReviewService {
         }
     }
 
-    public List<ReviewRequest> getAllReviewByProduct(Integer productId) {
-        List<Review> review = repository.findByProductReviewProductId(productId);
+    public Page<ReviewRequest> getAllReviewByProduct(Integer productId,int page) {
+        Pageable pageable = PageRequest.of(page, 3);
+       Page<Review> review = repository.findByProductReviewProductId(productId,pageable);
         if (review.isEmpty()) {
             throw new EntityNotFoundException("not found any review");
         }
-        return review.stream().map(Review::getDto).collect(Collectors.toList());
+        return review.map(Review::getDto);
     }
 
     public ProductForReviewResponse getProductForReview(Integer orderId) {
@@ -99,15 +103,17 @@ public class ReviewService {
         }
     }
 
-public List<ReviewRequest> getAllReviewByUserId(Integer userId) {
-    List<Review> reviews = repository.findByUsersId(userId);
+public Page<ReviewRequest> getAllReviewByUserId(Integer userId,int page) {
+    Pageable pageable = PageRequest.of(page, 5);
+   Page<Review> reviews = repository.findByUsersId(userId,pageable);
     if(reviews.isEmpty()){
      throw new EntityNotFoundException("No review was found");
     }
-    return reviews.stream().map(Review::getDto).collect(Collectors.toList());
+    return reviews.map(Review::getDto);
 
 
 }
+
 
 
 

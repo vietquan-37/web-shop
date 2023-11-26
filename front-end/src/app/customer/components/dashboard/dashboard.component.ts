@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
     public service: CustomerService,
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
-    private router:Router
+
   ) { }
 
   ngOnInit() {

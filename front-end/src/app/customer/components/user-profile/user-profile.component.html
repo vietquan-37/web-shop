@@ -42,9 +42,10 @@
           <label>Phone:</label>
           <input [(ngModel)]="editedInfo.phone" name="phone" required pattern="\d{10,11}" />
         </div>
-        <div>
+        <div class="avatar-input-container">
           <label>Avatar:</label>
           <input type="file" (change)=" OnFileSelected($event)" accept="image/*" />
+          <button type="button" (click)="deleteAvatar()"> <mat-icon>delete</mat-icon></button>
         </div>
         <button type="button" (click)="saveChanges()">Save Changes</button>
         <button type="button" (click)="toggleEditMode()">Cancel</button>

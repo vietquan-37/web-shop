@@ -80,5 +80,10 @@ export class UserProfileComponent implements OnInit {
       reader.readAsDataURL(this.selectedFile);
     }
   }
+  deleteAvatar() {
+    this.selectedFile = null;
+    this.imagePreview ='data:image/jpeg;base64,' + this.info.img;
+    this.editedInfo.img = null; // Remove the avatar from editedInfo
+  }
 }
 

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -8,8 +8,11 @@ import {Observable} from "rxjs";
 export class CustomerService {
 
   private baseUrl = 'http://localhost:8080/api/v1';
-  constructor(private http:HttpClient) { }
-  addToCart(productId:any,size:any):Observable<any>{
+
+  constructor(private http: HttpClient) {
+  }
+
+  addToCart(productId: any, size: any): Observable<any> {
     const userId: number = Number(localStorage.getItem('userId'));
     const cartDto={
       productId:productId,
@@ -68,23 +71,30 @@ export class CustomerService {
   createReview(reviewDto:any,orderId:any): Observable<any> {
     return this.http.post(`${this.baseUrl}/review/create/${orderId}`,reviewDto,{headers:this.createHeader()})
   }
+
   userOrder(): Observable<any> {
     const userId: number = Number(localStorage.getItem('userId'));
-    return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`,{headers:this.createHeader()})
+    return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`, {headers: this.createHeader()})
   }
-  getProductById(id:number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/product/get/${id}`,{headers:this.createHeader()})
+
+  getProductById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/product/get/${id}`, {headers: this.createHeader()})
   }
-  getProductForReview(orderId:any): Observable<any>{
-    return this.http.get(`${this.baseUrl}/review/${orderId}`,{headers:this.createHeader()})
+
+  getProductForReview(orderId: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/review/${orderId}`, {headers: this.createHeader()})
   }
-  getReviewByUsed(): Observable<any>{
-  const  userId=localStorage.getItem('userId')
-    return this.http.get(`${this.baseUrl}/review/user/${userId}`,{headers:this.createHeader()})
+
+  getReviewByUsed(page: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    const userId = localStorage.getItem('userId')
+    return this.http.get(`${this.baseUrl}/review/user/${userId}`, {headers: this.createHeader(), params: params})
   }
-  getUserInfo(): Observable<any>{
-    const  userId=localStorage.getItem('userId')
-    return this.http.get(`${this.baseUrl}/users/${userId}`,{headers:this.createHeader()})
+
+  getUserInfo(): Observable<any> {
+    const userId = localStorage.getItem('userId')
+    return this.http.get(`${this.baseUrl}/users/${userId}`, {headers: this.createHeader()})
   }
 
 }

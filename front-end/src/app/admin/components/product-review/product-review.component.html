@@ -1,0 +1,39 @@
+<div class="back-button">
+  <button mat-icon-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</div>
+<div class="product-reviews">
+  <h3>Product Reviews</h3>
+  <div *ngFor="let review of reviews" class="review-item">
+    <span class="review-username"> {{ review.username }}</span>
+    <div class="review-info">
+
+      <img src="{{'data:image/jpeg;base64,'+ review.avatar }}" alt="user avatar" class="user-avatar">
+
+      <div class="star-rating">
+        <!-- Display stars based on starArray -->
+        Rating:
+        <span *ngFor="let star of createStarArray(review.star)" class="star">&#9733;</span>
+      </div>
+    </div>
+    <p class="review-comment">   {{ review.comment }}</p>
+  </div>
+
+
+
+  <!-- Pagination controls -->
+  <div class="pagination" *ngIf="reviews.length > 0" >
+    <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+      Previous
+    </button>
+    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+    <button mat-button color="primary" [disabled]="currentPage === totalPages - 1" (click)="onPageChange(currentPage + 1)">
+      Next
+    </button>
+  </div>
+</div>
+
+<div *ngIf="reviews.length === 0" class="no-reviews-message">
+  <p>No reviews yet.</p>
+</div>

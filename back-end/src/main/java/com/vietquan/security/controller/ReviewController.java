@@ -6,6 +6,7 @@ import com.vietquan.security.response.ProductForReviewResponse;
 import com.vietquan.security.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,8 +29,8 @@ public class ReviewController {
 
     @GetMapping("/get/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<List<ReviewRequest>>getAllReviewById(@PathVariable Integer productId) {
-        return ResponseEntity.ok(service.getAllReviewByProduct(productId));
+    public ResponseEntity<Page<ReviewRequest>>getAllReviewById(@PathVariable Integer productId, @RequestParam(defaultValue = "0")int page) {
+        return ResponseEntity.ok(service.getAllReviewByProduct(productId,page));
     }
     @GetMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('USER')")
@@ -38,7 +39,7 @@ public class ReviewController {
     }
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<ReviewRequest>>getReviewByUserId(@PathVariable Integer userId) {
-        return ResponseEntity.ok(service.getAllReviewByUserId(userId));
+    public ResponseEntity<Page<ReviewRequest>>getReviewByUserId(@PathVariable Integer userId,@RequestParam(defaultValue = "0")int page) {
+        return ResponseEntity.ok(service.getAllReviewByUserId(userId,page));
     }
 }

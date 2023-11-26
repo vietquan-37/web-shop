@@ -9,6 +9,7 @@ import {PostCouponComponent} from "./components/post-coupon/post-coupon.componen
 import {CouponsComponent} from "./components/coupons/coupons.component";
 import {roleGuard} from "../services/auth/role.guard";
 import {OrdersComponent} from "./components/orders/orders.component";
+import {ProductReviewComponent} from "./components/product-review/product-review.component";
 
 const routes: Routes = [{path: '', component: AdminComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard,roleGuard]},
@@ -16,7 +17,8 @@ const routes: Routes = [{path: '', component: AdminComponent},
   {path: 'product', component: PostProductComponent, canActivate: [authGuard,roleGuard],},
   {path: 'post-coupon', component: PostCouponComponent, canActivate: [authGuard,roleGuard],},
   {path: 'coupons', component: CouponsComponent, canActivate: [authGuard,roleGuard],},
-  {path: 'orders', component: OrdersComponent, canActivate: [authGuard,roleGuard],}
+  {path: 'orders', component: OrdersComponent, canActivate: [authGuard,roleGuard],},
+  {path: 'review/:id', component:ProductReviewComponent, canActivate: [authGuard,roleGuard],}
 ];
 
 @NgModule({
