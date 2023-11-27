@@ -1,8 +1,6 @@
-// user-management.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../service/admin.service';
-import {MatSnackBar} from "@angular/material/snack-bar";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-management',
@@ -13,8 +11,8 @@ export class UserManagementComponent implements OnInit {
   user: any[] = [];
   currentPage = 0;
   totalPages: number = 0;
-  constructor(private service: AdminService,
-              private snackBar:MatSnackBar) {}
+
+  constructor(private service: AdminService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.getAllUser();
@@ -26,15 +24,22 @@ export class UserManagementComponent implements OnInit {
       this.totalPages = res.totalPages;
     });
   }
-  changeUserStatus(status:any,userId:any){
-    this.service.changeUserStatus(status,userId).subscribe((res)=>{
-      this.snackBar.open('Update successfully','Close',{duration:5000})
-    },
-      (error)=>{
-        this.snackBar.open('Error while updating successfully','Close',{duration:5000})
-    }
-    )
 
+  changeUserStatus(status: any, userId: any) {
+    const request = { request: status };
+
+    this.service.changeUserStatus(request, userId).subscribe(
+      (res) => {
+        this.snackBar.open('Update successfully', 'Close', { duration: 5000 });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+
+      },
+      (error) => {
+        this.snackBar.open('Error while updating successfully', 'Close', { duration: 5000 });
+      }
+    );
   }
 
   onPageChange(page: number) {

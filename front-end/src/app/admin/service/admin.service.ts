@@ -30,8 +30,8 @@ export class AdminService {
   getAllCategory(): Observable<any> {
     return this.http.get(`${this.baseUrl}/category`, {headers: this.createHeader()})
   }
-  changeUserStatus(status:any,userId:any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/users/${userId}`, {headers: this.createHeader()})
+  changeUserStatus(request: any, userId: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/users/status/${userId}`, request, { headers: this.createHeader() });
   }
 
   getAllPlaceOrder(): Observable<any> {

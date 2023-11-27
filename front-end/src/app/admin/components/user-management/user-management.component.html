@@ -36,11 +36,12 @@
             Action
           </th>
           <td mat-cell *matCellDef="let users">
-            <button mat-raised-button color="primary" *ngIf="!users.status" (click)="changeUserStatus(false,users.userId)">
+            <button mat-raised-button color="primary" *ngIf="users.status == false" (click)="changeUserStatus(true, users.userId)">
               Ban Account
             </button>
-            <button mat-raised-button color="primary" *ngIf="users.status" (click)="changeUserStatus(false,users.userId)">
-             UnLock Account
+
+            <button mat-raised-button color="warn" *ngIf="users.status" (click)="changeUserStatus(false, users.userId)">
+              Unlock Account
             </button>
           </td>
         </ng-container>
