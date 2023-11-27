@@ -25,16 +25,22 @@ export class PublicService {
   getAllCoupon(): Observable<any> {
     return this.http.get(`${this.baseUrl}/coupon`, {headers: this.createHeader()})
   }
-  getAllReviewByProduct(productId:any,page:number): Observable<any> {
+
+  getAllReviewByProduct(productId: any, page: number): Observable<any> {
     let params = new HttpParams();
     params = params.append('page', page.toString());
-    return this.http.get(`${this.baseUrl}/review/get/${productId}`, {headers: this.createHeader(),params:params})
+    return this.http.get(`${this.baseUrl}/review/get/${productId}`, {headers: this.createHeader(), params: params})
   }
 
 
   getAllProductByName(name: string, page: number) {
-    return this.http.get(`${this.baseUrl}/product/search/${name}?page=${page}`,{headers:this.createHeader()});
+    return this.http.get(`${this.baseUrl}/product/search/${name}?page=${page}`, {headers: this.createHeader()});
   }
+
+  changePassword(changePassDto:any):Observable<any> {
+    return this.http.put(`${this.baseUrl}/users`, changePassDto,{headers: this.createHeader()});
+  }
+
 
   private createHeader(): HttpHeaders {
     return new HttpHeaders().set(

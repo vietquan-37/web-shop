@@ -9,12 +9,10 @@ import com.vietquan.security.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -26,9 +24,10 @@ public class UserController {
     @Autowired
     private final UserService service;
 
-    @PatchMapping
+    @PutMapping()
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> changePassword(
-           @Valid @RequestBody ChangePasswordRequest request,
+           @RequestBody ChangePasswordRequest request,
             Principal connectedUser
     ) throws InvalidPasswordException, MisMatchPasswordException {
         service.changePassword(request, connectedUser);

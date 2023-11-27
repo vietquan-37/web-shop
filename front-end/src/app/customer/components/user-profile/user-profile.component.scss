@@ -9,7 +9,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 100%;
-  height: 400px;
+  height: auto;
   display: ruby;
 
   .profile-header {
@@ -48,7 +48,7 @@
     .user-avatar {
       img {
         border-radius: 50%;
-        max-width: 150px;
+        max-width: 250px;
       }
     }
 
@@ -67,6 +67,61 @@
     }
   }
 
+  .change-password-form {
+    form {
+      div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px; /* Increased margin for better separation */
+
+        label {
+          margin-bottom: 8px; /* Slightly increased margin for better spacing */
+        }
+
+        .password-input-container {
+          position: relative;
+
+          input {
+            padding: 10px;
+            border: 1px solid #ccc; /* Added a border for better input distinction */
+            border-radius: 5px; /* Rounded corners for a softer look */
+            margin-bottom: 8px; /* Improved spacing between input and button */
+            width: calc(100% - 22px); /* Adjusted width for better alignment */
+          }
+
+          button {
+            position: absolute;
+            top: 10%;
+            right: 0px; /* Adjusted right position for better alignment */
+            transform: translateY(-50%);
+            cursor: pointer;
+            background-color: #6c757d; /* Green button color */
+
+            border: none; /* Removed border for a cleaner look */
+
+            padding: 8px 12px; /* Increased padding for a more clickable area */
+          }
+        }
+      }
+
+      button {
+        margin-top: 15px; /* Adjusted margin for better spacing */
+        background-color: lightskyblue; /* Blue button color for consistency */
+        color: white; /* White text for better contrast */
+        border: none; /* Removed border for a cleaner look */
+        border-radius: 5px; /* Rounded corners for a softer look */
+        padding: 10px 15px; /* Increased padding for a more clickable area */
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+
+        &:hover {
+          background-color: #0056b3; /* Darker blue on hover for feedback */
+        }
+      }
+    }
+  }
+
+
   .edit-form {
     form {
       .user-avatar {
@@ -74,7 +129,7 @@
 
         img {
           border-radius: 50%;
-          max-width: 150px;
+          max-width: 200px;
         }
       }
 
@@ -163,3 +218,4 @@
     }
   }
 }
+
