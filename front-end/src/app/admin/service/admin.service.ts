@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 
@@ -30,9 +30,17 @@ export class AdminService {
   getAllCategory(): Observable<any> {
     return this.http.get(`${this.baseUrl}/category`, {headers: this.createHeader()})
   }
+  changeUserStatus(status:any,userId:any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/users/${userId}`, {headers: this.createHeader()})
+  }
 
   getAllPlaceOrder(): Observable<any> {
     return this.http.get(`${this.baseUrl}/order`, {headers: this.createHeader()})
+  }
+  getAllUser(page:number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    return this.http.get(`${this.baseUrl}/users/allUsers`, {headers: this.createHeader(),params:params})
   }
 
   changeOrderStatus(orderId: any, orderStatus: any): Observable<any> {

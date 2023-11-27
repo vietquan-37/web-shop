@@ -35,6 +35,7 @@ public class User implements UserDetails {
     private String secret;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean isBanned;
     @OneToMany(
             mappedBy = "user"
     )
@@ -63,7 +64,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !this.isBanned();
     }
 
     @Override

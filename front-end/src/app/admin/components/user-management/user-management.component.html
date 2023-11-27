@@ -1,0 +1,64 @@
+<div class="container" style="padding: 30px">
+  <mat-card>
+    <mat-card-content>
+
+      <table mat-table [dataSource]="user" class="mat-elevation-z8">
+        <ng-container matColumnDef="img">
+          <th mat-header-cell *matHeaderCellDef>Avatar</th>
+          <td mat-cell *matCellDef="let user" class="avatar">
+            <img *ngIf="user.img" [src]="'data:image/jpeg;base64,'+ user.img" alt="User Image">
+            <span *ngIf="!user.img">No Image</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef>Fist Name</th>
+          <td mat-cell *matCellDef="let users" class="bold-cell">{{ users.firstname}}</td>
+        </ng-container>
+        <ng-container matColumnDef="lastname">
+          <th mat-header-cell *matHeaderCellDef>Last Name</th>
+          <td mat-cell *matCellDef="let users" class="bold-cell">{{ users.lastname }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let users" class="bold-cell">{{ users.email }}</td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let users" class="bold-cell">{{ users.phone }}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>User Status</th>
+          <td mat-cell *matCellDef="let users" class="bold-cell">{{ users.status ? 'BANNED' : 'ACTIVE' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Action
+          </th>
+          <td mat-cell *matCellDef="let users">
+            <button mat-raised-button color="primary" *ngIf="!users.status" (click)="changeUserStatus(false,users.userId)">
+              Ban Account
+            </button>
+            <button mat-raised-button color="primary" *ngIf="users.status" (click)="changeUserStatus(false,users.userId)">
+             UnLock Account
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row
+            *matHeaderRowDef="['img', 'firstname', 'lastname', 'email', 'phone','status', 'action' ]"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns:['img', 'firstname', 'lastname', 'email', 'phone','status', 'action']"></tr>
+      </table>
+    </mat-card-content>
+    <div class="pagination" *ngIf="user.length > 0">
+      <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button mat-button color="primary" [disabled]="currentPage === totalPages - 1"
+              (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </mat-card>
+</div>

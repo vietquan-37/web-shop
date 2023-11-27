@@ -4,6 +4,7 @@ import com.vietquan.security.exception.EmailAlreadyExistsException;
 import com.vietquan.security.exception.InvalidPasswordException;
 import com.vietquan.security.exception.MisMatchPasswordException;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -65,7 +66,12 @@ public class ExceptionHandler {
         } else if (exception instanceof SignatureException) {
             error.put("error", "invalid token string");
             response.setStatus(HttpStatus.FORBIDDEN.value());
-        } else if (exception instanceof InvalidPasswordException) {
+        }
+        else if (exception instanceof MalformedJwtException) {
+            error.put("error", "hihi");
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+        }
+        else if (exception instanceof InvalidPasswordException) {
             error.put("error", exception.getMessage());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         } else if (exception instanceof MisMatchPasswordException) {

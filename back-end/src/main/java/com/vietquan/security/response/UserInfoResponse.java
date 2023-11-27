@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserInfoResponse {
+    private Integer userId;
+    private boolean status;
     private String email;
     private String firstname;
     private String lastname;

@@ -15,6 +15,7 @@ import {UpdateModalComponent} from './components/update-modal/update-modal.compo
 import {MatDialogModule} from "@angular/material/dialog";
 import { OrdersComponent } from './components/orders/orders.component';
 import { ProductReviewComponent } from './components/product-review/product-review.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ProductReviewComponent } from './components/product-review/product-revi
     CouponsComponent,
     UpdateModalComponent,
     OrdersComponent,
-    ProductReviewComponent
+    ProductReviewComponent,
+    UserManagementComponent
   ],
   imports: [
     CommonModule,

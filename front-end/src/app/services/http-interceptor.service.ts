@@ -38,24 +38,27 @@ export class Interceptor implements HttpInterceptor {
                   this.isRefreshing = false;
                   localStorage.setItem('accessToken', response.accessToken);
 
-                  // Retry the request with updated access token
+                  // Retry the request with the updated access token
                   return next.handle(clonedRequest);
                 }),
-                catchError(() => {
-                  // If refresh token fails, log out the user and redirect to login
-                  alert('Session has expired. Please log in again.');
-                  localStorage.clear();
-                  this.router.navigate(['login']);
-                  return throwError('Access token is null');
+                catchError((error) => {
+                  // Handle refresh token failure
+                  if (error.status === 403) {
+                    // Handle 403 error (forbidden access)
+                    alert('This account has been logged in on another device.');
+                    localStorage.clear();
+                    this.router.navigate(['login']);
+                    return throwError('Forbidden access');
+                  } else {
+                    // Handle other errors or simply log them
+                    alert('Session has expired. Please log in again.');
+                    localStorage.clear();
+                    this.router.navigate(['login']);
+                    return throwError('Access token is null');
+                  }
                 })
               );
             }
-          } else if (error.status === 403) {
-            // Handle 403 error (forbidden access)
-            alert('this account have been log in another device');
-            localStorage.clear();
-            this.router.navigate(['login']);
-            return throwError('Forbidden access');
           }
         }
 

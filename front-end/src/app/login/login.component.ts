@@ -66,6 +66,10 @@ export class LoginComponent implements OnInit{
       },
       (error) => {
         this.snackBar.open('Login Failed', 'Close', {duration: 5000, panelClass: 'error-snackbar'});
+        if(error.status==500){
+          this.snackBar.open('account have been locked please contact admin@gmail.com', 'Close');
+
+        }
       }
     )
   }

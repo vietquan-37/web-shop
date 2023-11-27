@@ -7,9 +7,14 @@ import com.vietquan.security.exception.MisMatchPasswordException;
 import com.vietquan.security.repository.UserRepository;
 import com.vietquan.security.request.ChangeInformationRequest;
 import com.vietquan.security.request.ChangePasswordRequest;
+import com.vietquan.security.request.StatusRequest;
 import com.vietquan.security.response.UserInfoResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,18 +90,35 @@ public class UserService {
 
     }
 
-    public List<UserInfoResponse> getAllUserInfo() {
-        List<User> users = repository.findAllByRole(Role.USER);
+    public Page<UserInfoResponse> getAllUserInfo(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<User> users = repository.findAllByRole(Role.USER,pageable);
         List<UserInfoResponse> responses = new ArrayList<>();
         for (User user : users) {
             UserInfoResponse response = new UserInfoResponse();
+            response.setUserId(user.getId());
             response.setFirstname(user.getFirstname());
             response.setLastname(user.getLastname());
             response.setPhone(user.getPhoneNumber());
             response.setEmail(user.getEmail());
             response.setImg(user.getAvatar());
+            response.setStatus(user.isBanned());
             responses.add(response);
         }
-        return responses;
+
+        return new PageImpl<>(responses, pageable, users.getTotalElements());
+    }
+    public void changeUserAccountStatus(Integer userId, StatusRequest request){
+        Optional<User> user=repository.findById(userId);
+        if(user.isPresent()){
+
+            user.get().setBanned(request.isRequest());
+            repository.save(user.get());
+        }
+        else{
+            throw new EntityNotFoundException("not found user");
+        }
+
+
     }
 }

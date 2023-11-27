@@ -1,14 +1,13 @@
 package com.vietquan.security.controller;
 
+import com.vietquan.security.exception.EmailAlreadyExistsException;
 import com.vietquan.security.request.AuthenticationRequest;
 import com.vietquan.security.request.RefreshTokenRequest;
+import com.vietquan.security.request.RegisterRequest;
 import com.vietquan.security.request.verifyRequest;
 import com.vietquan.security.response.AuthenticationResponse;
 import com.vietquan.security.service.AuthenticationService;
-import com.vietquan.security.request.RegisterRequest;
-import com.vietquan.security.exception.EmailAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class AuthenticationController {
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthenticationResponse> refresh(
             @RequestBody RefreshTokenRequest request
-            ) throws IOException {
+            )  {
  return ResponseEntity.ok(service.refreshToken(request));
     }
     @PostMapping("/logout")
