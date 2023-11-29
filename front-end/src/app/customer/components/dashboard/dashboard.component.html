@@ -43,11 +43,14 @@
 
 </div>
 <!-- Add this section inside your template -->
-<div class="pagination">
-  <button mat-raised-button color="primary" (click)="loadPreviousPage()" [disabled]="currentPage === 0">Previous</button>
-  <ng-container *ngFor="let pageNumber of pageNumbers">
-    <button mat-raised-button color="primary" (click)="loadPage(pageNumber - 1)" [disabled]="currentPage === pageNumber - 1">{{ pageNumber }}</button>
-  </ng-container>
-  <button mat-raised-button color="primary" (click)="loadNextPage()" [disabled]="currentPage >= totalPages - 1">Next</button>
+<div class="pagination" *ngIf=" products.length > 0">
+  <button mat-button color="primary" [disabled]="currentPage <= 0" (click)="onPageChange(currentPage - 1)">
+    Previous
+  </button>
+  <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+  <button mat-button color="primary" [disabled]="currentPage === totalPages - 1"
+          (click)="onPageChange(currentPage + 1)">
+    Next
+  </button>
 </div>
-<!---->
+

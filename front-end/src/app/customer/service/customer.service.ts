@@ -72,9 +72,16 @@ export class CustomerService {
     return this.http.post(`${this.baseUrl}/review/create/${orderId}`,reviewDto,{headers:this.createHeader()})
   }
 
-  userOrder(): Observable<any> {
+  userOrder(status: any[], page: number): Observable<any> {
+    let params = new HttpParams();
+    if (Array.isArray(status) && status.length > 0) {
+      params = params.append('status', status.join(','));
+    }
+
+    params = params.append('page', page.toString());
+
     const userId: number = Number(localStorage.getItem('userId'));
-    return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`, {headers: this.createHeader()})
+    return this.http.get(`${this.baseUrl}/order/myOrder/${userId}`, {headers: this.createHeader(),params:params})
   }
 
   getProductById(id: number): Observable<any> {

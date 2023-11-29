@@ -89,7 +89,7 @@
 
 
   <!-- Pagination controls -->
-  <div class="pagination">
+  <div class="pagination"*ngIf="reviews.length > 0">
     <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
       Previous
     </button>

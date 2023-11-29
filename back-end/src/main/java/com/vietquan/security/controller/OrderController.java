@@ -1,5 +1,6 @@
 package com.vietquan.security.controller;
 
+import com.vietquan.security.enumPackage.OrderStatus;
 import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PlaceOrderRequest;
 import com.vietquan.security.response.OrderResponse;
@@ -7,6 +8,7 @@ import com.vietquan.security.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,8 +31,9 @@ public class OrderController {
 
     @GetMapping("")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<List<OrderRequest>> getAllOrder() {
-        return ResponseEntity.ok(service.getAllPlaceOrder());
+    public ResponseEntity<Page<OrderRequest>> getAllOrder(@RequestParam(required = false) List<OrderStatus> status, @RequestParam(defaultValue = "0") int page
+    ) {
+        return ResponseEntity.ok(service.getAllPlaceOrder(status,page));
     }
 
     @GetMapping("/{orderId}/{orderStatus}")
@@ -41,7 +44,13 @@ public class OrderController {
 
     @GetMapping("/myOrder/{userId}")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<OrderRequest>>getOrderForUser(@PathVariable Integer userId) {
-        return ResponseEntity.ok(service.getUserOrder(userId));
+    public ResponseEntity<Page<OrderRequest>>getOrderForUser(@PathVariable Integer userId,@RequestParam(required = false) List<OrderStatus> status,@RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(service.getUserOrder(userId,status,page));
     }
+//    @GetMapping("filter")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+//    public ResponseEntity<List<OrderRequest>> filterOrder(@RequestParam List<OrderStatus> status) {
+//        return ResponseEntity.ok(service.filterByOrderStatus(status));
+//    }
+
 }

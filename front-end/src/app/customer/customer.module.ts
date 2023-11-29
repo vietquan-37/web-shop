@@ -26,7 +26,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     UserOrdersComponent,
     ProductDetailsComponent,
     ReviewProductComponent,
-    UserReviewComponent,
+ UserReviewComponent,
     UserProfileComponent
   ],
   imports: [

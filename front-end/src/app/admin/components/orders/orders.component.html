@@ -1,13 +1,12 @@
 <mat-form-field>
-  <mat-label>Filter by Order Status</mat-label>
-  <mat-select [(ngModel)]="orderStatusFilter" (ngModelChange)="getPlaceOrders()">
+  <mat-label for="orderStatusFilter">Filter by Order Status</mat-label>
+  <mat-select id="orderStatusFilter" [(ngModel)]="orderStatusFilter" (ngModelChange)="onStatusFilterChange()">
     <mat-option value="">All</mat-option>
-    <mat-option value="PLACED">PLACED</mat-option>
-    <mat-option value="SHIPPED">Shipped</mat-option>
-    <mat-option value="DELIVERED">Delivered</mat-option>
-
+    <mat-option *ngFor="let status of orderStatusOptions" [value]="status">{{ status }}</mat-option>
   </mat-select>
 </mat-form-field>
+
+
 <div class="container">
   <mat-card>
     <mat-card-content>
@@ -104,7 +103,6 @@
         </span>
 
               </mat-menu>
-
             </button>
           </td>
 
@@ -117,6 +115,16 @@
             *matRowDef="let row; columns:['trackingId', 'carts', 'username', 'amount', 'orderDescription', 'address', 'orderStatus' , 'date', 'delivery' , 'payed' , 'payment' , 'action' ]"></tr>
       </table>
     </mat-card-content>
+    <div class="pagination" *ngIf=" orders.length > 0">
+      <button mat-button color="primary" [disabled]="currentPage <= 0" (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button mat-button color="primary" [disabled]="currentPage === totalPages - 1"
+              (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
   </mat-card>
 
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../service/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-management',
@@ -12,16 +13,36 @@ export class UserManagementComponent implements OnInit {
   currentPage = 0;
   totalPages: number = 0;
 
-  constructor(private service: AdminService, private snackBar: MatSnackBar) {}
+  constructor(private service: AdminService, private snackBar: MatSnackBar,
+              private route:ActivatedRoute,private router:Router
+  ) {}
 
   ngOnInit(): void {
-    this.getAllUser();
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = +params['page'] || 0;
+      if (this.currentPage < 0) {
+        this.currentPage = 0
+      }
+      this.getAllUser()
+    });
   }
 
   getAllUser() {
     this.service.getAllUser(this.currentPage).subscribe((res) => {
       this.user = res.content;
       this.totalPages = res.totalPages;
+      if(res.content==''){
+        if(this.currentPage>0){
+          this.router.navigate([], {
+
+            relativeTo: this.route,
+            queryParams: { page: res.totalPages-1},
+            queryParamsHandling: 'merge',
+          });
+        }
+
+
+      }
     });
   }
 
@@ -44,6 +65,11 @@ export class UserManagementComponent implements OnInit {
 
   onPageChange(page: number) {
     this.currentPage = page;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {  page: this.currentPage },
+      queryParamsHandling: 'merge'
+    });
     this.getAllUser();
   }
 }

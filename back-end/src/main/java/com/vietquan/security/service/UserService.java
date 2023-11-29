@@ -91,7 +91,10 @@ public class UserService {
     }
 
     public Page<UserInfoResponse> getAllUserInfo(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        if(page<0){
+            page=0;
+        }
+        Pageable pageable = PageRequest.of(page, 1);
         Page<User> users = repository.findAllByRole(Role.USER,pageable);
         List<UserInfoResponse> responses = new ArrayList<>();
         for (User user : users) {

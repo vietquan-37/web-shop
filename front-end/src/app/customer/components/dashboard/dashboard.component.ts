@@ -4,7 +4,9 @@ import { PublicService } from "../../../services/public.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { CustomerService } from "../../service/customer.service";
 import {Observable, range} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AdminService} from "../../../admin/service/admin.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,50 +15,95 @@ import {Router} from "@angular/router";
 })
 export class DashboardComponent implements OnInit {
   products: any[] = [];
-  searchForm!: FormGroup;
+  searchForm!:FormGroup;
   currentPage: number = 0;
   totalPages: number = 0;
   pageNumbers: number[] = [];
-  constructor(
-    private pService: PublicService,
-    public service: CustomerService,
-    private builder: FormBuilder,
-    private snackBar: MatSnackBar,
 
-  ) { }
+  constructor(private service: AdminService,
+              private pService: PublicService,
+              private builder: FormBuilder,
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog,
+              private route: ActivatedRoute,
+              private router: Router
+  ) {
+  }
 
   ngOnInit() {
     this.searchForm = this.builder.group({
       name: [null]
     });
-    this.getAllProducts();
+
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = +params['page'] || 0;
+      let nameFromQueryParam = params['name'];
+
+      if (nameFromQueryParam !== '' && nameFromQueryParam !== undefined) {
+        this.searchForm.patchValue({
+          name: nameFromQueryParam
+        });
+        this.currentPage = 0;
+        this.getAllProductsByName(nameFromQueryParam, this.currentPage);
+      } else {
+        // If nameFromQueryParam is an empty string or undefined, remove the 'name' parameter from the URL
+        const queryParams = { page: this.currentPage };
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: queryParams,
+          queryParamsHandling: 'merge',
+        });
+
+        this.getAllProducts();
+      }
+    });
   }
+
+
 
   getAllProducts() {
     this.pService.getAllProduct(this.currentPage).subscribe((res: any) => {
       this.products = res.content.map((product: any) => ({
         processedImg: 'data:image/jpeg;base64,' + product.image,
+        byteImages: product.byteImages.map((img: any) => 'data:image/jpeg;base64,' + img), // New line
         name: product.name,
-
+        description: product.description,
         price: product.price,
         categoryName: product.categoryName,
         id: product.id,
-
+        productSizes: product.productSizes
       }));
-
       this.totalPages = res.totalPages;
-      this.updatePageNumbers();
+
     });
   }
-
   submitForm(event: any) {
     if (this.searchForm.valid) {
       const name = this.searchForm.get('name')?.value;
 
-      if (name) {
-        this.currentPage = 0; // Reset currentPage to 0 when performing a new search
+      if (name != null && name.trim() !== '') {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { name: name, page: this.currentPage },
+          queryParamsHandling: 'merge',
+        });
+        this.currentPage=0
         this.getAllProductsByName(name, this.currentPage);
       } else {
+        // Set page to 0 in the query parameters when the search form is empty
+        const queryParams: { page: number; name?: string | null } = { page: 0 };
+
+        // Check if 'name' parameter is present in the current query params
+        if (this.route.snapshot.queryParams['name']) {
+          queryParams.name = null; // Remove 'name' parameter from the query params
+        }
+
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: queryParams,
+          queryParamsHandling: 'merge',
+        });
+        this.currentPage = 0;
         this.getAllProducts();
       }
     } else {
@@ -64,65 +111,47 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
   getAllProductsByName(name: string, page: number) {
     this.pService.getAllProductByName(name, page).subscribe((res: any) => {
       this.products = res.content.map((product: any) => ({
         processedImg: 'data:image/jpeg;base64,' + product.image,
         name: product.name,
-
+        description: product.description,
         price: product.price,
         categoryName: product.categoryName,
         id: product.id,
         productSizes: product.productSizes
       }));
       this.totalPages = res.totalPages;
-      this.updatePageNumbers();
+
     }, (error) => {
-      this.snackBar.open('No records found.', 'Close', { duration: 5000 });
+      this.snackBar.open('No records found.', 'Close', {duration: 5000});
     });
   }
 
 
+  onPageChange(page: number) {
 
-  loadNextPage() {
-    if (this.currentPage < this.totalPages - 1) {
-      this.currentPage++;
-      const name = this.searchForm.get('name')?.value;
-      if (name) {
-        this.getAllProductsByName(name, this.currentPage);
-      } else {
-        this.getAllProducts();
-      }
+    this.currentPage = page;
+    const name = this.searchForm.get('name')?.value;
+    if (name) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {name: name, page: this.currentPage},
+        queryParamsHandling: 'merge',
+      });
+      this.getAllProductsByName(name, this.currentPage);
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {page: this.currentPage},
+        queryParamsHandling: 'merge',
+      });
+      this.getAllProducts();
     }
-  }
-
-  loadPreviousPage() {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      const name = this.searchForm.get('name')?.value;
-      if (name) {
-        this.getAllProductsByName(name, this.currentPage);
-      } else {
-        this.getAllProducts();
-      }
-    }
-  }
-  // Inside your component class
-  loadPage(pageIndex: number) {
-    if (pageIndex >= 0 && pageIndex < this.totalPages) {
-      this.currentPage = pageIndex;
-      const name = this.searchForm.get('name')?.value;
-      if (name) {
-        this.getAllProductsByName(name, this.currentPage);
-      } else {
-        this.getAllProducts();
-      }
-    }
-  }
 
 
-  updatePageNumbers() {
-    this.pageNumbers = Array.from({ length: this.totalPages }, (_, index) => index + 1);
   }
 
 

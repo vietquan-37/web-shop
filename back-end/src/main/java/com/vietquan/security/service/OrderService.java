@@ -17,6 +17,9 @@ import com.vietquan.security.response.OrderResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -108,9 +111,19 @@ private final ProductSizeRepository productSizeRepository;
         return null;
     }
 
-    public List<OrderRequest> getAllPlaceOrder() {
-        List<Order> orders = orderRepository.findAllByOrderStatusIn(List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED));
-        return orders.stream().map(Order::getOrderDto).collect(Collectors.toList());
+    public Page<OrderRequest> getAllPlaceOrder(List<OrderStatus>statuses,int page) {
+        if(page<0){
+            page=1;
+        }
+        Pageable pageable= PageRequest.of(page,1);
+        Page<Order> orders;
+        if(statuses==null) {
+           orders = orderRepository.findAllByOrderStatusIn(List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED),pageable);
+        }
+        else {
+         orders= orderRepository.findAllByOrderStatusIn(statuses,pageable);
+        }
+        return orders.map(Order::getOrderDto);
     }
 
     public OrderRequest changeOrderStatus(Integer orderId, String status) {
@@ -143,8 +156,25 @@ private final ProductSizeRepository productSizeRepository;
         }
     }
 
-    public List<OrderRequest> getUserOrder(Integer userId) {
-
-        return orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.PLACED, OrderStatus.DELIVERED, OrderStatus.SHIPPED)).stream().map(Order::getOrderDto).collect(Collectors.toList());
+    public Page<OrderRequest> getUserOrder(Integer userId,List<OrderStatus>statuses,int page) {
+        if(page<0){
+            page=1;
+        }
+        Pageable pageable= PageRequest.of(page,1);
+        Page<Order> orders;
+        if(statuses==null) {
+            orders = orderRepository.findByUserIdAndOrderStatusIn(userId,List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED),pageable);
+        }
+        else {
+            orders= orderRepository.findByUserIdAndOrderStatusIn(userId,statuses,pageable);
+        }
+        return orders.map(Order::getOrderDto);
     }
+//    public List<OrderRequest>filterByOrderStatus(List<OrderStatus> status){
+//        if(status.size()==0)
+//        return orderRepository.findAllByOrderStatusIn(status).stream().map(Order::getOrderDto).collect(Collectors.toList());
+//    }
+//    public List<OrderRequest>filterByOrderStatusOfUser(List<OrderStatus> status,Integer userId){
+//        return orderRepository.findAllByOrderStatusInAndUserId(status,userId).stream().map(Order::getOrderDto).collect(Collectors.toList());
+//    }
 }

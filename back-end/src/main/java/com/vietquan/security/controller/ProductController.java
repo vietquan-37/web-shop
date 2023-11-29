@@ -34,10 +34,10 @@ public class ProductController {
         return ResponseEntity.ok(all);
     }
 
-    @GetMapping("/search/{name}")
+    @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN','USER')"
     )
-    public ResponseEntity<Page<ProductRequest>> getAllProductByName(@PathVariable String name,@RequestParam(defaultValue = "0")int page) {
+    public ResponseEntity<Page<ProductRequest>> getAllProductByName(@RequestParam(required = false) String name,@RequestParam(defaultValue = "0")int page) {
         Page<ProductRequest> all = service.getAllProductByName(name,page);
         return ResponseEntity.ok(all);
     }

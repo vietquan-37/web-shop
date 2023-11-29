@@ -26,6 +26,8 @@ export class AuthenticationService {
         localStorage.setItem('accessToken', response.accessToken as string);
         localStorage.setItem('refreshToken', response.refreshToken as string);
         localStorage.setItem('role', response.role as string);
+        localStorage.setItem('userId', response.userId?.toString() || '');
+
       })
     );
   }

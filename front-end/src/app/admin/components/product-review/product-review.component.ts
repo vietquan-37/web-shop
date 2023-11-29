@@ -17,12 +17,26 @@ export class ProductReviewComponent implements OnInit{
               private router: Router
   ) {
   }
-ngOnInit() {
-    this.getAllReview()
-}
+  ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = +params['page'] || 0;
+      if (this.currentPage < 0) {
+        this.currentPage = 0
+      }
+      this.getAllReview();
+    });
+  }
 
   onPageChange(page: number) {
+
     this.currentPage = page;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {  page: this.currentPage },
+      queryParamsHandling: 'merge'
+    });
+
     this.getAllReview();
   }
 
@@ -36,6 +50,19 @@ ngOnInit() {
           console.log('Response from backend:', res);
           this.reviews = res.content;
           this.totalPages = res.totalPages;
+          if(res.content==''){
+            if(this.currentPage>0){
+              this.router.navigate([], {
+
+                relativeTo: this.route,
+                queryParams: { page: res.totalPages-1},
+                queryParamsHandling: 'merge',
+              });
+            }
+
+
+          }
+
         },
         (error) => {
           console.error('Error fetching reviews:', error);

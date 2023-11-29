@@ -33,8 +33,13 @@ export class PublicService {
   }
 
 
-  getAllProductByName(name: string, page: number) {
-    return this.http.get(`${this.baseUrl}/product/search/${name}?page=${page}`, {headers: this.createHeader()});
+  getAllProductByName(name: any, page: number) {
+    let params = new HttpParams();
+    if ( name.length > 0) {
+      params = params.append('name', name);
+    }
+    params = params.append('page', page);
+    return this.http.get(`${this.baseUrl}/product/search`, {headers: this.createHeader(),params:params});
   }
 
   changePassword(changePassDto:any):Observable<any> {

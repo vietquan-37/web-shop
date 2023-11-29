@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CustomerService} from "../../service/customer.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-review',
@@ -9,16 +9,28 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class UserReviewComponent implements OnInit {
   reviews: any[] = [];
-  currentPage:number=0;
+  currentPage: number = 0;
   totalPages: number = 0;
+
   constructor(
     private service: CustomerService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit() {
-    this.loadReview()
+    this.route.queryParams.subscribe(params => {
+
+
+      this.currentPage = +params['page'] || 0;
+      if (this.currentPage < 0) {
+        this.currentPage = 0
+      }
+      this.loadReview();
+    });
   }
+
 
   loadReview() {
     this.service.getReviewByUsed(this.currentPage).subscribe(
@@ -34,9 +46,23 @@ export class UserReviewComponent implements OnInit {
             comment: review.comment,
             starArray: this.createStarArray(review.star),
           }));
+          this.totalPages = res.totalPages;
+          if (res.content == '') {
+            if (this.currentPage > 0) {
+              this.router.navigate([], {
+
+                relativeTo: this.route,
+                queryParams: { page: res.totalPages - 1},
+                queryParamsHandling: 'merge',
+              });
+            }
+
+
+          }
+
         }
 
-        this.totalPages = res.totalPages;
+
       },
       (error) => {
         console.error('Error fetching reviews:', error);
@@ -50,6 +76,11 @@ export class UserReviewComponent implements OnInit {
   }
   onPageChange(page: number) {
     this.currentPage = page;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.currentPage},
+      queryParamsHandling: 'merge',
+    });
     this.loadReview();
   }
 }

@@ -9,12 +9,10 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   const userRole = localStorage.getItem('role');
   if (userRole !== expectedRole) {
     router.open('dont have authorization to access this', 'Close', {duration: 5000, panelClass: 'error-snackbar'});
-  // You can return `false` here if you want to deny access when roles do not match.
-  // Alternatively, you can return a UrlTree to redirect the user to a different route.
+
   return false;
 }
 
-// If roles match, the user is allowed to access the route.
 return true;
 };
 

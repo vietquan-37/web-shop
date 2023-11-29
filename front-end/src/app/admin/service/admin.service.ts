@@ -34,9 +34,18 @@ export class AdminService {
     return this.http.patch(`${this.baseUrl}/users/status/${userId}`, request, { headers: this.createHeader() });
   }
 
-  getAllPlaceOrder(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/order`, {headers: this.createHeader()})
+  getAllOrder(status: any[], page: number): Observable<any> {
+    let params = new HttpParams();
+
+    if (Array.isArray(status) && status.length > 0) {
+      params = params.append('status', status.join(','));
+    }
+
+    params = params.append('page', page.toString());
+
+    return this.http.get(`${this.baseUrl}/order`, { headers: this.createHeader(), params: params });
   }
+
   getAllUser(page:number): Observable<any> {
     let params = new HttpParams();
     params = params.append('page', page.toString());

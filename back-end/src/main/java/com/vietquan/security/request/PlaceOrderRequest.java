@@ -10,15 +10,13 @@ import lombok.Data;
 public class PlaceOrderRequest {
 
     private Integer userId;
-    @NotBlank
-    @NotNull
+
     private String address;
     @NotBlank
     @NotBlank
     @Pattern(regexp = "\\d{10,11}", message = "Phone number must have 10-11 numeric characters")
     private String phoneNumber;
-    @NotBlank
-    @NotNull
+
 
     private String orderDescription;
     private PaymentMethod method;
