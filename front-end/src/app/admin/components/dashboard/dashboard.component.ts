@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   searchForm!:FormGroup;
   currentPage: number = 0;
   totalPages: number = 0;
-  pageNumbers: number[] = [];
+
 
   constructor(private service: AdminService,
               private pService: PublicService,
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
       if (name != null && name.trim() !== '') {
         this.router.navigate([], {
           relativeTo: this.route,
-          queryParams: { name: name, page: this.currentPage },
+          queryParams: { name: name, page: 0 },
           queryParamsHandling: 'merge',
         });
         this.currentPage=0

@@ -1,5 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {PublicService} from "../../../services/public.service";
+import {AdminService} from "../../service/admin.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {UpdateModalComponent} from "../update-modal/update-modal.component";
+import {DialogConfig} from "@angular/cdk/dialog";
+import {EditCouponsComponent} from "../edit-coupons/edit-coupons.component";
 
 @Component({
   selector: 'app-coupons',
@@ -10,14 +16,17 @@ export class CouponsComponent implements OnInit {
   coupons: any[] = [];
 
   constructor(private service: PublicService,
+              public AdminService: AdminService,
+              public snackBar: MatSnackBar,
+              private dialog: MatDialog,
   ) {
   }
 
   ngOnInit() {
-    this.getAllProducts()
+    this.getAllCoupons()
   }
 
-  getAllProducts() {
+  getAllCoupons() {
     this.service.getAllCoupon().subscribe((res) => {
       this.coupons = res.map((coupon: any) => {
         return {
@@ -30,5 +39,30 @@ export class CouponsComponent implements OnInit {
         };
       });
     });
+  }
+
+  deleteCoupon(couponId: any) {
+    this.AdminService.deleteCoupon(couponId).subscribe((res) => {
+        if (res != null) {
+          this.snackBar.open('Delete coupon successfully', 'Close', {duration: 5000})
+        }
+      },
+      (error) => {
+        this.snackBar.open('Delete coupon unsuccessfully', 'Close', {duration: 5000})
+      }
+    )
+
+  }
+  updateCoupon(coupon:any){
+
+      const dialogConfig:any = new MatDialogConfig();
+      dialogConfig.data = { coupon };
+
+      const dialogRef = this.dialog.open(EditCouponsComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe(result => {
+
+      });
+
   }
 }

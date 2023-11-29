@@ -16,6 +16,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { OrdersComponent } from './components/orders/orders.component';
 import { ProductReviewComponent } from './components/product-review/product-review.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
+import { EditCouponsComponent } from './components/edit-coupons/edit-coupons.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { UserManagementComponent } from './components/user-management/user-manag
     UpdateModalComponent,
     OrdersComponent,
     ProductReviewComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    EditCouponsComponent
   ],
   imports: [
     CommonModule,

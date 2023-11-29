@@ -27,7 +27,7 @@ export class UpdateModalComponent {
       description: [data.product.description, Validators.required],
       price: [data.product.price, Validators.required],
       productSizes: this.productSizesArray,
-      disabled: true,// Initialize as an array
+
     });
 
     if (data.product.productSizes) {

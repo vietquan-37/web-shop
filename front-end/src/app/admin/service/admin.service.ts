@@ -55,7 +55,12 @@ export class AdminService {
   changeOrderStatus(orderId: any, orderStatus: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/order/${orderId}/${orderStatus}`, {headers: this.createHeader()})
   }
-
+  deleteCoupon(couponId:any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/coupon/delete/${couponId}`, {headers: this.createHeader()})
+  }
+  updateCoupon(couponId:any,couponDto:any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/coupon/update/${couponId}`,couponDto,{headers: this.createHeader()})
+  }
 
   updateProduct(productId: any, productData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/product/update/${productId}`, productData, {headers: this.createHeader()})

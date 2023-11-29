@@ -1,0 +1,43 @@
+<form [formGroup]="couponForm" (ngSubmit)="onSubmit()">
+
+  <h1 mat-dialog-title></h1>
+
+  <div mat-dialog-content>
+
+
+    <mat-form-field>
+      <mat-label>Coupon Name</mat-label>
+      <input matInput type="text" placeholder="couponName" formControlName="couponName">
+      <mat-error *ngIf="couponForm.get('couponName')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Code</mat-label>
+      <input matInput type="text" placeholder="Code" formControlName="code">
+      <mat-error *ngIf="couponForm.get('code')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Discount</mat-label>
+      <input matInput type="number" placeholder="discount" formControlName="discount">
+      <mat-error *ngIf="couponForm.get('discount')?.hasError('required')">This Input is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Expired Date</mat-label>
+      <input matInput [matDatepicker]="picker"  formControlName="expiredDate">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="couponForm.get('expiredDate')?.hasError('required')">This input is required</mat-error>
+    </mat-form-field>
+
+
+    <!-- Dialog actions: Close, Cancel, and Update Product buttons -->
+    <div mat-dialog-actions>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="couponForm.invalid">Save</button>
+      <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+    </div>
+  </div>
+</form>
