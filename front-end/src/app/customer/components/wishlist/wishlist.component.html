@@ -1,0 +1,29 @@
+
+
+<div *ngIf="wishList && wishList.length > 0">
+  <h2>Your Wish List</h2>
+  <div *ngFor="let item of wishList">
+    <div class="wish-list-item">
+      <img [src]="item.processedImg" alt="{{ item.productName }} Image" />
+      <div class="item-details">
+        <a [routerLink]="['/customer/product', item.productId]">{{ item.productName }}</a>
+        <p>Price: {{ item.price }}</p>
+        <p>Product ID: {{ item.productId }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="pagination">
+    <button mat-button color="primary" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">
+      Previous
+    </button>
+    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+    <button mat-button color="primary" [disabled]="currentPage === totalPages - 1" (click)="onPageChange(currentPage + 1)">
+      Next
+    </button>
+</div>
+</div>
+
+
+<div *ngIf="wishList && wishList.length === 0">
+  <p>Your wish list is empty.</p>
+</div>

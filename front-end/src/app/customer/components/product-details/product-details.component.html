@@ -56,6 +56,13 @@
 
 
       <div class="actions">
+        <button mat-icon-button class="wish-list-button"  (click)="toggleWishlist(product.id)" [ngStyle]="{ 'color': heartColor ? '#FF424F' : 'white' }">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.469 1.262c-5.284-1.53-7.47 4.142-7.47 4.142S9.815-.269 4.532 1.262C-1.937 3.138.44 13.832 12 19.333c11.559-5.501 13.938-16.195 7.469-18.07z" [attr.stroke]="heartColor ? '#FF424F' : '#FF424F'" stroke-width="1.5" fill-rule="evenodd" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+
 
         <button mat-raised-button color="accent" class="cart-button" (click)="addToCart(product.id,selectedSize)" >
           Add to cart

@@ -21,6 +21,12 @@ export class CustomerService {
     }
     return this.http.post(`${this.baseUrl}/cart/add` ,cartDto ,{headers:this.createHeader()})
   }
+  isProductInWishlist(productId:any):Observable<boolean>{
+    const userId: number = Number(localStorage.getItem('userId'));
+
+    return this.http.get<boolean>(`${this.baseUrl}/wishList/check/${userId}/${productId}`  ,{headers:this.createHeader()})
+  }
+
   private createHeader():HttpHeaders{
     return new HttpHeaders().set(
       'Authorization', 'Bearer ' + localStorage.getItem('accessToken')
@@ -30,6 +36,20 @@ export class CustomerService {
     const userId: number = Number(localStorage.getItem('userId'));
 
     return this.http.get(`${this.baseUrl}/cart/${userId}`  ,{headers:this.createHeader()})
+  }
+  getWishListByUserId(page:number):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    const userId: number = Number(localStorage.getItem('userId'));
+
+    return this.http.get(`${this.baseUrl}/wishList/${userId}`  ,{headers:this.createHeader(),params:params})
+  }
+
+  addOrDelete(productId:any):Observable<any>{
+    const userId: number = Number(localStorage.getItem('userId'));
+
+    return this.http.post(`${this.baseUrl}/wishList/${userId}/${productId}`,null
+      ,{headers:this.createHeader()})
   }
   deleteProductFromCart( productId: number,size:any): Observable<any> {
     const userId: number = Number(localStorage.getItem('userId'));

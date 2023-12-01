@@ -10,6 +10,7 @@ import {ProductDetailsComponent} from "./components/product-details/product-deta
 import {ReviewProductComponent} from "./components/review-product/review-product.component";
 import {UserReviewComponent} from "./components/user-review/user-review.component";
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
+import {WishlistComponent} from "./components/wishlist/wishlist.component";
 
 
 const routes: Routes = [{ path: '', component: CustomerComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [{ path: '', component: CustomerComponent },
   { path: 'product/:id', component: ProductDetailsComponent ,canActivate: [authGuard,roleGuard] },
   { path: 'review/:id', component: ReviewProductComponent, canActivate: [authGuard,roleGuard]},
   { path: 'review', component: UserReviewComponent, canActivate: [authGuard,roleGuard]},
-  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard,roleGuard]}
+  { path: 'profile', component: UserProfileComponent, canActivate: [authGuard,roleGuard]},
+  { path: 'wishlist', component: WishlistComponent, canActivate: [authGuard,roleGuard]}
 ];
 
 @NgModule({

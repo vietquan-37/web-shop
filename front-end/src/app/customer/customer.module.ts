@@ -14,6 +14,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { ReviewProductComponent } from './components/review-product/review-product.component';
 import { UserReviewComponent } from './components/user-review/user-review.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { WishlistComponent } from './components/wishlist/wishlist.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     ProductDetailsComponent,
     ReviewProductComponent,
  UserReviewComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    WishlistComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {PublicService} from "../../../services/public.service";
 import {CustomerService} from "../../service/customer.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -10,25 +10,26 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit{
+export class ProductDetailsComponent implements OnInit {
   product: any;
-
   currentMainImage: string = '';
   selectedSize: string = '';
-reviews: any[] = [];
+  reviews: any[] = [];
   currentPage: number = 0;
+  totalPages: number = 0;
+  heartColor!: boolean;
 
-  totalPages: number = 0;  // New property to store total pages
+  // New property to store total pages
 
   constructor(
-
     public service: CustomerService,
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private router:Router,
-    private pService:PublicService
-  ) { }
+    private router: Router,
+    private pService: PublicService
+  ) {
+  }
 
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
@@ -45,12 +46,15 @@ reviews: any[] = [];
           id: res.id,
           productSizes: res.productSizes
         };
-        },
+      },
       (error) => {
         console.error('Error loading product:', error);
       }
     );
-this.getAllReview()
+    this.getAllReview()
+    this.isProductInWishlist(productIdFromRoute)
+
+
   }
 
   addToCart(id: any, selectedSize: any) {
@@ -101,11 +105,39 @@ this.getAllReview()
     this.getAllReview();
   }
 
+  toggleWishlist(productId: number): void {
+    this.service.addOrDelete(productId).subscribe((res) => {
+      if (res.message === "add product to wishlist successfully" ) {
+        this.heartColor = true
+        this.snackBar.open('Added to wishlist successfully', 'Close', {duration: 5000});
+      }
+      if (res.message === "remove product from wishlist successfully") {
+        this.heartColor = false
+        this.snackBar.open('Removed from wishlist successfully', 'Close', {duration: 5000});
+      }
+    });
+  }
+
+  isProductInWishlist(productId: any) {
+
+    this.service.isProductInWishlist(productId).subscribe(
+      (isInWishlist: boolean) => {
+        this.heartColor = isInWishlist;
+
+      },
+      (error) => {
+        console.error('Error checking product in wishlist', error);
+      }
+    );
+  }
+
+
   goBack() {
     this.router.navigate(['/customer/dashboard']);
   }
+
   createStarArray(starCount: number): number[] {
-    return Array.from({ length: starCount }, (_, index) => index + 1);
+    return Array.from({length: starCount}, (_, index) => index + 1);
   }
 
 }

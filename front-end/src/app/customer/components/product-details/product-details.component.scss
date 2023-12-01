@@ -85,21 +85,37 @@
       }
 
       .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+
+        .wishlist-button {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+
+          mat-icon {
+            font-size: 2rem;
+          }
+        }
+
         .cart-button {
           background-color: #da0202;
           color: #fff;
-          font-size: 1.2rem; /* Increased font size */
-          padding: 15px 30px; /* Increased padding */
+          font-size: 1.2rem;
+          padding: 15px 30px;
           border: none;
           border-radius: 4px;
           cursor: pointer;
-
+          margin-top: 10px;
 
           &:hover {
             background-color: #ff3c3c;
           }
         }
       }
+
     }
   }
 }
