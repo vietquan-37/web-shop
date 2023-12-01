@@ -10,6 +10,7 @@ import com.vietquan.security.enumPackage.PaymentMethod;
 import com.vietquan.security.repository.OrderRepository;
 import com.vietquan.security.repository.ProductSizeRepository;
 import com.vietquan.security.repository.UserRepository;
+import com.vietquan.security.request.MailForOrderRequest;
 import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PayPalPaymentDetails;
 import com.vietquan.security.request.PlaceOrderRequest;
@@ -34,6 +35,8 @@ public class OrderService {
     private final UserRepository userRepository;
     @Autowired
     private final PayPalService service;
+    @Autowired
+    private final EmailSenderService senderService;
 @Autowired
 private final ProductSizeRepository productSizeRepository;
     public OrderResponse placeOrder(PlaceOrderRequest request) {
@@ -88,6 +91,11 @@ private final ProductSizeRepository productSizeRepository;
                         productSizeRepository.save(productSize);
 
                     }
+                    MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+                    forOrderRequest.setToEmail(activeOrder.getUser().getEmail());
+                    forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day" );
+                    forOrderRequest.setSubject("Order Placing response");
+                    senderService.setMailSender(forOrderRequest);
                 }
 
                 // Create a new pending order for the user
@@ -131,11 +139,14 @@ private final ProductSizeRepository productSizeRepository;
 
         if (order.isPresent() && order.get().getOrderStatus() != OrderStatus.DELIVERED) {
             Order order1 = order.get();
-            if (order.get().getOrderStatus() == OrderStatus.PLACED) {
 
-            }
             if (Objects.equals(status, "SHIPPED")) {
                 order1.setOrderStatus(OrderStatus.SHIPPED);
+                MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+                forOrderRequest.setToEmail(order1.getUser().getEmail());
+                forOrderRequest.setBody("Your order are now on the shipping process" );
+                forOrderRequest.setSubject("Shipping response");
+                senderService.setMailSender(forOrderRequest);
 
             } else if (order.get().getOrderStatus() != OrderStatus.PLACED) {
 
@@ -145,6 +156,12 @@ private final ProductSizeRepository productSizeRepository;
                     Date currentDate = new Date(System.currentTimeMillis());
                     order1.setDeliveriedDate(currentDate);
                     order1.setPayed(true);
+                    MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+                    forOrderRequest.setToEmail(order1.getUser().getEmail());
+                    forOrderRequest.setBody("Your order are now delivered ,feel free to leave a review of product on our web" );
+                    forOrderRequest.setSubject("Delivery response");
+                    senderService.setMailSender(forOrderRequest);
+
                 }
             }
             else {

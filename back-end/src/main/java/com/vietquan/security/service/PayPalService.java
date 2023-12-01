@@ -11,6 +11,7 @@ import com.vietquan.security.enumPackage.PaymentMethod;
 import com.vietquan.security.repository.CartItemsRepository;
 import com.vietquan.security.repository.OrderRepository;
 import com.vietquan.security.repository.ProductSizeRepository;
+import com.vietquan.security.request.MailForOrderRequest;
 import com.vietquan.security.request.PayPalPaymentDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ public class PayPalService {
     private String clientId;
     @Value("${paypal.clientSecret}")
     private String clientSecret;
-
+    @Autowired
+    private final EmailSenderService senderService;
     public PayPalPaymentDetails processPayment(double amount, String currency, String description) throws PayPalRESTException {
         Payment payment = createPayment(amount, currency, description);
         PayPalPaymentDetails details = new PayPalPaymentDetails();
@@ -125,6 +127,11 @@ public class PayPalService {
             productSizeRepository.save(productSize);
 
         }
+        MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+        forOrderRequest.setToEmail(order.getUser().getEmail());
+        forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day (have paid by paypal)" );
+        forOrderRequest.setSubject("Order Placing response");
+        senderService.setMailSender(forOrderRequest);
 
         repository.save(order);
         Order newOrder = new Order();
