@@ -91,11 +91,7 @@ private final ProductSizeRepository productSizeRepository;
                         productSizeRepository.save(productSize);
 
                     }
-                    MailForOrderRequest forOrderRequest =new MailForOrderRequest();
-                    forOrderRequest.setToEmail(activeOrder.getUser().getEmail());
-                    forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day" );
-                    forOrderRequest.setSubject("Order Placing response");
-                    senderService.setMailSender(forOrderRequest);
+
                 }
 
                 // Create a new pending order for the user
@@ -107,8 +103,13 @@ private final ProductSizeRepository productSizeRepository;
                 newOrder.setOrderStatus(OrderStatus.PENDING);
                 newOrder.setPayed(false);
                 orderRepository.save(newOrder);
+                MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+                forOrderRequest.setToEmail(activeOrder.getUser().getEmail());
+                forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day" );
+                forOrderRequest.setSubject("Order Placing response");
+                senderService.setMailSender(forOrderRequest);
 
-                // Return OrderResponse without PayPal approval URL
+
                 return OrderResponse.builder().request(activeOrder.getOrderDto()).build();
             }
 
@@ -147,7 +148,7 @@ private final ProductSizeRepository productSizeRepository;
                 forOrderRequest.setBody("Your order are now on the shipping process" );
                 forOrderRequest.setSubject("Shipping response");
                 senderService.setMailSender(forOrderRequest);
-
+                orderRepository.save(order1);
             } else if (order.get().getOrderStatus() != OrderStatus.PLACED) {
 
 
@@ -161,13 +162,13 @@ private final ProductSizeRepository productSizeRepository;
                     forOrderRequest.setBody("Your order are now delivered ,feel free to leave a review of product on our web" );
                     forOrderRequest.setSubject("Delivery response");
                     senderService.setMailSender(forOrderRequest);
-
+                    orderRepository.save(order1);
                 }
             }
             else {
                 throw new RuntimeException("When order status are placed cannot change to delivered");
             }
-            return orderRepository.save(order1).getOrderDto();
+            return order1.getOrderDto();
         } else {
             throw new EntityNotFoundException("no record not able to change");
         }
@@ -187,11 +188,5 @@ private final ProductSizeRepository productSizeRepository;
         }
         return orders.map(Order::getOrderDto);
     }
-//    public List<OrderRequest>filterByOrderStatus(List<OrderStatus> status){
-//        if(status.size()==0)
-//        return orderRepository.findAllByOrderStatusIn(status).stream().map(Order::getOrderDto).collect(Collectors.toList());
-//    }
-//    public List<OrderRequest>filterByOrderStatusOfUser(List<OrderStatus> status,Integer userId){
-//        return orderRepository.findAllByOrderStatusInAndUserId(status,userId).stream().map(Order::getOrderDto).collect(Collectors.toList());
-//    }
+
 }

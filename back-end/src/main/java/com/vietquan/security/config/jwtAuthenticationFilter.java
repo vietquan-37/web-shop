@@ -1,6 +1,5 @@
 package com.vietquan.security.config;
 
-import com.vietquan.security.repository.TokenRepository;
 import com.vietquan.security.service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -40,7 +39,7 @@ public class jwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
+        if (request.getServletPath().contains("/api/v1/auth") || request.getServletPath().contains("/api/v1/auth/reset-password")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -76,7 +75,7 @@ public class jwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
 
-        } catch (ExpiredJwtException| SignatureException ex) {
+        } catch (ExpiredJwtException | SignatureException ex) {
 
             handlerExceptionResolver.resolveException(request, response, null, ex);
 

@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class JwtService {
 
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
+    @Value("${application.security.reset-password.expiration}")
+    private long resetPassword;
     private final TokenRepository repository;
 
     public String extractUsername(String token) {
@@ -55,6 +58,26 @@ public class JwtService {
             UserDetails userDetails
     ) {
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+
+
+
+    public String generatePasswordResetToken(String userEmail) {
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts
+                .builder()
+                .setClaims(claims)
+                .setSubject(userEmail)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + resetPassword))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public boolean isPasswordResetTokenValid(String token, String userEmail) {
+        final String subject = extractUsername(token);
+        return (subject.equals(userEmail)) && !isTokenExpired(token);
     }
 
     private String buildToken(

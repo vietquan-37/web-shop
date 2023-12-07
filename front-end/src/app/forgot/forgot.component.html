@@ -1,0 +1,34 @@
+<!-- reset-password.component.html -->
+
+<div class="reset-password-container">
+  <h2>Reset Password</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- reset-password.component.html -->
+
+    <!-- ... (previous code) ... -->
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Password</mat-label>
+      <input matInput formControlName="newPassword" type="{{ newPasswordVisible ? 'text' : 'password' }}" placeholder="Enter new password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility('newPassword')">
+        <mat-icon>{{ newPasswordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="form.get('newPassword')?.hasError('required')">New Password is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput formControlName="confirmPassword" type="{{ confirmPasswordVisible ? 'text' : 'password' }}" placeholder="Confirm new password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility('confirmPassword')">
+        <mat-icon>{{ confirmPasswordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Confirm Password is required</mat-error>
+    </mat-form-field>
+
+    <!-- ... (remaining code) ... -->
+
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Reset Password</button>
+  </form>
+</div>

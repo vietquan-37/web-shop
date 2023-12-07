@@ -19,6 +19,9 @@ export class AuthenticationService {
   register(inputData: any) {
     return this.http.post<AuthenticationResponse>(`${this.baseUrl}/register`, inputData);
   }
+  reset(inputData: any) {
+    return this.http.post(`${this.baseUrl}/forgot`, inputData);
+  }
 
   verifyCode(inputData: any) {
     return this.http.post<AuthenticationResponse>(`${this.baseUrl}/verify`, inputData).pipe(
@@ -67,7 +70,11 @@ export class AuthenticationService {
         })
       );
   }
+  resetPassword(request: any, token: string): Observable<any> {
+    const resetUrl = `${this.baseUrl}/reset-password?token=${token}`; // Adjust the URL structure based on your backend API
 
+    return this.http.post(resetUrl, request);
+  }
 
   getNewAccessToken() {
     const refreshToken = localStorage.getItem('refreshToken');

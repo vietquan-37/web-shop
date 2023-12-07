@@ -1,0 +1,16 @@
+<!-- reset.component.html -->
+
+<div class="reset-container">
+  <h2>Reset Password</h2>
+
+  <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="Enter your email">
+      <mat-error *ngIf="resetForm.get('email')?.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="resetForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="resetForm.invalid">Reset Password</button>
+  </form>
+</div>

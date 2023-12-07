@@ -12,6 +12,8 @@ import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {Interceptor} from "./services/http-interceptor.service";
 import {MatDialogModule} from "@angular/material/dialog";
+import { ForgotComponent } from './forgot/forgot.component';
+import { ResetComponent } from './reset/reset.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     AppComponent,
     RegisterComponent,
     LoginComponent,
+    ForgotComponent,
+    ResetComponent,
 
 
   ],

@@ -16,6 +16,7 @@ import com.vietquan.security.request.PayPalPaymentDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -127,11 +128,7 @@ public class PayPalService {
             productSizeRepository.save(productSize);
 
         }
-        MailForOrderRequest forOrderRequest =new MailForOrderRequest();
-        forOrderRequest.setToEmail(order.getUser().getEmail());
-        forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day (have paid by paypal)" );
-        forOrderRequest.setSubject("Order Placing response");
-        senderService.setMailSender(forOrderRequest);
+
 
         repository.save(order);
         Order newOrder = new Order();
@@ -142,6 +139,11 @@ public class PayPalService {
         newOrder.setOrderStatus(OrderStatus.PENDING);
         newOrder.setPayed(false);
         repository.save(newOrder);
+        MailForOrderRequest forOrderRequest =new MailForOrderRequest();
+        forOrderRequest.setToEmail(order.getUser().getEmail());
+        forOrderRequest.setBody("Thank for placing an order of our shop,your order will be shipped after 2-3 business day (have paid by paypal)" );
+        forOrderRequest.setSubject("Order Placing response");
+        senderService.setMailSender(forOrderRequest);
     }
 
     private String formatAddress(ShippingAddress shippingAddress) {

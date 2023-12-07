@@ -3,6 +3,7 @@ package com.vietquan.security.advice;
 import com.vietquan.security.exception.EmailAlreadyExistsException;
 import com.vietquan.security.exception.InvalidPasswordException;
 import com.vietquan.security.exception.MisMatchPasswordException;
+import com.vietquan.security.exception.ResetTokenExpired;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -38,6 +39,7 @@ public class ExceptionHandler {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
 
+
         else if (exception instanceof ExpiredJwtException) {
             error.put("error", "token is expired");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -67,6 +69,7 @@ public class ExceptionHandler {
             error.put("error", "invalid token string");
             response.setStatus(HttpStatus.FORBIDDEN.value());
         }
+
         else if (exception instanceof MalformedJwtException) {
             error.put("error", "hihi");
             response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -84,4 +87,5 @@ public class ExceptionHandler {
 
         return error;
     }
+
 }

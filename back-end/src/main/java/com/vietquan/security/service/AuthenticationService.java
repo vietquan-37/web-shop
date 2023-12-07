@@ -7,20 +7,21 @@ import com.vietquan.security.enumPackage.OrderStatus;
 import com.vietquan.security.enumPackage.Role;
 import com.vietquan.security.enumPackage.TokenType;
 import com.vietquan.security.exception.EmailAlreadyExistsException;
+import com.vietquan.security.exception.MisMatchPasswordException;
+import com.vietquan.security.exception.ResetTokenExpired;
 import com.vietquan.security.repository.OrderRepository;
 import com.vietquan.security.repository.TokenRepository;
 import com.vietquan.security.repository.UserRepository;
-import com.vietquan.security.request.AuthenticationRequest;
-import com.vietquan.security.request.RefreshTokenRequest;
-import com.vietquan.security.request.RegisterRequest;
-import com.vietquan.security.request.verifyRequest;
+import com.vietquan.security.request.*;
 import com.vietquan.security.response.AuthenticationResponse;
+import com.vietquan.security.response.ResponseMessage;
 import com.vietquan.security.tfa.TwoFactorAuthenticationService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +39,7 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final TwoFactorAuthenticationService twoFactorAuthenticationService;
     private final OrderRepository orderRepository;
+    private final EmailSenderService senderService;
 
     public AuthenticationResponse register(RegisterRequest request) throws EmailAlreadyExistsException {
         var user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname()).email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).mfaEnable(request.isMfaEnable()).build();
@@ -134,6 +136,40 @@ public class AuthenticationService {
         var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).expired(false).revoked(false).build();
         tokenRepository.save(token);
     }
+
+
+    public ResponseEntity<ResponseMessage> forgotPassword(ForgotRequest request) {
+        User user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new EntityNotFoundException("Not found user"));
+        MailForOrderRequest forOrderRequest = new MailForOrderRequest();
+        var link = jwtService.generatePasswordResetToken(request.getEmail());
+        forOrderRequest.setToEmail(user.getEmail());
+        forOrderRequest.setBody("Click <a href=\"http://localhost:4200/forgot?token=" + link + "\">here</a> to reset your password.");
+
+
+        forOrderRequest.setSubject("Forgot Password");
+        senderService.setMailSender(forOrderRequest);
+        return ResponseEntity.ok(ResponseMessage.builder().message("send link successfully").build());
+
+    }
+
+    public ResponseEntity<ResponseMessage> resetPassword(ResetPasswordRequest request, String token) throws ResetTokenExpired, MisMatchPasswordException {
+        String userEmail = jwtService.extractUsername(token);
+        User user = repository.findByEmail(userEmail).orElseThrow();
+        if (jwtService.isPasswordResetTokenValid(token, userEmail)) {
+            if (request.getNewPassword().trim().equals(request.getConfirmPassword().trim())) {
+                user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+                repository.save(user);
+
+                return ResponseEntity.ok(ResponseMessage.builder().message("reset successfully").build());
+            } else {
+                throw new MisMatchPasswordException("not match");
+            }
+
+        }
+        throw new ResetTokenExpired("reset token has expired");
+
+    }
+
 
     public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
         String userEmail = jwtService.extractUsername(request.getToken());

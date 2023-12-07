@@ -1,0 +1,29 @@
+/* reset-password.component.scss */
+
+.reset-password-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      background-color: transparent;
+    }
+  }
+
+  button {
+    width: 100%;
+  }
+}
