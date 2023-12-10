@@ -24,10 +24,17 @@ public class CouponController {
         return ResponseEntity.status(HttpStatus.CREATED).body(request1);
     }
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')"
+    @PreAuthorize("hasAnyRole('ADMIN')"
     )
     public ResponseEntity<List<CouponRequest>> getAllCoupon() {
         List<CouponRequest> all = service.getAllCoupon();
+        return ResponseEntity.ok(all);
+    }
+    @GetMapping("code")
+    @PreAuthorize("hasAnyRole('USER')"
+    )
+    public ResponseEntity<List<CouponRequest>> getAllNonExpired() {
+        List<CouponRequest> all = service.getAllNonExpiredCoupons();
         return ResponseEntity.ok(all);
     }
 

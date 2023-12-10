@@ -1,0 +1,51 @@
+<!-- analytics.component.html -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Placed Orders</h5>
+          <p class="card-text">{{ analytics?.placedOrderCount }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Shipped Orders</h5>
+          <p class="card-text">{{ analytics?.shippedOrderCount }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Delivery Orders</h5>
+          <p class="card-text">{{ analytics?.deliveredOrderCount }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Revenue</h5>
+          <p class="card-text">{{ analytics?.totalRevenue | currency: 'USD':true }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Clients</h5>
+          <p class="card-text">{{ analytics?.client }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

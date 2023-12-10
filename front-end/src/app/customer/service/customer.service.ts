@@ -37,6 +37,9 @@ export class CustomerService {
 
     return this.http.get(`${this.baseUrl}/cart/${userId}`  ,{headers:this.createHeader()})
   }
+  getNonExpiredCoupon():Observable<any>{
+    return this.http.get(`${this.baseUrl}/coupon/code`  ,{headers:this.createHeader()})
+  }
   getWishListByUserId(page:number):Observable<any>{
     let params = new HttpParams();
     params = params.append('page', page.toString());

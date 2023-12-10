@@ -76,3 +76,17 @@ button.active {
 .customer-toolbar{
   background-color: crimson;
 }
+.coupon {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-top: 0px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  p {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+  }
+}

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "./services/authentication.service";
 import {Router} from "@angular/router";
+import {CustomerService} from "./customer/service/customer.service";
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,11 @@ import {Router} from "@angular/router";
 })
 export class AppComponent implements OnInit {
   title = 'front-end';
+  coupons: any
 
   constructor(private service: AuthenticationService,
-              private router: Router) {
+              private router: Router,
+              private CustomerService: CustomerService) {
   }
 
   isCustomerLogin: boolean = this.service.isCustomerLogin();
@@ -24,7 +27,9 @@ export class AppComponent implements OnInit {
       this.isCustomerLogin = this.service.isCustomerLogin();
       this.isAdminLogin = this.service.isAdminLogin();
 
-
+      if (this.isCustomerLogin) {
+        this.getAllNonExpiredCoupon();
+      }
     });
   }
 
@@ -40,6 +45,19 @@ export class AppComponent implements OnInit {
         console.error('Logout error:', error);
       }
     );
+  }
+
+  getAllNonExpiredCoupon() {
+    this.CustomerService.getNonExpiredCoupon().subscribe((res) => {
+      this.coupons = res.map((coupon: any) => {
+        return {
+          code: coupon.code,
+          discount: coupon.discount,
+          expiredDate: coupon.expiredDate
+
+        };
+      });
+    })
   }
 
 

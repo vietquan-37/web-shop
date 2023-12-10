@@ -12,6 +12,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,13 +57,24 @@ public class CouponService {
         repository.save(coupon.get());
         return ResponseEntity.ok(ResponseMessage.builder().message("Update successfully").build());
     }
+
     public ResponseEntity<ResponseMessage> deleteCoupon(Integer id) {
         Optional<Coupon> coupon = repository.findById(id);
         if (coupon.isEmpty()) {
             throw new EntityNotFoundException("not found");
         }
-       repository.delete(coupon.get());
+        repository.delete(coupon.get());
         return ResponseEntity.ok(ResponseMessage.builder().message("Update successfully").build());
+    }
+
+    public List<CouponRequest> getAllNonExpiredCoupons() {
+        LocalDate currentDate = LocalDate.now();
+        Date currentDateAsDate = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<Coupon> nonExpiredCoupons = repository.findAllByExpiredDateAfter(currentDateAsDate);
+        if (nonExpiredCoupons.isEmpty()) {
+            throw new EntityNotFoundException("not found any non-expired coupon");
+        }
+        return nonExpiredCoupons.stream().map(Coupon::getDto).collect(Collectors.toList());
     }
 
 

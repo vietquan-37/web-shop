@@ -17,6 +17,7 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { ProductReviewComponent } from './components/product-review/product-review.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { EditCouponsComponent } from './components/edit-coupons/edit-coupons.component';
+import { AnalyticsComponent } from './components/analytics/analytics.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { EditCouponsComponent } from './components/edit-coupons/edit-coupons.com
     OrdersComponent,
     ProductReviewComponent,
     UserManagementComponent,
-    EditCouponsComponent
+    EditCouponsComponent,
+    AnalyticsComponent
   ],
   imports: [
     CommonModule,

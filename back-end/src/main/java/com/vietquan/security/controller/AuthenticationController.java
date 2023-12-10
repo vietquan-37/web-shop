@@ -45,7 +45,7 @@ public class AuthenticationController {
     }
     @PostMapping("/reset-password")
     public ResponseEntity<ResponseMessage>resetPassword(
-            @RequestBody ResetPasswordRequest request,@RequestParam(name = "token")String token
+            @Valid @RequestBody ResetPasswordRequest request,@RequestParam(name = "token")String token
             ) throws MisMatchPasswordException, ResetTokenExpired {
         return service.resetPassword(request,token);
     }

@@ -15,7 +15,7 @@ import {EditCouponsComponent} from "../edit-coupons/edit-coupons.component";
 export class CouponsComponent implements OnInit {
   coupons: any[] = [];
 
-  constructor(private service: PublicService,
+  constructor(
               public AdminService: AdminService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog,
@@ -27,7 +27,7 @@ export class CouponsComponent implements OnInit {
   }
 
   getAllCoupons() {
-    this.service.getAllCoupon().subscribe((res) => {
+    this.AdminService.getAllCoupon().subscribe((res) => {
       this.coupons = res.map((coupon: any) => {
         return {
           id: coupon.id,
@@ -61,7 +61,9 @@ export class CouponsComponent implements OnInit {
       const dialogRef = this.dialog.open(EditCouponsComponent, dialogConfig);
 
       dialogRef.afterClosed().subscribe(result => {
-
+        setTimeout(() => {
+          window.location.reload();
+        },500);
       });
 
   }

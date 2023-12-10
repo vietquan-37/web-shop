@@ -1,0 +1,40 @@
+/* analytics.component.scss */
+
+.container {
+  margin-top: 20px;
+
+  .row {
+    margin-bottom: 20px;
+
+    .card {
+      background-color: deepskyblue;
+      color: #fff; /* White text */
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+
+      .card-body {
+        padding: 20px;
+        border-radius: 15px;
+
+        .card-title {
+          font-size: 1.8rem;
+          margin-bottom: 15px;
+        }
+
+        .card-text {
+          font-size: 1.4rem;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-8px);
+      }
+    }
+
+    .col-md-6 {
+      margin-bottom: 20px;
+    }
+  }
+}

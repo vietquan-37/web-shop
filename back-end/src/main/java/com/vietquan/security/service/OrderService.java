@@ -14,6 +14,7 @@ import com.vietquan.security.request.MailForOrderRequest;
 import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PayPalPaymentDetails;
 import com.vietquan.security.request.PlaceOrderRequest;
+import com.vietquan.security.response.AnalyticsResponse;
 import com.vietquan.security.response.OrderResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -175,18 +175,34 @@ private final ProductSizeRepository productSizeRepository;
     }
 
     public Page<OrderRequest> getUserOrder(Integer userId,List<OrderStatus>statuses,int page) {
-        if(page<0){
-            page=1;
+        if (page < 0) {
+            page = 1;
         }
-        Pageable pageable= PageRequest.of(page,1);
+        Pageable pageable = PageRequest.of(page, 1);
         Page<Order> orders;
-        if(statuses==null) {
-            orders = orderRepository.findByUserIdAndOrderStatusIn(userId,List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED),pageable);
-        }
-        else {
-            orders= orderRepository.findByUserIdAndOrderStatusIn(userId,statuses,pageable);
+        if (statuses == null) {
+            orders = orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED), pageable);
+        } else {
+            orders = orderRepository.findByUserIdAndOrderStatusIn(userId, statuses, pageable);
         }
         return orders.map(Order::getOrderDto);
     }
+
+    public AnalyticsResponse analyticsForAdmin() {
+        var placedOrderCount = orderRepository.countOrderByOrderStatus(OrderStatus.PLACED);
+        var deliveredOrderCount = orderRepository.countOrderByOrderStatus(OrderStatus.DELIVERED);
+        var shippedOrderCount = orderRepository.countOrderByOrderStatus(OrderStatus.SHIPPED);
+        double totalRevenue = orderRepository.getRevenue(OrderStatus.DELIVERED);
+        var client=orderRepository.getClient(OrderStatus.DELIVERED);
+
+        return AnalyticsResponse.builder()
+                .placedOrderCount(placedOrderCount)
+                .shippedOrderCount(shippedOrderCount)
+                .deliveredOrderCount(deliveredOrderCount)
+                .client(client)
+                .totalRevenue(totalRevenue)
+                .build();
+    }
+
 
 }

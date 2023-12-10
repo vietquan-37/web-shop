@@ -3,6 +3,7 @@ package com.vietquan.security.controller;
 import com.vietquan.security.enumPackage.OrderStatus;
 import com.vietquan.security.request.OrderRequest;
 import com.vietquan.security.request.PlaceOrderRequest;
+import com.vietquan.security.response.AnalyticsResponse;
 import com.vietquan.security.response.OrderResponse;
 import com.vietquan.security.service.OrderService;
 import jakarta.validation.Valid;
@@ -47,10 +48,9 @@ public class OrderController {
     public ResponseEntity<Page<OrderRequest>>getOrderForUser(@PathVariable Integer userId,@RequestParam(required = false) List<OrderStatus> status,@RequestParam(defaultValue = "0") int page) {
         return ResponseEntity.ok(service.getUserOrder(userId,status,page));
     }
-//    @GetMapping("filter")
-//    @PreAuthorize("hasAnyRole('ADMIN')")
-//    public ResponseEntity<List<OrderRequest>> filterOrder(@RequestParam List<OrderStatus> status) {
-//        return ResponseEntity.ok(service.filterByOrderStatus(status));
-//    }
-
+    @GetMapping("/analytics")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<AnalyticsResponse> AnalyticForAdmin() {
+        return ResponseEntity.ok(service.analyticsForAdmin());
+    }
 }

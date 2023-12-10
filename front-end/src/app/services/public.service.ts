@@ -22,9 +22,7 @@ export class PublicService {
     });
   }
 
-  getAllCoupon(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/coupon`, {headers: this.createHeader()})
-  }
+
 
   getAllReviewByProduct(productId: any, page: number): Observable<any> {
     let params = new HttpParams();

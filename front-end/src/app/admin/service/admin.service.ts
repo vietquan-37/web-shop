@@ -26,7 +26,12 @@ export class AdminService {
       'Authorization', 'Bearer ' + localStorage.getItem('accessToken')
     )
   }
-
+  getAnalytic():Observable<any>{
+    return this.http.get(`${this.baseUrl}/order/analytics`, {headers: this.createHeader()})
+  }
+  getAllCoupon(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/coupon`, {headers: this.createHeader()})
+  }
   getAllCategory(): Observable<any> {
     return this.http.get(`${this.baseUrl}/category`, {headers: this.createHeader()})
   }

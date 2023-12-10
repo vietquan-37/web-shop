@@ -9,7 +9,6 @@
         <mat-toolbar color="primary" class="navbar">
           <span class="navbar-brand">E-Commerce</span>
           <span class="spacer"></span>
-          <button mat-button routerLink="/order" routerLinkActive="active">Track Order</button>
           <button mat-button routerLink="/register" routerLinkActive="active">Register</button>
           <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
         </mat-toolbar>
@@ -46,7 +45,13 @@
           <button mat-button routerLink="/customer/profile" routerLinkActive="active">Profile</button>
           <button mat-button routerLink="/customer/review" routerLinkActive="active">View Review</button>
           <button mat-button  routerLinkActive="active" (click)="logout()">Logout</button>
+
         </mat-toolbar>
+
+        <div class="coupon"  *ngIf="coupons && coupons.length > 0">
+          <p>Apply this coupon code: {{ coupons[0].code }} to get {{ coupons[0].discount }}% discount . Expires on {{ coupons[0].expiredDate |date:'dd/MM/yyyy' }}</p>
+        </div>
+
       </div>
     </nav>
   </div>
