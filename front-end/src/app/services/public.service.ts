@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
   providedIn: 'root'
 })
 export class PublicService {
-  private baseUrl = 'http://localhost:8080/api/v1';
+  private baseUrl = 'https://ecommerce-vietquan.onrender.com/api/v1';
 
   constructor(private http: HttpClient) {
   }

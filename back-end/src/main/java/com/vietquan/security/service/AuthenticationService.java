@@ -144,7 +144,7 @@ public class AuthenticationService {
         MailForOrderRequest forOrderRequest = new MailForOrderRequest();
         var link = jwtService.generatePasswordResetToken(request.getEmail());
         forOrderRequest.setToEmail(user.getEmail());
-        forOrderRequest.setBody("Click <a href=\"http://localhost:4200/forgot?token=" + link + "\">here</a> to reset your password.");
+        forOrderRequest.setBody("Click <a href=\"https://vietquan-ecommerce.netlify.app/forgot?token=" + link + "\">here</a> to reset your password.");
 
 
         forOrderRequest.setSubject("Forgot Password");

@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 })
 export class CustomerService {
 
-  private baseUrl = 'http://localhost:8080/api/v1';
+  private baseUrl = 'https://ecommerce-vietquan.onrender.com/api/v1';
 
   constructor(private http: HttpClient) {
   }

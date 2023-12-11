@@ -9,7 +9,7 @@ import {AuthenticationResponse} from "../models/authentication-response";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private baseUrl = 'http://localhost:8080/api/v1/auth';
+  private baseUrl = 'https://ecommerce-vietquan.onrender.com/api/v1/auth';
 
   constructor(private http: HttpClient,
               private router: Router,

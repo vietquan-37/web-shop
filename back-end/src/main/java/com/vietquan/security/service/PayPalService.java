@@ -79,8 +79,8 @@ public class PayPalService {
         transactions.add(transaction);
         payment.setTransactions(transactions);
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:8080/payment/cancel"); // Adjust the URL based on your application's structure
-        redirectUrls.setReturnUrl("http://localhost:8080/payment/success"); // Adjust the URL based on your application's structure
+        redirectUrls.setCancelUrl("https://ecommerce-vietquan.onrender.com/payment/cancel"); // Adjust the URL based on your application's structure
+        redirectUrls.setReturnUrl("https://ecommerce-vietquan.onrender.com/payment/success"); // Adjust the URL based on your application's structure
         payment.setRedirectUrls(redirectUrls);
 
         APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
