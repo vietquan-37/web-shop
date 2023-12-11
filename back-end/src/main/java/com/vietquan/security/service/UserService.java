@@ -4,6 +4,7 @@ import com.vietquan.security.entity.User;
 import com.vietquan.security.enumPackage.Role;
 import com.vietquan.security.exception.InvalidPasswordException;
 import com.vietquan.security.exception.MisMatchPasswordException;
+import com.vietquan.security.repository.TokenRepository;
 import com.vietquan.security.repository.UserRepository;
 import com.vietquan.security.request.ChangeInformationRequest;
 import com.vietquan.security.request.ChangePasswordRequest;
@@ -30,6 +31,7 @@ import java.util.Optional;
 public class UserService {
     private final PasswordEncoder encoder;
     private final UserRepository repository;
+    private final TokenRepository tokenRepository;
     private static final int MAX_AVATAR_LENGTH = 1048576;
 
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) throws InvalidPasswordException, MisMatchPasswordException {
@@ -89,7 +91,17 @@ public class UserService {
         return response;
 
     }
-
+    private void revokeAllUserTokens(User user) {
+        var validUserToken = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserToken.isEmpty()) {
+            return;
+        }
+        validUserToken.forEach(t -> {
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserToken);
+    }
     public Page<UserInfoResponse> getAllUserInfo(int page) {
         if(page<0){
             page=0;
@@ -116,6 +128,7 @@ public class UserService {
         if(user.isPresent()){
 
             user.get().setBanned(request.isRequest());
+            revokeAllUserTokens(user.get());
             repository.save(user.get());
         }
         else{

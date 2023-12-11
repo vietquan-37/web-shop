@@ -41,6 +41,7 @@ public class AuthenticationService {
     private final OrderRepository orderRepository;
     private final EmailSenderService senderService;
 
+
     public AuthenticationResponse register(RegisterRequest request) throws EmailAlreadyExistsException {
         var user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname()).email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).mfaEnable(request.isMfaEnable()).build();
         if (repository.findByEmail(request.getEmail()).isPresent()) {

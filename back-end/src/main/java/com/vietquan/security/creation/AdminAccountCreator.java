@@ -22,13 +22,13 @@ public class AdminAccountCreator {
             return;
         }
 
-        if (userRepository.findByEmail("admin@gmail.com").isPresent()) {
+        if (userRepository.findByEmail("bubakush20099@gmail.com").isPresent()) {
             adminAccountCreated = true;
             return;
         }
 
         User adminUser = User.builder()
-                .email("admin@gmail.com")
+                .email("bubakush20099@gmail.com")
                 .password(passwordEncoder.encode("Quanbeo123"))
                 .firstname("Viet")
                 .lastname("Quan")
