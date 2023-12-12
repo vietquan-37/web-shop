@@ -41,11 +41,9 @@ public class User implements UserDetails {
     @OneToMany(
             mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true
     )
-
+    private List<Review> reviews;
     @Column(name = "avatar", columnDefinition = "bytea")
     private byte[] avatar;
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
