@@ -31,7 +31,7 @@ public class AdminAccountCreator {
                 .email("bubakush20099@gmail.com")
                 .password(passwordEncoder.encode("Quanbeo123"))
                 .firstname("Viet")
-                .avatar(null)
+                .avatar(new byte[0])
                 .lastname("Quan")
                 .role(Role.ADMIN)
                 .build();
