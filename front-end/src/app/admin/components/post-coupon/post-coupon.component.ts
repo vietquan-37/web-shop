@@ -33,7 +33,7 @@ ngOnInit() {
         (res) => {
           if (res.id != null) {
             this.snackBar.open("Add coupon successfully", 'Close', {duration: 5000});
-            this.router.navigate(['/admin/dashboard'])
+            this.router.navigate(['/admin/coupon'])
 
           } else {
             this.snackBar.open("Add coupon unsuccessfully", 'Close', {duration: 5000});

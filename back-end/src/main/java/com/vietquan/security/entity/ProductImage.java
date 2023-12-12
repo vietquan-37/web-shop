@@ -18,7 +18,7 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer imageId;
 
-    @Lob
+
     @Column(columnDefinition = "bytea")
     private byte[] image;
 

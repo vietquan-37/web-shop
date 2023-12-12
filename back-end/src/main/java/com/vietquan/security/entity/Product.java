@@ -32,7 +32,6 @@ public class Product {
     @Lob
     private String description;
 
-    @Lob
     @Column(columnDefinition = "bytea")
     private byte[] image;
 

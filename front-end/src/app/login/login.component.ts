@@ -70,6 +70,10 @@ export class LoginComponent implements OnInit{
           this.snackBar.open('account have been locked please contact bubakush20099@gmail.com', 'Close');
 
         }
+        if(error.status==401&&error.message=='Bad credentials'){
+          this.snackBar.open('wrong username or password', 'Close');
+
+        }
       }
     )
   }
