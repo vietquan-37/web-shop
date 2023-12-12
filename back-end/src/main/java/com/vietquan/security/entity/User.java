@@ -23,8 +23,6 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-
     private Integer id;
     private String firstname;
     private String lastname;
@@ -45,7 +43,7 @@ public class User implements UserDetails {
     )
     private List<Review> reviews;
     @Lob
-    @Column(columnDefinition = "longblob", length = 1048576)  // 1 MB in bytes
+    @Column(columnDefinition = "bytea")  // 1 MB in bytes
     private byte[] avatar;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

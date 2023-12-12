@@ -19,7 +19,7 @@ public class ProductImage {
     private Integer imageId;
 
     @Lob
-    @Column(columnDefinition = "longblob")
+    @Column(columnDefinition = "bytea")
     private byte[] image;
 
     // Other fields as needed
