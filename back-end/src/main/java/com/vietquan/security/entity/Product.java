@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "products")
+
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,8 @@ public class Product {
     @Lob
     private String description;
 
-    @Column(columnDefinition = "bytea")
+    @Lob
+    @Column(columnDefinition = "longblob")
     private byte[] image;
 
     @ManyToOne(fetch = FetchType.LAZY)

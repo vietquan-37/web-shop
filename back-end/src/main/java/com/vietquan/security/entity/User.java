@@ -19,7 +19,7 @@ import java.util.List;
 )
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "_user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class User implements UserDetails {
             mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true
     )
     private List<Review> reviews;
-    @Column(name = "avatar", columnDefinition = "bytea")
+    @Column(name = "avatar", columnDefinition = "longblob")
     private byte[] avatar;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

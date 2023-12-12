@@ -18,8 +18,8 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer imageId;
 
-
-    @Column(columnDefinition = "bytea")
+    @Lob
+    @Column(columnDefinition = "longblob")
     private byte[] image;
 
     // Other fields as needed
