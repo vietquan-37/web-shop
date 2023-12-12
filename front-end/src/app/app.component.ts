@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from "./services/authentication.service";
-import {Router} from "@angular/router";
-import {CustomerService} from "./customer/service/customer.service";
+import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from "./services/authentication.service";
+import { Router, NavigationEnd } from "@angular/router";
+import { CustomerService } from "./customer/service/customer.service";
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -10,29 +11,31 @@ import {CustomerService} from "./customer/service/customer.service";
 })
 export class AppComponent implements OnInit {
   title = 'front-end';
-  coupons: any
+  coupons: any;
 
-  constructor(private service: AuthenticationService,
-              private router: Router,
-              private CustomerService: CustomerService) {
-  }
+  constructor(
+    private service: AuthenticationService,
+    private router: Router,
+    private CustomerService: CustomerService
+  ) {}
 
   isCustomerLogin: boolean = this.service.isCustomerLogin();
   isAdminLogin: boolean = this.service.isAdminLogin();
 
   ngOnInit(): void {
-
-
-    this.router.events.subscribe(event => {
+    // Subscribe to NavigationEnd events using the filter operator
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
       this.isCustomerLogin = this.service.isCustomerLogin();
       this.isAdminLogin = this.service.isAdminLogin();
 
-      if (this.isCustomerLogin) {
+      // Call getAllNonExpiredCoupon only when the user is logged in as a customer
+      if (this.isCustomerLogin && event.urlAfterRedirects && event.urlAfterRedirects.startsWith('/customer')) {
         this.getAllNonExpiredCoupon();
       }
     });
   }
-
 
   logout() {
     this.service.logout().subscribe(
@@ -41,7 +44,6 @@ export class AppComponent implements OnInit {
         localStorage.clear();
       },
       error => {
-        // Handle logout error if needed
         console.error('Logout error:', error);
       }
     );
@@ -54,11 +56,8 @@ export class AppComponent implements OnInit {
           code: coupon.code,
           discount: coupon.discount,
           expiredDate: coupon.expiredDate
-
         };
       });
-    })
+    });
   }
-
-
 }
