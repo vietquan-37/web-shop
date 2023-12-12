@@ -19,7 +19,7 @@ import java.util.List;
 )
 @Builder
 @Entity
-@Table(name = "_user")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
