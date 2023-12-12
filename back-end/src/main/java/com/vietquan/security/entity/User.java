@@ -43,7 +43,7 @@ public class User implements UserDetails {
     )
     private List<Review> reviews;
     @Lob
-    @Column(columnDefinition = "bytea")  // 1 MB in bytes
+    @Column(columnDefinition = "oid")  // 1 MB in bytes
     private byte[] avatar;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
