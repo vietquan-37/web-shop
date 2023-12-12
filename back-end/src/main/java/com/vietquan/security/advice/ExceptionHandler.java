@@ -64,7 +64,7 @@ public class ExceptionHandler {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         } else if (exception instanceof BadCredentialsException) {
             error.put("error", exception.getMessage());
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
         } else if (exception instanceof SignatureException) {
             error.put("error", "invalid token string");
             response.setStatus(HttpStatus.FORBIDDEN.value());

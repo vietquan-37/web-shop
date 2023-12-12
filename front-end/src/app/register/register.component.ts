@@ -85,6 +85,9 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['customer/dashboard']);
       },
       (error) => {
+        if(error.status==405){
+          this.snackBar.open('wrong code', 'Close', {duration: 5000, panelClass: 'error-snackbar'});
+        }
         this.snackBar.open('wrong code', 'Close', {duration: 5000, panelClass: 'error-snackbar'});
       }
 
